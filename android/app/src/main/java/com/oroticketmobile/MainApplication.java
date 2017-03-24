@@ -1,4 +1,4 @@
-package com.oroticket;
+package com.oroticketmobile;
 
 import android.app.Application;
 

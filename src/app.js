@@ -6,7 +6,7 @@ import LoginView from './LoginView'
 import HomeView from './HomeView'
 import CooperativaDetailView from './CooperativaDetailView'
 
-export default class OroTicket extends Component {
+export default class OroTicketMobile extends Component {
 
   render () {
     return <Router>
@@ -19,4 +19,4 @@ export default class OroTicket extends Component {
   }
 }
 
-AppRegistry.registerComponent('OroTicket', () => OroTicket)
+AppRegistry.registerComponent('OroTicketMobile', () => OroTicketMobile)
