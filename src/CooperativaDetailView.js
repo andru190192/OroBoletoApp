@@ -7,7 +7,6 @@ import {
 } from 'react-native'
 
 import CityList from './CityList'
-import { Actions } from 'react-native-router-flux'
 
 export default class CooperativaDetailView extends Component {
   constructor (props) {
@@ -18,10 +17,6 @@ export default class CooperativaDetailView extends Component {
         'Machala', 'Guayaquil', 'Santo Domingo', 'Duran', 'Cuenca', 'Loja', 'Quito', 'Ambato'
       ])
     }
-  }
-
-  _onPressButton () {
-    Actions.home()
   }
 
   render () {
