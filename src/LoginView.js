@@ -1,50 +1,72 @@
-import React, { Component } from 'react'
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
+
+import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   View,
   Image,
   Text,
-  TouchableOpacity
-} from 'react-native'
+} from 'react-native';
 
-import Icon from 'react-native-vector-icons/Ionicons'
-import { Actions } from 'react-native-router-flux'
+import FBSDK , {
+  LoginButton,
+  AccessToken
+} from 'react-native-fbsdk';
 
-export default class OroTicket extends Component {
 
-  _onPressButton () {
-    Actions.root()
-  }
+import {Actions} from 'react-native-router-flux'
 
-  render () {
+export default class LoginView extends Component {
+
+  handlenLoginFinished =   (error, result) => {
+      if (error) {
+        console.error(error)
+      } else if (result.isCancelled) {
+        alert("login is cancelled.");
+      } else {
+        AccessToken.getCurrentAccessToken().then(
+          (data) => {
+                    //alert(data.accessToken.toString())
+                    Actions.root()
+          }
+        )
+      }
+    }
+
+
+    render() {
     return (
       <View style={styles.container}>
         <Image source={require('./logo.png')} style={styles.logo} />
-        <TouchableOpacity onPress={this._onPressButton} style={styles.btnFacebook}>
-          <Icon name='logo-facebook' size={24} color='#FFFFFF' />
-        <Text style={{marginLeft: 5, marginTop: 2, color: '#FFFFFF'}}>Inicio assa de Sesi&oacute;n</Text>
-        </TouchableOpacity>
+        <LoginButton
+          redPermissions={["public_profile", 'email']}
+          onLoginFinished={this.handlenLoginFinished}
+          onLogoutFinished={() => alert("logout.")}/>
       </View>
-    )
+    );
+
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'lightgray',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF'
   },
   logo: {
     width: 250,
     height: 150,
     marginBottom: 50
   },
-  btnFacebook: {
-    flexDirection: 'row',
-    backgroundColor: '#3B5998',
-    padding: 7
+  welcome: {
+    fontSize: 24,
+    fontWeight: '600',
+    marginBottom: 20,
   }
-})
+});
