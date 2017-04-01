@@ -23,4 +23,41 @@ function getDestinos (salida) {
   .then(data => data.ciudades)
 }
 
-export { getOrigenes, getDestinos }
+
+function getPersona(usuarioId){
+  console.warn('usuarioId',usuarioId);
+  return fetch (URL+'/signIn',{
+    method: 'POST',
+    headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    body: JSON.stringify({
+           usuario: usuarioId
+       })
+  })
+    .then(response => response.json().then(json => {
+        json.status = response.status
+        return json
+      })
+    )
+  }
+
+
+function setPersona(objPersona){
+  return fetch (URL+'/signUP',{
+    method: 'POST',
+    headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    body: JSON.stringify(objPersona)
+  })
+    .then(response => response.json().then(json => {
+        json.status = response.status
+        return json
+      })
+    )
+}
+
+export { getOrigenes, getDestinos, getPersona, setPersona }
