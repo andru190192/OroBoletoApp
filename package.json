@@ -15,8 +15,8 @@
   },
   "scripts": {
     "lint": "standard",
-    "android": "npm run lint && react-native run-android",
-    "ios": "npm run lint && react-native run-ios",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
