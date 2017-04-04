@@ -28,6 +28,7 @@
     "react-native": "0.42.3",
     "react-native-fbsdk": "^0.5.0",
     "react-native-router-flux": "^3.38.0",
+    "react-native-scrollable-tab-view": "^0.6.3",
     "react-native-vector-icons": "^4.0.0"
   },
   "devDependencies": {
