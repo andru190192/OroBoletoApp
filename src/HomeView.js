@@ -10,28 +10,24 @@ import {
 
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import moment from 'moment'
 
 export default class HomeView extends Component {
 
-  state = {
-    simpleDate: new Date(),
-    simpleText: 'Escoje una fecha'
-  }
-
   showPicker = async (stateKey, options) => {
     try {
-      var newState = {};
-      const {action, year, month, day} = await DatePickerAndroid.open(options);
+      var newState = {}
+      const {action, year, month, day} = await DatePickerAndroid.open(options)
       if (action === DatePickerAndroid.dismissedAction) {
-        newState[stateKey + 'Text'] = 'dismissed';
+        newState[stateKey + 'Text'] = 'dismissed'
       } else {
-        var date = new Date(year, month, day);
-        newState[stateKey + 'Text'] = date.toLocaleDateString();
-        newState[stateKey + 'Date'] = date;
+        var date = new Date(year, month, day)
+        newState[stateKey + 'Text'] = moment(`${day}/${month + 1}/${year}`, 'DD/MM/yyyy').format('DD/MM/YYYY')
+        newState[stateKey + 'Date'] = date
       }
-      this.setState(newState);
+      this.setState(newState)
     } catch ({code, message}) {
-      console.warn(`Error in example '${stateKey}': `, message);
+      console.warn(`Error in example '${stateKey}': `, message)
     }
   };
 
@@ -40,7 +36,9 @@ export default class HomeView extends Component {
 
     this.state = {
       ciudadSalida: '',
-      ciudadDestino: ''
+      ciudadDestino: '',
+      simpleDate: new Date(moment().format('DD/MM/YYYY')),
+      simpleText: moment().format('DD/MM/YYYY')
     }
     this.handleCiudadSalida = this.handleCiudadSalida.bind(this)
     this.handleCiudadDestino = this.handleCiudadDestino.bind(this)
