@@ -4,82 +4,52 @@ import {
   View,
   Text,
   TextInput,
-  AlertIOS,
   Alert,
-  TouchableHighlight,
-
+  TouchableHighlight
 } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { getPersona, setPersona } from './api-client'
-
-// changeUsuario(usuario){
-//   this.setState({usuario})
-// }
-
-// <TextInput style={styles.input}
-//   placeholder="Usuario"
-//   value={this.state.usuario}
-//   onChangeText={(usuario)=> this.changeUsuario(usuario)}
-// />
+import { setPersona } from './api-client'
 
 export default class PersonaView extends Component {
 
-  // constructor(){
-  //   super()
-  //   this.state= {
-  //     usuario:'',
-  //     cedulaRuc:'',
-  //     nombre:'',
-  //     apellido:'',
-  //     direccion:'',
-  //     email:'',
-  //     telefono:'',
-  //     ciudad:''
-  //   }
-  //
-  // }
-  constructor(props){
+  constructor (props) {
     super()
-    this.state= {
-      usuario:props.usuarioFb.id,
-      cedulaRuc:'',
-      nombre:props.usuarioFb.last_name,
-      apellido:props.usuarioFb.first_name,
-      direccion:'',
-      email:props.usuarioFb.email,
-      telefono:'',
-      ciudad:''
+    this.state = {
+      usuario: props.usuarioFb.id,
+      cedulaRuc: '',
+      nombre: props.usuarioFb.last_name,
+      apellido: props.usuarioFb.first_name,
+      direccion: '',
+      email: props.usuarioFb.email,
+      telefono: '',
+      ciudad: ''
     }
-
   }
 
-
-  changeCedulaRuc(cedulaRuc){
+  changeCedulaRuc (cedulaRuc) {
     this.setState({cedulaRuc})
   }
-  changeNombre(nombre){
+  changeNombre (nombre) {
     this.setState({nombre})
   }
-  changeApellido(apellido){
+  changeApellido (apellido) {
     this.setState({apellido})
   }
-  changeEmail(email){
+  changeEmail (email) {
     this.setState({email})
   }
-  changeDireccion(direccion){
+  changeDireccion (direccion) {
     this.setState({direccion})
   }
-  changeTelefono(telefono){
+  changeTelefono (telefono) {
     this.setState({telefono})
   }
-  changeCiudad(ciudad){
+  changeCiudad (ciudad) {
     this.setState({ciudad})
   }
 
-  buttonPressed(){
-     //crear un objeto
+  buttonPressed () {
     const objPersona = {
       cedulaRuc: this.state.cedulaRuc,
       usuario: this.state.usuario,
@@ -88,20 +58,20 @@ export default class PersonaView extends Component {
       direccion: this.state.direccion,
       email: this.state.email,
       telefono: this.state.telefono,
-      ciudad : this.state.ciudad,
+      ciudad: this.state.ciudad
     }
-    setPersona(objPersona).then(datoPersona =>  {
+    setPersona(objPersona).then(datoPersona => {
       if (datoPersona.status.toString() === '200') {
         Alert.alert(
           'Datos de usuario',
           'Se ingreso Correctamente',
           [
-            {text: 'OK', onPress: () => Actions.root()},
+            {text: 'OK', onPress: () => Actions.root()}
           ],
           { cancelable: false }
         )
-      }else if (datoPersona.status.toString() === '404') {
-        console.warn('error');
+      } else if (datoPersona.status.toString() === '404') {
+        console.warn('error')
       }
     })
   }
@@ -109,49 +79,49 @@ export default class PersonaView extends Component {
   render () {
     return (
       <View style={styles.container}>
-          <Text style={styles.titulo}>DATOS DE USUARIO</Text>
+        <Text style={styles.titulo}>DATOS DE USUARIO</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Cedula/Ruc'
+          value={this.state.cedulaRuc}
+          onChangeText={(cedulaRuc) => this.changeCedulaRuc(cedulaRuc)}
+          />
+        <TextInput style={styles.input}
+          placeholder='Nombre'
+          value={this.state.nombre}
+          onChangeText={(nombre) => this.changeNombre(nombre)}
+          />
+        <TextInput style={styles.input}
+          placeholder='Apellido'
+          value={this.state.apellido}
+          onChangeText={(apellido) => this.changeApellido(apellido)}
+          />
+        <TextInput style={styles.input}
+          placeholder='Direccion'
+          value={this.state.direccion}
+          onChangeText={(direccion) => this.changeDireccion(direccion)}
+          />
+        <TextInput style={styles.input}
+          placeholder='Email'
+          value={this.state.email}
+          onChangeText={(email) => this.changeEmail(email)}
+          />
+        <TextInput style={styles.input}
+          placeholder='Telefono'
+          value={this.state.telefono}
+          onChangeText={(telefono) => this.changeTelefono(telefono)}
+          />
+        <TextInput style={styles.input}
+          placeholder='Ciudad'
+          value={this.state.ciudad}
+          onChangeText={(ciudad) => this.changeCiudad(ciudad)}
+          />
 
-          <TextInput style={styles.input}
-            placeholder="Cedula/ruc"
-            value={this.state.cedulaRuc}
-            onChangeText={(cedulaRuc)=> this.changeCedulaRuc(cedulaRuc)}
-          />
-          <TextInput style={styles.input}
-            placeholder="Nombre"
-            value={this.state.nombre}
-            onChangeText={(nombre)=> this.changeNombre(nombre)}
-          />
-          <TextInput style={styles.input}
-            placeholder="Apellido"
-            value={this.state.apellido}
-            onChangeText={(apellido)=> this.changeApellido(apellido)}
-          />
-          <TextInput style={styles.input}
-            placeholder="Direccion"
-            value={this.state.direccion}
-            onChangeText={(direccion)=> this.changeDireccion(direccion)}
-          />
-          <TextInput style={styles.input}
-            placeholder="Email"
-            value={this.state.email}
-            onChangeText={(email)=> this.changeEmail(email)}
-          />
-          <TextInput style={styles.input}
-            placeholder="Telefono"
-            value={this.state.telefono}
-            onChangeText={(telefono)=> this.changeTelefono(telefono)}
-          />
-          <TextInput style={styles.input}
-            placeholder="ciudad"
-            value={this.state.ciudad}
-            onChangeText={(ciudad)=> this.changeCiudad(ciudad)}
-          />
-
-          <TouchableHighlight
-            style={styles.button}
-            onPress={() => this.buttonPressed()}>
-            <Text style={styles.textButtom}>Send</Text>
-          </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => this.buttonPressed()}>
+          <Text style={styles.textButtom}>Send</Text>
+        </TouchableHighlight>
       </View>
 
     )
@@ -162,48 +132,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F3F3',
-    marginTop:30,
-    paddingLeft:15,
-    paddingRight:15
+    marginTop: 30,
+    paddingLeft: 15,
+    paddingRight: 15
   },
   titulo: {
     margin: 20,
-    textAlign: 'center',
+    textAlign: 'center'
   },
-  button:{
-    backgroundColor:'skyblue',
-    paddingTop:15,
-    paddingBottom:15,
-    borderRadius:5,
+  button: {
+    backgroundColor: 'skyblue',
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderRadius: 5
 
   },
-  textButtom:{
+  textButtom: {
     textAlign: 'center',
-    color: 'white',
+    color: 'white'
   },
   input: {
     height: 40,
     borderColor: '#CCC',
-    borderWidth:2,
-    borderRadius:5,
-    marginBottom:10,
-    paddingHorizontal:15,
-  },
+    borderWidth: 2,
+    borderRadius: 5,
+    marginBottom: 10,
+    paddingHorizontal: 15
+  }
 })
-
-// button:{
-//   width: 300,
-//   height: 30,
-//   backgroundColor:'skyblue',
-//   alignItems: 'center',
-//   justifyContent: 'center',
-//   marginTop: 10,
-//   marginBottom: 10,
-//   borderRadius: 8,
-//   borderWidth: 1
-//
-// },
-// textButtom:{
-//   textAlign: 'center',
-//   color: 'white',
-// },
