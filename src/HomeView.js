@@ -75,9 +75,9 @@ export default class HomeView extends Component {
            <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
          </TouchableOpacity>
          <TouchableWithoutFeedback style={styles.datePicker} onPress={this.showPicker.bind(this, 'simple', {date: this.state.simpleDate})}>
-           <View>
+           <View style={styles.calendar}>
              <Text style={styles.text}>{this.state.simpleText}</Text>
-             <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
+            <Icon style={styles.icon} name='calendar' size={32} color='#e74c3c' />
            </View>
          </TouchableWithoutFeedback>
        </View>
@@ -114,5 +114,17 @@ const styles = StyleSheet.create({
   },
   titulo: {
     margin: 20
+  },
+  datePicker: {
+
+  },
+  calendar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+    height: 50,
+    marginHorizontal: 10,
+    borderColor: '#F0F0F0',
+    borderWidth: 1
   }
 })
