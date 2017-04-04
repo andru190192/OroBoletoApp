@@ -6,7 +6,6 @@ import {
 } from 'react-native'
 
 import CityList from './CityList'
-import { Actions } from 'react-native-router-flux'
 import { getOrigenes } from './api-client'
 
 export default class SalidasView extends Component {
@@ -27,18 +26,13 @@ export default class SalidasView extends Component {
     })
   }
 
-  handleBoxPress (ciudadSalida) {
-    const ciudadDestino = this.props.destino
-    Actions.home({ ciudadSalida, ciudadDestino })
-  }
-
   render () {
     return (
       <ListView dataSource={this.state.dataSource} renderRow={
         (ciudad) =>
-        <TouchableOpacity style={styles.combo} onPress={() => this.handleBoxPress(ciudad.nombre)}>
-          <CityList ciudad={ciudad} />
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.combo} onPress={() => this.props.handleCiudadSalida(ciudad.nombre)}>
+            <CityList ciudad={ciudad} />
+          </TouchableOpacity>
         }
       />
     )
@@ -66,5 +60,5 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: 5,
     marginRight: 5
-  },
+  }
 })

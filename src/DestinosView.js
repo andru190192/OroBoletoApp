@@ -6,7 +6,6 @@ import {
 } from 'react-native'
 
 import CityList from './CityList'
-import { Actions } from 'react-native-router-flux'
 import { getDestinos } from './api-client'
 
 export default class DestinosView extends Component {
@@ -19,7 +18,7 @@ export default class DestinosView extends Component {
   }
 
   componentDidMount () {
-    getDestinos(this.props.salida)
+    getDestinos(this.props.ciudadSalida)
     .then(ciudades => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(ciudades)
@@ -27,16 +26,11 @@ export default class DestinosView extends Component {
     })
   }
 
-  handleBoxPress (ciudadDestino) {
-    const ciudadSalida = this.props.salida
-    Actions.home({ ciudadDestino, ciudadSalida })
-  }
-
   render () {
     return (
       <ListView dataSource={this.state.dataSource} renderRow={
         (ciudad) =>
-          <TouchableOpacity style={styles.combo} onPress={() => this.handleBoxPress(ciudad.nombre)}>
+          <TouchableOpacity style={styles.combo} onPress={() => this.props.handleCiudadDestino(ciudad.nombre)}>
             <CityList ciudad={ciudad} />
           </TouchableOpacity>
         }
@@ -66,5 +60,5 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: 5,
     marginRight: 5
-  },
+  }
 })

@@ -8,7 +8,7 @@ import PersonaView from './PersonaView'
 import HomeView from './HomeView'
 import SalidasView from './SalidasView'
 import DestinosView from './DestinosView'
-
+import DashboardView from './DashboardView'
 
 export default class OroTicketMobile extends Component {
 //  <Scene key='persona' component={PersonaView} hideNavBar />
@@ -17,12 +17,13 @@ export default class OroTicketMobile extends Component {
     const isAndroid = Platform.OS === 'android'
     return <Router>
 
-    <Scene key='login' component={LoginView} hideNavBar />
-    <Scene key='persona' component={PersonaView} hideNavBar />
+      <Scene key='login' component={LoginView} hideNavBar />
+      <Scene key='persona' component={PersonaView} hideNavBar />
       <Scene key='root'>
+        <Scene key='dashboard' component={DashboardView} hideNavBar />
         <Scene key='home' component={HomeView} hideNavBar />
-        <Scene key='salidas' component={SalidasView} title='Salidas' hideNavBar ={isAndroid}/>
-        <Scene key='destinos' component={DestinosView} title='Destinos' hideNavBar ={isAndroid}/>
+        <Scene key='salidas' component={SalidasView} title='Salidas' hideNavBar={isAndroid} />
+        <Scene key='destinos' component={DestinosView} title='Destinos' hideNavBar={isAndroid} />
       </Scene>
     </Router>
   }

@@ -1,12 +1,27 @@
 {
   "name": "OroTicketMobile",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
+  "description": "APP OroTicketMobile",
+  "author": "OroCodigo Developers (www.orocodigo.com)",
+  "license": "MIT",
+  "homepage": "https://github.com/adrianconza/OroTicketMobile#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrianconza/OroTicketMobile.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adrianconza/OroTicketMobile/issues"
+  },
   "scripts": {
+    "lint": "standard",
+    "android": "npm run lint && react-native run-android",
+    "ios": "npm run lint && react-native run-ios",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
     "test": "jest"
+  },
+  "standard": {
+    "parser": "babel-eslint"
   },
   "dependencies": {
     "react": "15.4.2",
@@ -18,8 +33,10 @@
   "devDependencies": {
     "babel-jest": "19.0.0",
     "babel-preset-react-native": "1.9.1",
+    "babel-eslint": "^7.2.1",
     "jest": "19.0.2",
-    "react-test-renderer": "15.4.2"
+    "react-test-renderer": "15.4.2",
+    "standard": "^9.0.2"
   },
   "jest": {
     "preset": "react-native"

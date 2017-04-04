@@ -15,7 +15,7 @@ import {
 
 import FBSDK , {
   LoginButton,
-  AccessToken
+  AccessToken,
 } from 'react-native-fbsdk';
 
 const {
@@ -25,90 +25,65 @@ const {
 
 const fbPer = ["public_profile", "email"]
 
-import {Actions} from 'react-native-router-flux'
+import { Actions } from 'react-native-router-flux'
 import { getPersona } from './api-client'
 
 export default class LoginView extends Component {
 
-
-  _responseInfoCallback(error: ?Object, result: ?Object) {
-    if (error) {
-      alert('Error fetching data: ' + error.toString());
-    } else {
-      getPersona(result.id).then(
-        dataFb => {
-          if (dataFb.status.toString() === '200') {
-            Actions.root()
-          }else if (dataFb.status.toString() === '404') {
-            Actions.persona({'usuarioFb':result})
-          }
+_responseInfoCallback(error, result) {
+  if (error) {
+    alert('Error fetching data: ' + error.toString());
+  } else {
+    getPersona(result.id).then(
+      credential => {
+        if (credential.status.toString() === '200') {
+          Actions.root()
+        }else if (credential.status.toString() === '404') {
+          Actions.persona({'usuarioFb':result})
         }
-      )
-    }
-  };
-
- authenticateUser(accessToken){
-     const infoRequest = new GraphRequest(
-       '/me',
-       {
-         parameters: {
-           fields: { string: 'id, email, first_name, last_name' },
-           access_token: { string: accessToken }
-         }
-       },
-       this._responseInfoCallback,
-     );
-     new GraphRequestManager().addRequest(infoRequest).start();
+      }
+    )
+  }
+};
+componentWillMount(){
+  this.authenticateUser()
+}
+authenticateUser(){
+   AccessToken.getCurrentAccessToken().then((data) => {
+     if (data){
+       const { accessToken } = data
+       const infoRequest = new GraphRequest(
+         '/me',
+         {
+           parameters: {
+             fields: { string: 'id, email, first_name, last_name' },
+             access_token: { string: accessToken }
+           }
+         },
+         this._responseInfoCallback,
+       );
+       new GraphRequestManager().addRequest(infoRequest).start();
+     }
+   })
  }
 
- handlenLoginFinished = (error, result) => {
-   
+ handleLoginFinished = (error, result) => {
      if (error) {
        console.error(error)
      } else if (result.isCancelled) {
        alert("login is cancelled.");
      } else {
-       AccessToken.getCurrentAccessToken()
-       .then((data) => {
-            this.authenticateUser(data.accessToken)
-         }
-       )
+        this.authenticateUser()
      }
-   }
+  }
 
-  // handlenLoginFinished = (error, result) => {
-  //   console.warn('result',result);
-  //     if (error) {
-  //       console.error(error)
-  //     } else if (result.isCancelled) {
-  //       alert("login is cancelled.");
-  //     } else {
-  //       AccessToken.getCurrentAccessToken()
-  //       .then(data => {
-  //           const infoRequest = new GraphRequest(
-  //             '/me',
-  //             {
-  //               parameters: {
-  //                 fields: { string: 'id, email, first_name, last_name' },
-  //                 access_token: { string: data.accessToken }
-  //               }
-  //             },
-  //             this._responseInfoCallback,
-  //           );
-  //           new GraphRequestManager().addRequest(infoRequest).start();
-  //
-  //         }
-  //       )
-  //     }
-  //   }
-
-    render() {
+  render() {
       return (
         <View style={styles.container}>
           <Image source={require('./logo.png')} style={styles.logo} />
           <LoginButton
             readPermissions={["public_profile", "email"]}
-            onLoginFinished={this.handlenLoginFinished}/>
+            onLoginFinished={this.handleLoginFinished}/>
         </View>
       );
     }
