@@ -25,7 +25,7 @@ function getDestinos (salida) {
 
 
 function getPersona(usuarioId){
-  console.warn('usuarioId',usuarioId);
+//  console.warn('usuarioId',usuarioId);
   return fetch (URL+'/signIn',{
     method: 'POST',
     headers: {

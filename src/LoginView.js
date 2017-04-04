@@ -30,49 +30,54 @@ import { getPersona } from './api-client'
 
 export default class LoginView extends Component {
 
-  constructor() {
-    super();
-    this.state = {
-      id : '',
-      email : ''
-    }
-  }
 
   _responseInfoCallback(error: ?Object, result: ?Object) {
     if (error) {
       alert('Error fetching data: ' + error.toString());
     } else {
-      console.warn('datal: ', result.id);
+      getPersona(result.id).then(
+        dataFb => {
+          if (dataFb.status.toString() === '200') {
+            Actions.root()
+          }else if (dataFb.status.toString() === '404') {
+            Actions.persona({'usuarioFb':result})
+          }
+        }
+      )
     }
   };
 
-  renderScene(result) {
-     getPersona(result).then(
-       us => {
-         console.warn('us', us);
-         if (us.status.toString() === '200') {
-           Actions.root()
-         }else if (us.status.toString() === '404') {
-           Actions.persona()
+ authenticateUser(accessToken){
+     const infoRequest = new GraphRequest(
+       '/me',
+       {
+         parameters: {
+           fields: { string: 'id, email, first_name, last_name' },
+           access_token: { string: accessToken }
          }
-       }
-     )
+       },
+       this._responseInfoCallback,
+     );
+     new GraphRequestManager().addRequest(infoRequest).start();
+ }
 
-   }
-   handlenLoginFinished = (error, result) => {
-       if (error) {
-         console.error(error)
-       } else if (result.isCancelled) {
-         alert("login is cancelled.");
-       } else {
-         AccessToken.getCurrentAccessToken().then((data) => {
-                   //alert(data.accessToken.toString())
-                   Actions.root()
-                 }
-         )
-       }
+ handlenLoginFinished = (error, result) => {
+   
+     if (error) {
+       console.error(error)
+     } else if (result.isCancelled) {
+       alert("login is cancelled.");
+     } else {
+       AccessToken.getCurrentAccessToken()
+       .then((data) => {
+            this.authenticateUser(data.accessToken)
+         }
+       )
      }
+   }
+
   // handlenLoginFinished = (error, result) => {
+  //   console.warn('result',result);
   //     if (error) {
   //       console.error(error)
   //     } else if (result.isCancelled) {
@@ -84,14 +89,14 @@ export default class LoginView extends Component {
   //             '/me',
   //             {
   //               parameters: {
-  //                 fields: { string: 'id, email, name, first_name, last_name' },
+  //                 fields: { string: 'id, email, first_name, last_name' },
   //                 access_token: { string: data.accessToken }
   //               }
   //             },
   //             this._responseInfoCallback,
   //           );
   //           new GraphRequestManager().addRequest(infoRequest).start();
-  //           this.renderScene('albertoajila2')
+  //
   //         }
   //       )
   //     }
@@ -103,8 +108,7 @@ export default class LoginView extends Component {
           <Image source={require('./logo.png')} style={styles.logo} />
           <LoginButton
             readPermissions={["public_profile", "email"]}
-            onLoginFinished={this.handlenLoginFinished}
-            onLogoutFinished={() => alert("logout.")}/>
+            onLoginFinished={this.handlenLoginFinished}/>
         </View>
       );
     }
