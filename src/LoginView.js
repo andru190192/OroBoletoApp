@@ -15,7 +15,7 @@ import {
 
 import FBSDK , {
   LoginButton,
-  AccessToken
+  AccessToken,
 } from 'react-native-fbsdk';
 
 const {
@@ -25,30 +25,30 @@ const {
 
 const fbPer = ["public_profile", "email"]
 
-import {Actions} from 'react-native-router-flux'
+import { Actions } from 'react-native-router-flux'
 import { getPersona } from './api-client'
 
 export default class LoginView extends Component {
 
-  _responseInfoCallback(error, result) {
-    if (error) {
-      alert('Error fetching data: ' + error.toString());
-    } else {
-      getPersona(result.id).then(
-        credential => {
-          if (credential.status.toString() === '200') {
-            Actions.root()
-          }else if (credential.status.toString() === '404') {
-            Actions.persona({'usuarioFb':result})
-          }
+_responseInfoCallback(error, result) {
+  if (error) {
+    alert('Error fetching data: ' + error.toString());
+  } else {
+    getPersona(result.id).then(
+      credential => {
+        if (credential.status.toString() === '200') {
+          Actions.root()
+        }else if (credential.status.toString() === '404') {
+          Actions.persona({'usuarioFb':result})
         }
-      )
-    }
-  };
+      }
+    )
+  }
+};
 componentWillMount(){
   this.authenticateUser()
 }
- authenticateUser(){
+authenticateUser(){
    AccessToken.getCurrentAccessToken().then((data) => {
      if (data){
        const { accessToken } = data
@@ -67,7 +67,7 @@ componentWillMount(){
    })
  }
 
- handlenLoginFinished = (error, result) => {
+ handleLoginFinished = (error, result) => {
      if (error) {
        console.error(error)
      } else if (result.isCancelled) {
@@ -83,7 +83,7 @@ componentWillMount(){
           <Image source={require('./logo.png')} style={styles.logo} />
           <LoginButton
             readPermissions={["public_profile", "email"]}
-            onLoginFinished={this.handlenLoginFinished}/>
+            onLoginFinished={this.handleLoginFinished}/>
         </View>
       );
     }
@@ -107,5 +107,3 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   }
 });
-//onLoginFinished={() => alert("logout.")}
-  //<Text>{this.state.credentials && this.state.credentials.nombre}</Text>
