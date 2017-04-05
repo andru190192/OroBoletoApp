@@ -1,10 +1,4 @@
-const config = require('../../config')
-const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpYW5jb256YSIsImlhdCI6MTQ5MDM5NzY3OSwiZXhwIjoxNDkxNjA3Mjc5fQ.yjxuhv9bnJPDFsSvO6TycsjMVifwLBO6IZUO_qsSOEw'
-
-let headers = new Headers({
-  'Authorization': 'Bearer ' + TOKEN,
-  'Content-Type': 'application/json'
-})
+const config = require('../parameters')
 
 async function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
@@ -20,35 +14,19 @@ async function checkStatus (response) {
   }
 }
 
-function getOrigenes () {
-  return fetch(`${config.URL}/rutasAppMobile/ciudadOrigen`, { headers })
-  .then(checkStatus)
-}
-
-function getDestinos (salida) {
-  return fetch(`${config.URL}/rutasAppMobile/ciudadDestino/${salida}`, { headers })
-  .then(checkStatus)
-}
-
-function getPersona (usuarioId) {
-  return fetch(config.URL + '/signIn', {
+function signIn (usuarioId) {
+  return fetch(`${config.URL}/signIn`, {
     method: 'POST',
-    headers,
-    body: JSON.stringify({
-      usuario: usuarioId
-    })
+    headers: config.getHeader(),
+    body: JSON.stringify({ usuario: usuarioId })
   })
-    .then(response => response.json().then(json => {
-      json.status = response.status
-      return json
-    })
-    )
+  .then(checkStatus)
 }
 
-function setPersona (objPersona) {
+function signUP (objPersona) {
   return fetch(config.URL + '/signUP', {
     method: 'POST',
-    headers,
+    headers: config.getHeader(),
     body: JSON.stringify(objPersona)
   })
     .then(response => response.json().then(json => {
@@ -58,4 +36,25 @@ function setPersona (objPersona) {
     )
 }
 
-export { getOrigenes, getDestinos, getPersona, setPersona }
+function getOrigenes () {
+  return fetch(`${config.URL}/rutasAppMobile/ciudadOrigen`, {
+    headers: config.getHeader()
+  })
+  .then(checkStatus)
+}
+
+function getDestinos (origen) {
+  return fetch(`${config.URL}/rutasAppMobile/ciudadDestino/${origen}`, {
+    headers: config.getHeader()
+  })
+  .then(checkStatus)
+}
+
+function getTurnos (origen, destino, fecha) {
+  return fetch(`${config.URL}/rutasAppMobile/ciudadDestino/${origen}/${destino}/${fecha}`, {
+    headers: config.getHeader()
+  })
+  .then(checkStatus)
+}
+
+export { signIn, signUP, getOrigenes, getDestinos, getTurnos }

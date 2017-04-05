@@ -1,57 +1,53 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
+import { Actions } from 'react-native-router-flux'
+import { signIn } from '../api-client'
 import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk'
 const {GraphRequest, GraphRequestManager} = FBSDK
-import { Actions } from 'react-native-router-flux'
-import { getPersona } from '../api-client'
+const config = require('../parameters')
 
 export default class LoginView extends Component {
-  _responseInfoCallback (error, result) {
-    if (error) {
-      console.warn('Error fetching data: ' + error.toString())
-    } else {
-      getPersona(result.id).then(
-        credential => {
-          if (credential.status.toString() === '200') {
-            Actions.root()
-          } else if (credential.status.toString() === '404') {
-            Actions.persona({'usuarioFb': result})
-          }
-        }
-      )
-    }
-  }
-
   componentWillMount () {
     this.authenticateUser()
   }
 
+  handleLogin = (error, result) => {
+    if (error) console.error(error)
+    else if (result.isCancelled) console.warn('login is cancelled.')
+    else this.authenticateUser()
+  }
+
   authenticateUser () {
-    AccessToken.getCurrentAccessToken().then((data) => {
+    AccessToken.getCurrentAccessToken()
+    .then(data => {
       if (data) {
-        const { accessToken } = data
-        const infoRequest = new GraphRequest(
+        new GraphRequestManager().addRequest(new GraphRequest(
           '/me',
           {
             parameters: {
               fields: { string: 'id, email, first_name, last_name' },
-              access_token: { string: accessToken }
+              access_token: { string: data.accessToken }
             }
           },
-          this._responseInfoCallback,
-        )
-        new GraphRequestManager().addRequest(infoRequest).start()
+          this.responseInfo,
+        )).start()
       }
     })
   }
 
-  handleLoginFinished = (error, result) => {
-    if (error) {
-      console.error(error)
-    } else if (result.isCancelled) {
-      console.warn('login is cancelled.')
-    } else {
-      this.authenticateUser()
+  responseInfo (error, usuario) {
+    if (error) console.warn('Error fetching data: ' + error.toString())
+    else {
+      signIn(usuario.id)
+      .then(data => {
+        config.USER = data.persona
+        config.TOKEN = data.token
+        Actions.root()
+      })
+      .catch(err => {
+        console.warn(err.statusCode)
+        if (err.statusCode === 404) Actions.perfil({ usuario })
+      })
     }
   }
 
@@ -59,7 +55,7 @@ export default class LoginView extends Component {
     return (
       <View style={styles.container}>
         <Image source={require('../static/images/logo.png')} style={styles.logo} />
-        <LoginButton readPermissions={['public_profile', 'email']} onLoginFinished={this.handleLoginFinished} />
+        <LoginButton readPermissions={['public_profile', 'email']} onLoginFinished={this.handleLogin} />
       </View>
     )
   }

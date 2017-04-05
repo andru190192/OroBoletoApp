@@ -29,9 +29,10 @@ export default class HomeView extends Component {
     this.state = {
       ciudadSalida: '',
       ciudadDestino: '',
-      simpleDate: new Date(moment().format('DD/MM/YYYY')),
+      simpleDate: new Date(moment().format('MM/DD/YYYY')),
       simpleText: moment().format('DD/MM/YYYY')
     }
+
     this.handleCiudadSalida = this.handleCiudadSalida.bind(this)
     this.handleCiudadDestino = this.handleCiudadDestino.bind(this)
   }
@@ -51,14 +52,14 @@ export default class HomeView extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.titulo}>BUSCA TU BOLETO</Text>
-        <TouchableOpacity style={styles.combo} onPress={() => Actions.salidas({ handleCiudadSalida: this.handleCiudadSalida })}>
+        <TouchableOpacity style={styles.combo} onPress={() => Actions.origin({ handleCiudadSalida: this.handleCiudadSalida })}>
           <View style={styles.seleccion}>
             <Text style={styles.label}>Escoje tu salida</Text>
             <Text style={styles.element}>{this.state.ciudadSalida}</Text>
           </View>
           <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.combo} onPress={() => Actions.destinos({ ciudadSalida: this.state.ciudadSalida, handleCiudadDestino: this.handleCiudadDestino })}>
+        <TouchableOpacity style={styles.combo} onPress={() => Actions.destination({ ciudadSalida: this.state.ciudadSalida, handleCiudadDestino: this.handleCiudadDestino })}>
           <View style={styles.seleccion}>
             <Text style={styles.label}>Escoje tu Destino</Text>
             <Text style={styles.element}>{this.state.ciudadDestino}</Text>
