@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  ListView,
-  TouchableOpacity
-} from 'react-native'
+import { StyleSheet, ListView, TouchableOpacity } from 'react-native'
 
-import CityList from './CityList'
-import { getOrigenes } from './api-client'
+import CityList from '../components/CityList'
+import { getDestinos } from './api-client'
 
-export default class SalidasView extends Component {
+export default class DestinosView extends Component {
   constructor (props) {
     super()
 
@@ -18,23 +14,20 @@ export default class SalidasView extends Component {
   }
 
   componentDidMount () {
-    getOrigenes()
-    .then(ciudades => {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(ciudades)
+    getDestinos(this.props.ciudadSalida)
+      .then(ciudades => {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(ciudades)
+        })
       })
-    })
   }
 
   render () {
     return (
-      <ListView dataSource={this.state.dataSource} renderRow={
-        (ciudad) =>
-          <TouchableOpacity style={styles.combo} onPress={() => this.props.handleCiudadSalida(ciudad.nombre)}>
-            <CityList ciudad={ciudad} />
-          </TouchableOpacity>
-        }
-      />
+      <ListView dataSource={this.state.dataSource} renderRow={(ciudad) =>
+        <TouchableOpacity style={styles.combo} onPress={() => this.props.handleCiudadDestino(ciudad.nombre)}>
+          <CityList ciudad={ciudad} />
+        </TouchableOpacity>} />
     )
   }
 }

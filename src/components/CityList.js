@@ -6,7 +6,6 @@ import {
 } from 'react-native'
 
 export default class CityList extends Component {
-
   render () {
     return (
       <View style={styles.seleccion}>

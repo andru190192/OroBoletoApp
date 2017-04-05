@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  View,
-  Text
-} from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 
-export default class PerfilView extends Component {
-
+export default class FacturaView extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <Text>PerfilView</Text>
+        <Text>
+          FacturaView
+        </Text>
       </View>
     )
   }

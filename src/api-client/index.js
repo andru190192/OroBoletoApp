@@ -23,40 +23,37 @@ function getDestinos (salida) {
   .then(data => data.ciudades)
 }
 
-
-function getPersona(usuarioId){
-//  console.warn('usuarioId',usuarioId);
-  return fetch (URL+'/signIn',{
+function getPersona (usuarioId) {
+  return fetch(URL + '/signIn', {
     method: 'POST',
     headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
-           usuario: usuarioId
-       })
+      usuario: usuarioId
+    })
   })
     .then(response => response.json().then(json => {
-        json.status = response.status
-        return json
-      })
+      json.status = response.status
+      return json
+    })
     )
-  }
+}
 
-
-function setPersona(objPersona){
-  return fetch (URL+'/signUP',{
+function setPersona (objPersona) {
+  return fetch(URL + '/signUP', {
     method: 'POST',
     headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(objPersona)
   })
     .then(response => response.json().then(json => {
-        json.status = response.status
-        return json
-      })
+      json.status = response.status
+      return json
+    })
     )
 }
 

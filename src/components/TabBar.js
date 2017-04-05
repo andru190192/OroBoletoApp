@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity
 } from 'react-native'
@@ -40,7 +39,7 @@ const TabBar = React.createClass({
   },
 
   render () {
-    return <View style={[styles.tabs, this.props.style ]}>
+    return <View style={[ styles.tabs, this.props.style ]}>
       {this.props.tabs.map((tab, i) => {
         return <TouchableOpacity key={tab} onPress={() => this.props.goToPage(i)} style={styles.tab}>
           <Icon

@@ -1,19 +1,11 @@
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  View,
-  TouchableWithoutFeedback,
-  DatePickerAndroid
-} from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View, TouchableWithoutFeedback, DatePickerAndroid } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 
 export default class HomeView extends Component {
-
   showPicker = async (stateKey, options) => {
     try {
       var newState = {}
@@ -29,7 +21,7 @@ export default class HomeView extends Component {
     } catch ({code, message}) {
       console.warn(`Error in example '${stateKey}': `, message)
     }
-  };
+  }
 
   constructor (props) {
     super()
@@ -57,28 +49,52 @@ export default class HomeView extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <Text style={styles.titulo}>BUSCA TU BOLETO</Text>
-         <TouchableOpacity style={styles.combo} onPress={() => Actions.salidas({ handleCiudadSalida: this.handleCiudadSalida })}>
-           <View style={styles.seleccion}>
-             <Text style={styles.label}>Escoje tu salida</Text>
-             <Text style={styles.element}>{this.state.ciudadSalida}</Text>
-           </View>
-           <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
-         </TouchableOpacity>
-         <TouchableOpacity style={styles.combo} onPress={() => Actions.destinos({ ciudadSalida: this.state.ciudadSalida, handleCiudadDestino: this.handleCiudadDestino })}>
-           <View style={styles.seleccion}>
-             <Text style={styles.label}>Escoje tu Destino</Text>
-             <Text style={styles.element}>{this.state.ciudadDestino}</Text>
-           </View>
-           <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
-         </TouchableOpacity>
-         <TouchableWithoutFeedback style={styles.datePicker} onPress={this.showPicker.bind(this, 'simple', {date: this.state.simpleDate})}>
-           <View style={styles.calendar}>
-             <Text style={styles.text}>{this.state.simpleText}</Text>
-            <Icon style={styles.icon} name='calendar' size={32} color='#e74c3c' />
-           </View>
-         </TouchableWithoutFeedback>
-       </View>
+        <Text style={styles.titulo}>
+          BUSCA TU BOLETO
+        </Text>
+        <TouchableOpacity style={styles.combo} onPress={() => Actions.salidas({ handleCiudadSalida: this.handleCiudadSalida })}>
+          <View style={styles.seleccion}>
+            <Text style={styles.label}>
+              Escoje tu salida
+            </Text>
+            <Text style={styles.element}>
+              {this.state.ciudadSalida}
+            </Text>
+          </View>
+          <Icon
+            style={styles.icon}
+            name='map-marker'
+            size={32}
+            color='#e74c3c' />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.combo} onPress={() => Actions.destinos({ ciudadSalida: this.state.ciudadSalida, handleCiudadDestino: this.handleCiudadDestino })}>
+          <View style={styles.seleccion}>
+            <Text style={styles.label}>
+              Escoje tu Destino
+            </Text>
+            <Text style={styles.element}>
+              {this.state.ciudadDestino}
+            </Text>
+          </View>
+          <Icon
+            style={styles.icon}
+            name='map-marker'
+            size={32}
+            color='#e74c3c' />
+        </TouchableOpacity>
+        <TouchableWithoutFeedback style={styles.datePicker} onPress={this.showPicker.bind(this, 'simple', {date: this.state.simpleDate})}>
+          <View style={styles.calendar}>
+            <Text style={styles.text}>
+              {this.state.simpleText}
+            </Text>
+            <Icon
+              style={styles.icon}
+              name='calendar'
+              size={32}
+              color='#e74c3c' />
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
     )
   }
 }

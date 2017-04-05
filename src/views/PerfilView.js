@@ -5,12 +5,11 @@ import {
   Text
 } from 'react-native'
 
-export default class FacturaView extends Component {
-
+export default class PerfilView extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <Text>FacturaView</Text>
+        <Text>PerfilView</Text>
       </View>
     )
   }

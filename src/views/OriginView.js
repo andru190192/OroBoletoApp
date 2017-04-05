@@ -5,10 +5,10 @@ import {
   TouchableOpacity
 } from 'react-native'
 
-import CityList from './CityList'
-import { getDestinos } from './api-client'
+import CityList from '../components/CityList'
+import { getOrigenes } from './api-client'
 
-export default class DestinosView extends Component {
+export default class SalidasView extends Component {
   constructor (props) {
     super()
 
@@ -18,7 +18,7 @@ export default class DestinosView extends Component {
   }
 
   componentDidMount () {
-    getDestinos(this.props.ciudadSalida)
+    getOrigenes()
     .then(ciudades => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(ciudades)
@@ -30,7 +30,7 @@ export default class DestinosView extends Component {
     return (
       <ListView dataSource={this.state.dataSource} renderRow={
         (ciudad) =>
-          <TouchableOpacity style={styles.combo} onPress={() => this.props.handleCiudadDestino(ciudad.nombre)}>
+          <TouchableOpacity style={styles.combo} onPress={() => this.props.handleCiudadSalida(ciudad.nombre)}>
             <CityList ciudad={ciudad} />
           </TouchableOpacity>
         }
