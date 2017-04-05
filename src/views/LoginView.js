@@ -45,8 +45,11 @@ export default class LoginView extends Component {
         Actions.root()
       })
       .catch(err => {
-        console.warn(err.statusCode)
-        if (err.statusCode === 404) Actions.perfil({ usuario })
+        if (err.statusCode === 404) {
+          console.log('dddddd')
+          console.log(usuario)
+          Actions.perfil({ usuario })
+        }
       })
     }
   }

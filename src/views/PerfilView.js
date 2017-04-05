@@ -9,20 +9,22 @@ import {
 } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
-import { setPersona } from '../api-client'
+import { signUP } from '../api-client'
 
 export default class PerfilView extends Component {
   constructor (props) {
     super()
     this.state = {
-      usuario: props.usuarioFb.id,
-      cedulaRuc: '',
-      nombre: props.usuarioFb.first_name,
-      apellido: props.usuarioFb.last_name,
-      direccion: '',
-      email: props.usuarioFb.email,
-      telefono: '',
-      ciudad: ''
+      usuario: {
+        usuario: props.usuario.id,
+        cedulaRuc: '',
+        nombre: props.usuario.first_name,
+        apellido: props.usuario.last_name,
+        direccion: '',
+        email: props.usuario.email,
+        telefono: '',
+        ciudad: ''
+      }
     }
   }
 
@@ -48,18 +50,8 @@ export default class PerfilView extends Component {
     this.setState({ciudad})
   }
 
-  buttonPressed () {
-    const objPersona = {
-      cedulaRuc: this.state.cedulaRuc,
-      usuario: this.state.usuario,
-      nombre: this.state.nombre,
-      apellido: this.state.apellido,
-      direccion: this.state.direccion,
-      email: this.state.email,
-      telefono: this.state.telefono,
-      ciudad: this.state.ciudad
-    }
-    setPersona(objPersona).then(datoPersona => {
+  handleSignUp () {
+    signUP(this.state.usuario).then(datoPersona => {
       if (datoPersona.status.toString() === '200') {
         Alert.alert(
           'Datos de usuario',
@@ -69,6 +61,9 @@ export default class PerfilView extends Component {
           ],
           { cancelable: false }
         )
+
+        // config.USER = data.persona
+        // config.TOKEN = data.token
       } else if (datoPersona.status.toString() === '404') {
         console.warn('error')
       }
@@ -82,44 +77,43 @@ export default class PerfilView extends Component {
         <TextInput
           style={styles.input}
           placeholder='Cedula/Ruc'
-          value={this.state.cedulaRuc}
-          onChangeText={(cedulaRuc) => this.changeCedulaRuc(cedulaRuc)}
+          value={this.state.usuario.cedulaRuc}
+          // onChangeText={(cedulaRuc) => this.changeCedulaRuc(cedulaRuc)}
           />
         <TextInput style={styles.input}
           placeholder='Apellido'
-          value={this.state.apellido}
+          value={this.state.usuario.apellido}
           onChangeText={(apellido) => this.changeApellido(apellido)}
           />
         <TextInput style={styles.input}
           placeholder='Nombre'
-          value={this.state.nombre}
+          value={this.state.usuario.nombre}
           onChangeText={(nombre) => this.changeNombre(nombre)}
           />
-
         <TextInput style={styles.input}
           placeholder='Direccion'
-          value={this.state.direccion}
+          value={this.state.usuario.direccion}
           onChangeText={(direccion) => this.changeDireccion(direccion)}
           />
         <TextInput style={styles.input}
           placeholder='Email'
-          value={this.state.email}
+          value={this.state.usuario.email}
           onChangeText={(email) => this.changeEmail(email)}
           />
         <TextInput style={styles.input}
           placeholder='Telefono'
-          value={this.state.telefono}
+          value={this.state.usuario.telefono}
           onChangeText={(telefono) => this.changeTelefono(telefono)}
           />
         <TextInput style={styles.input}
           placeholder='Ciudad'
-          value={this.state.ciudad}
+          value={this.state.usuario.ciudad}
           onChangeText={(ciudad) => this.changeCiudad(ciudad)}
           />
 
         <TouchableHighlight
           style={styles.button}
-          onPress={() => this.buttonPressed()}>
+          onPress={() => this.handleSignUp()}>
           <Text style={styles.textButtom}>Send</Text>
         </TouchableHighlight>
       </View>

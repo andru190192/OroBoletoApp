@@ -4,7 +4,6 @@ async function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
     return response.json()
   } else {
-    console.log(response)
     let message
     await response.json().then(body => { message = body.message })
     .catch(err => { message = 'Error URL mal formado' })
@@ -23,17 +22,13 @@ function signIn (usuarioId) {
   .then(checkStatus)
 }
 
-function signUP (objPersona) {
-  return fetch(config.URL + '/signUP', {
+function signUP (usuario) {
+  return fetch(`${config.URL}/signUp`, {
     method: 'POST',
     headers: config.getHeader(),
-    body: JSON.stringify(objPersona)
+    body: JSON.stringify({ usuario })
   })
-    .then(response => response.json().then(json => {
-      json.status = response.status
-      return json
-    })
-    )
+  .then(checkStatus)
 }
 
 function getOrigenes () {
