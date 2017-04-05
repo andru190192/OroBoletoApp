@@ -10,10 +10,10 @@ export default class HomeView extends Component {
     try {
       var newState = {}
       const {action, year, month, day} = await DatePickerAndroid.open(options)
+      var date = new Date(year, month, day)
       if (action === DatePickerAndroid.dismissedAction) {
-        newState[stateKey + 'Text'] = 'dismissed'
+        newState[stateKey + 'Date'] = date
       } else {
-        var date = new Date(year, month, day)
         newState[stateKey + 'Text'] = moment(`${day}/${month + 1}/${year}`, 'DD/MM/yyyy').format('DD/MM/YYYY')
         newState[stateKey + 'Date'] = date
       }
@@ -47,6 +47,10 @@ export default class HomeView extends Component {
     Actions.pop()
   }
 
+  handleBuscar () {
+    Actions.turno()
+  }
+
   render () {
     const isAndroid = Platform.OS === 'android'
     return (
@@ -74,7 +78,7 @@ export default class HomeView extends Component {
             <Icon style={styles.icon} name='calendar' size={32} color='#e74c3c' />
           </View>
         </TouchableWithoutFeedback>
-        <TouchableOpacity style={styles.btnBuscar} onPress={() => console.warn('busqueda', isAndroid)} title='Buscar'>
+        <TouchableOpacity style={styles.btnBuscar} onPress={() => Actions.turno()} title='Buscar'>
           <Text style={{color: '#FFFFFF'}}>Buscar</Text>
         </TouchableOpacity>
       </View>
@@ -114,7 +118,7 @@ const styles = StyleSheet.create({
   },
   btnBuscar: {
     height: 50,
-    width: 100,
+    width: 200,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, ListView, TouchableOpacity } from 'react-native'
+import { StyleSheet, ListView, TouchableOpacity, Text } from 'react-native'
 
 import CityList from '../components/CityList'
 import { getDestinos } from '../api-client'
@@ -21,6 +21,9 @@ export default class DestinosView extends Component {
         })
       })
       .catch(err => {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(['row 1', 'row 2'])
+        })
         console.warn(err.message)
         console.warn(err.statusCode)
       })

@@ -9,6 +9,7 @@ import SearchView from './views/SearchView'
 import OriginView from './views/OriginView'
 import DestinationView from './views/DestinationView'
 import DashboardView from './views/DashboardView'
+import TurnView from './views/TurnView'
 
 export default class OroTicketMobile extends Component {
   render () {
@@ -21,6 +22,7 @@ export default class OroTicketMobile extends Component {
         <Scene key='origin' component={OriginView} title='Salidas' hideNavBar={isAndroid} />
         <Scene key='destination' component={DestinationView} title='Destinos' hideNavBar={isAndroid} />
         <Scene key='perfil' component={PerfilView} hideNavBar />
+        <Scene key='turno' component={TurnView} hideNavBar />
       </Scene>
     </Router>
   }
