@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, Text, View, TouchableWithoutFeedback, DatePickerAndroid } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View, TouchableWithoutFeedback, DatePickerAndroid, Platform } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -47,53 +47,35 @@ export default class HomeView extends Component {
   }
 
   render () {
+    const isAndroid = Platform.OS === 'android'
     return (
       <View style={styles.container}>
-        <Text style={styles.titulo}>
-          BUSCA TU BOLETO
-        </Text>
+        <Text style={styles.titulo}>BUSCA TU BOLETO</Text>
         <TouchableOpacity style={styles.combo} onPress={() => Actions.salidas({ handleCiudadSalida: this.handleCiudadSalida })}>
           <View style={styles.seleccion}>
-            <Text style={styles.label}>
-              Escoje tu salida
-            </Text>
-            <Text style={styles.element}>
-              {this.state.ciudadSalida}
-            </Text>
+            <Text style={styles.label}>Escoje tu salida</Text>
+            <Text style={styles.element}>{this.state.ciudadSalida}</Text>
           </View>
-          <Icon
-            style={styles.icon}
-            name='map-marker'
-            size={32}
-            color='#e74c3c' />
+          <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
         </TouchableOpacity>
         <TouchableOpacity style={styles.combo} onPress={() => Actions.destinos({ ciudadSalida: this.state.ciudadSalida, handleCiudadDestino: this.handleCiudadDestino })}>
           <View style={styles.seleccion}>
-            <Text style={styles.label}>
-              Escoje tu Destino
-            </Text>
-            <Text style={styles.element}>
-              {this.state.ciudadDestino}
-            </Text>
+            <Text style={styles.label}>Escoje tu Destino</Text>
+            <Text style={styles.element}>{this.state.ciudadDestino}</Text>
           </View>
-          <Icon
-            style={styles.icon}
-            name='map-marker'
-            size={32}
-            color='#e74c3c' />
+          <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
         </TouchableOpacity>
-        <TouchableWithoutFeedback style={styles.datePicker} onPress={this.showPicker.bind(this, 'simple', {date: this.state.simpleDate})}>
-          <View style={styles.calendar}>
-            <Text style={styles.text}>
-              {this.state.simpleText}
-            </Text>
-            <Icon
-              style={styles.icon}
-              name='calendar'
-              size={32}
-              color='#e74c3c' />
+        <TouchableWithoutFeedback onPress={this.showPicker.bind(this, 'simple', {date: this.state.simpleDate})}>
+          <View style={styles.combo}>
+            <View style={styles.seleccion}>
+              <Text style={styles.label}>{this.state.simpleText}</Text>
+            </View>
+            <Icon style={styles.icon} name='calendar' size={32} color='#e74c3c' />
           </View>
         </TouchableWithoutFeedback>
+        <TouchableOpacity style={styles.btnBuscar} onPress={() => console.warn('busqueda', isAndroid)} title='Buscar'>
+          <Text style={{color: '#FFFFFF'}}>Buscar</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -129,16 +111,13 @@ const styles = StyleSheet.create({
   titulo: {
     margin: 20
   },
-  datePicker: {
-
-  },
-  calendar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
+  btnBuscar: {
     height: 50,
-    marginHorizontal: 10,
-    borderColor: '#F0F0F0',
-    borderWidth: 1
+    width: 100,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    backgroundColor: '#e74c3c'
   }
 })
