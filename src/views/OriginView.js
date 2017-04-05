@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 
 import CityList from '../components/CityList'
-import { getOrigenes } from './api-client'
+import { getOrigenes } from '../api-client'
 
 export default class SalidasView extends Component {
   constructor (props) {
@@ -21,7 +21,7 @@ export default class SalidasView extends Component {
     getOrigenes()
     .then(ciudades => {
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(ciudades)
+        dataSource: this.state.dataSource.cloneWithRows(ciudades.ciudades)
       })
     })
   }

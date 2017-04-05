@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
-import { setPersona } from './api-client'
+import { setPersona } from '../api-client'
 
 export default class PersonaView extends Component {
   constructor (props) {

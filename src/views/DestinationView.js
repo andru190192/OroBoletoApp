@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, ListView, TouchableOpacity } from 'react-native'
 
 import CityList from '../components/CityList'
-import { getDestinos } from './api-client'
+import { getDestinos } from '../api-client'
 
 export default class DestinosView extends Component {
   constructor (props) {
@@ -17,8 +17,12 @@ export default class DestinosView extends Component {
     getDestinos(this.props.ciudadSalida)
       .then(ciudades => {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(ciudades)
+          dataSource: this.state.dataSource.cloneWithRows(ciudades.ciudades)
         })
+      })
+      .catch(err => {
+        console.warn(err.message)
+        console.warn(err.statusCode)
       })
   }
 

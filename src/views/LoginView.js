@@ -3,7 +3,7 @@ import { StyleSheet, View, Image } from 'react-native'
 import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk'
 const {GraphRequest, GraphRequestManager} = FBSDK
 import { Actions } from 'react-native-router-flux'
-import { getPersona } from './api-client'
+import { getPersona } from '../api-client'
 
 export default class LoginView extends Component {
   _responseInfoCallback (error, result) {

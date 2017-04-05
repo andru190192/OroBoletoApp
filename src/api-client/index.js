@@ -1,35 +1,39 @@
-const URL = 'http://192.168.1.10:3000/api'
+const config = require('../../config')
 const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpYW5jb256YSIsImlhdCI6MTQ5MDM5NzY3OSwiZXhwIjoxNDkxNjA3Mjc5fQ.yjxuhv9bnJPDFsSvO6TycsjMVifwLBO6IZUO_qsSOEw'
 
+let headers = new Headers({
+  'Authorization': 'Bearer ' + TOKEN,
+  'Content-Type': 'application/json'
+})
+
+async function checkStatus (response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response.json()
+  } else {
+    console.log(response)
+    let message
+    await response.json().then(body => { message = body.message })
+    .catch(err => { message = 'Error URL mal formado' })
+    let error = new Error(message)
+    error.statusCode = response.status
+    throw error
+  }
+}
+
 function getOrigenes () {
-  return fetch(URL + '/rutasAppMobile/ciudadOrigen', {
-    method: 'GET',
-    headers: {
-      'Authorization': 'Bearer ' + TOKEN
-    }
-  })
-  .then(response => response.json())
-  .then(data => data.ciudades)
+  return fetch(`${config.URL}/rutasAppMobile/ciudadOrigen`, { headers })
+  .then(checkStatus)
 }
 
 function getDestinos (salida) {
-  return fetch(URL + '/rutasAppMobile/ciudadDestino/' + salida, {
-    method: 'GET',
-    headers: {
-      'Authorization': 'Bearer ' + TOKEN
-    }
-  })
-  .then(response => response.json())
-  .then(data => data.ciudades)
+  return fetch(`${config.URL}/rutasAppMobile/ciudadDestino/${salida}`, { headers })
+  .then(checkStatus)
 }
 
 function getPersona (usuarioId) {
-  return fetch(URL + '/signIn', {
+  return fetch(config.URL + '/signIn', {
     method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
+    headers,
     body: JSON.stringify({
       usuario: usuarioId
     })
@@ -42,12 +46,9 @@ function getPersona (usuarioId) {
 }
 
 function setPersona (objPersona) {
-  return fetch(URL + '/signUP', {
+  return fetch(config.URL + '/signUP', {
     method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
+    headers,
     body: JSON.stringify(objPersona)
   })
     .then(response => response.json().then(json => {
