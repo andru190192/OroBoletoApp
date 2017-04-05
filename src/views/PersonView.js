@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   StyleSheet,
-  View,
+  ScrollView,
   Text,
   TextInput,
   Alert,
@@ -17,8 +17,8 @@ export default class PersonaView extends Component {
     this.state = {
       usuario: props.usuarioFb.id,
       cedulaRuc: '',
-      nombre: props.usuarioFb.last_name,
-      apellido: props.usuarioFb.first_name,
+      nombre: props.usuarioFb.first_name,
+      apellido: props.usuarioFb.last_name,
       direccion: '',
       email: props.usuarioFb.email,
       telefono: '',
@@ -77,7 +77,7 @@ export default class PersonaView extends Component {
 
   render () {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.titulo}>DATOS DE USUARIO</Text>
         <TextInput
           style={styles.input}
@@ -86,15 +86,16 @@ export default class PersonaView extends Component {
           onChangeText={(cedulaRuc) => this.changeCedulaRuc(cedulaRuc)}
           />
         <TextInput style={styles.input}
-          placeholder='Nombre'
-          value={this.state.nombre}
-          onChangeText={(nombre) => this.changeNombre(nombre)}
-          />
-        <TextInput style={styles.input}
           placeholder='Apellido'
           value={this.state.apellido}
           onChangeText={(apellido) => this.changeApellido(apellido)}
           />
+        <TextInput style={styles.input}
+          placeholder='Nombre'
+          value={this.state.nombre}
+          onChangeText={(nombre) => this.changeNombre(nombre)}
+          />
+
         <TextInput style={styles.input}
           placeholder='Direccion'
           value={this.state.direccion}
@@ -121,7 +122,7 @@ export default class PersonaView extends Component {
           onPress={() => this.buttonPressed()}>
           <Text style={styles.textButtom}>Send</Text>
         </TouchableHighlight>
-      </View>
+      </ScrollView>
 
     )
   }
