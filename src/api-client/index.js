@@ -1,4 +1,4 @@
-const config = require('../parameters')
+const parameters = require('../parameters')
 
 async function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
@@ -14,40 +14,40 @@ async function checkStatus (response) {
 }
 
 function signIn (usuarioId) {
-  return fetch(`${config.URL}/signIn`, {
+  return fetch(`${parameters.URL}/signIn`, {
     method: 'POST',
-    headers: config.getHeader(),
+    headers: parameters.getHeader(),
     body: JSON.stringify({ usuario: usuarioId })
   })
   .then(checkStatus)
 }
 
 function signUP (usuario) {
-  return fetch(`${config.URL}/signUp`, {
+  return fetch(`${parameters.URL}/signUp`, {
     method: 'POST',
-    headers: config.getHeader(),
-    body: JSON.stringify({ usuario })
+    headers: parameters.getHeader(),
+    body: JSON.stringify(usuario)
   })
   .then(checkStatus)
 }
 
 function getOrigenes () {
-  return fetch(`${config.URL}/rutasAppMobile/ciudadOrigen`, {
-    headers: config.getHeader()
+  return fetch(`${parameters.URL}/rutasAppMobile/ciudadOrigen`, {
+    headers: parameters.getHeader()
   })
   .then(checkStatus)
 }
 
 function getDestinos (origen) {
-  return fetch(`${config.URL}/rutasAppMobile/ciudadDestino/${origen}`, {
-    headers: config.getHeader()
+  return fetch(`${parameters.URL}/rutasAppMobile/ciudadDestino/${origen}`, {
+    headers: parameters.getHeader()
   })
   .then(checkStatus)
 }
 
 function getTurnos (origen, destino, fecha) {
-  return fetch(`${config.URL}/rutasAppMobile/ciudadDestino/${origen}/${destino}/${fecha}`, {
-    headers: config.getHeader()
+  return fetch(`${parameters.URL}/rutasAppMobile/ciudadDestino/${origen}/${destino}/${fecha}`, {
+    headers: parameters.getHeader()
   })
   .then(checkStatus)
 }

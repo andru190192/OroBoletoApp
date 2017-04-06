@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux'
 import { signIn } from '../api-client'
 import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk'
 const {GraphRequest, GraphRequestManager} = FBSDK
-const config = require('../parameters')
+const parameters = require('../parameters')
 
 export default class LoginView extends Component {
   componentWillMount () {
@@ -25,9 +25,9 @@ export default class LoginView extends Component {
           '/me',
           {
             parameters: {
-              fields: { string: 'id, email, first_name, last_name' },
-              access_token: { string: data.accessToken }
-            }
+              fields: { string: 'id, email, first_name, last_name, picture.type(large)' }
+            },
+            access_token: data.accessToken
           },
           this.responseInfo,
         )).start()
@@ -40,16 +40,13 @@ export default class LoginView extends Component {
     else {
       signIn(usuario.id)
       .then(data => {
-        config.USER = data.persona
-        config.TOKEN = data.token
-        Actions.root()
+        parameters.USER = data.persona
+        parameters.USER.picture = usuario.picture.data.url
+        parameters.TOKEN = data.token
+        Actions.dashboard()
       })
       .catch(err => {
-        if (err.statusCode === 404) {
-          console.log('dddddd')
-          console.log(usuario)
-          Actions.perfil({ usuario })
-        }
+        if (err.statusCode === 404) Actions.perfil({ usuario })
       })
     }
   }

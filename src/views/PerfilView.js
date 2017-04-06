@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   Text,
+  Image,
   TextInput,
   Alert,
   TouchableHighlight
@@ -10,12 +11,25 @@ import {
 
 import { Actions } from 'react-native-router-flux'
 import { signUP } from '../api-client'
+const parameters = require('../parameters')
 
 export default class PerfilView extends Component {
   constructor (props) {
     super()
-    this.state = {
-      usuario: {
+    if (props.usuario === undefined) {
+      this.state = {
+        usuario: parameters.USER.usuario,
+        cedulaRuc: parameters.USER.cedulaRuc,
+        nombre: parameters.USER.nombre,
+        apellido: parameters.USER.apellido,
+        direccion: parameters.USER.direccion,
+        email: parameters.USER.email,
+        telefono: parameters.USER.telefono,
+        ciudad: parameters.USER.ciudad,
+        picture: parameters.USER.picture
+      }
+    } else {
+      this.state = {
         usuario: props.usuario.id,
         cedulaRuc: '',
         nombre: props.usuario.first_name,
@@ -23,92 +37,66 @@ export default class PerfilView extends Component {
         direccion: '',
         email: props.usuario.email,
         telefono: '',
-        ciudad: ''
+        ciudad: '',
+        picture: props.usuario.picture.data.url
       }
     }
-  }
-
-  changeCedulaRuc (cedulaRuc) {
-    this.setState({cedulaRuc})
-  }
-  changeNombre (nombre) {
-    this.setState({nombre})
-  }
-  changeApellido (apellido) {
-    this.setState({apellido})
-  }
-  changeEmail (email) {
-    this.setState({email})
-  }
-  changeDireccion (direccion) {
-    this.setState({direccion})
-  }
-  changeTelefono (telefono) {
-    this.setState({telefono})
-  }
-  changeCiudad (ciudad) {
-    this.setState({ciudad})
+    console.log(this.state)
   }
 
   handleSignUp () {
-    signUP(this.state.usuario).then(datoPersona => {
-      if (datoPersona.status.toString() === '200') {
-        Alert.alert(
-          'Datos de usuario',
-          'Se ingreso Correctamente',
-          [
-            {text: 'OK', onPress: () => Actions.root()}
-          ],
-          { cancelable: false }
-        )
-
-        // config.USER = data.persona
-        // config.TOKEN = data.token
-      } else if (datoPersona.status.toString() === '404') {
-        console.warn('error')
-      }
+    signUP(this.state)
+    .then(data => {
+      parameters.USER = data.persona
+      parameters.USER.picture = this.state.picture
+      parameters.TOKEN = data.token
+      Actions.dashboard()
+    })
+    .catch(err => {
+      console.warn(`${err}`)
     })
   }
 
   render () {
     return (
       <View style={styles.container}>
+        <Image source={{uri: this.state.picture}} style={styles.picture} />
         <Text style={styles.titulo}>DATOS DE USUARIO</Text>
         <TextInput
           style={styles.input}
           placeholder='Cedula/Ruc'
-          value={this.state.usuario.cedulaRuc}
-          // onChangeText={(cedulaRuc) => this.changeCedulaRuc(cedulaRuc)}
+          value={this.state.cedulaRuc}
+          onChangeText={(cedulaRuc) => this.setState({ cedulaRuc })}
           />
         <TextInput style={styles.input}
           placeholder='Apellido'
-          value={this.state.usuario.apellido}
-          onChangeText={(apellido) => this.changeApellido(apellido)}
+          value={this.state.apellido}
+          onChangeText={(apellido) => this.setState({ apellido })}
           />
         <TextInput style={styles.input}
           placeholder='Nombre'
-          value={this.state.usuario.nombre}
-          onChangeText={(nombre) => this.changeNombre(nombre)}
+          value={this.state.nombre}
+          onChangeText={(nombre) => this.setState({ nombre })}
           />
         <TextInput style={styles.input}
           placeholder='Direccion'
-          value={this.state.usuario.direccion}
-          onChangeText={(direccion) => this.changeDireccion(direccion)}
+          value={this.state.direccion}
+          onChangeText={(direccion) => this.setState({ direccion })}
           />
         <TextInput style={styles.input}
           placeholder='Email'
-          value={this.state.usuario.email}
-          onChangeText={(email) => this.changeEmail(email)}
+          value={this.state.email}
+          onChangeText={(email) => this.setState({ email })}
           />
         <TextInput style={styles.input}
           placeholder='Telefono'
-          value={this.state.usuario.telefono}
-          onChangeText={(telefono) => this.changeTelefono(telefono)}
+          value={this.state.telefono}
+          onChangeText={(telefono) => this.setState({ telefono })}
           />
         <TextInput style={styles.input}
           placeholder='Ciudad'
-          value={this.state.usuario.ciudad}
-          onChangeText={(ciudad) => this.changeCiudad(ciudad)}
+          value={this.state.ciudad}
+          onChangeText={(ciudad) => this.setState({ ciudad })}
           />
 
         <TouchableHighlight
@@ -152,5 +140,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     paddingHorizontal: 15
+  },
+  picture: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: 'center'
   }
 })
