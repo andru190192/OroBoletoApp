@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import {
   StyleSheet,
   ListView,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native'
 
 import CityList from '../components/CityList'
 import { getOrigenes } from '../api-client'
+import { Actions } from 'react-native-router-flux'
 
 export default class SalidasView extends Component {
   constructor (props) {
@@ -23,6 +25,10 @@ export default class SalidasView extends Component {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(ciudades.ciudades)
       })
+    })
+    .catch(err => {
+      Actions.pop()
+      Alert.alert('OroTicket', err.message)
     })
   }
 

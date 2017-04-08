@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, ListView, TouchableOpacity, Text, View } from 'react-native'
+import { StyleSheet, ListView, TouchableOpacity, Text, View, Alert } from 'react-native'
 import { getTurnos } from '../api-client'
 import TurnList from '../components/TurnList'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -10,8 +10,7 @@ export default class TurnView extends Component {
     super()
 
     this.state = {
-      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-      error: ''
+      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     }
   }
 
@@ -23,9 +22,8 @@ export default class TurnView extends Component {
         })
       })
       .catch(err => {
-        this.setState({
-          error: err.message
-        })
+        Actions.pop()
+        Alert.alert('OroTicket', err.message)
       })
   }
 
@@ -43,18 +41,19 @@ export default class TurnView extends Component {
   }
 
   handleTurno (turno) {
-    Actions.seat({ turno })
+    if (turno.asientos === '0') {
+      Alert.alert('OroTicket', 'No hay asientos disponibles')
+    } else {
+      Actions.seat({ turno })
+    }
   }
 
   render () {
     return (
-      <View>
-        <Text>{this.state.error}</Text>
-        <ListView dataSource={this.state.dataSource} renderRow={(turno) =>
-          <TouchableOpacity style={styles.combo} onPress={() => this.handleTurno(turno)}>
-            <TurnList turno={turno} />
-          </TouchableOpacity>} renderSectionHeader={() => this.renderSectionHeader()} />
-      </View>
+      <ListView dataSource={this.state.dataSource} renderRow={(turno) =>
+        <TouchableOpacity style={styles.combo} onPress={() => this.handleTurno(turno)}>
+          <TurnList turno={turno} />
+        </TouchableOpacity>} renderSectionHeader={() => this.renderSectionHeader()} />
     )
   }
 }

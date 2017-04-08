@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet, ListView, TouchableOpacity } from 'react-native'
+import { StyleSheet, ListView, TouchableOpacity, Alert } from 'react-native'
 
 import CityList from '../components/CityList'
 import { getDestinos } from '../api-client'
+import { Actions } from 'react-native-router-flux'
 
 export default class DestinosView extends Component {
   constructor (props) {
@@ -21,11 +22,8 @@ export default class DestinosView extends Component {
         })
       })
       .catch(err => {
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(['row 1', 'row 2'])
-        })
-        console.warn(err.message)
-        console.warn(err.statusCode)
+        Actions.pop()
+        Alert.alert('OroTicket', err.message)
       })
   }
 

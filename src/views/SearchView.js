@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, Text, View, TouchableWithoutFeedback, DatePickerAndroid, Platform } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View, TouchableWithoutFeedback, DatePickerAndroid, Platform, Alert } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -19,7 +19,8 @@ export default class HomeView extends Component {
       }
       this.setState(newState)
     } catch ({code, message}) {
-      console.warn(`Error in example '${stateKey}': `, message)
+      Actions.pop()
+      Alert.alert('OroTicket', message)
     }
   }
 
@@ -48,11 +49,19 @@ export default class HomeView extends Component {
   }
 
   handleBuscar () {
-    Actions.turn({
-      ciudadSalida: this.state.ciudadSalida,
-      ciudadDestino: this.state.ciudadDestino,
-      fecha: moment(this.state.simpleText, 'DD/MM/YYYY').format('YYYY-MM-DD')
-    })
+    if (this.state.ciudadSalida === '') {
+      Alert.alert('OroTicket', 'Escoja una salida')
+    } else if (this.state.ciudadDestino === '') {
+      Alert.alert('OroTicket', 'Escoja un Destino')
+    } else if (this.state.simpleText === '') {
+      Alert.alert('OroTicket', 'Escoja una fecha')
+    } else {
+      Actions.turn({
+        ciudadSalida: this.state.ciudadSalida,
+        ciudadDestino: this.state.ciudadDestino,
+        fecha: moment(this.state.simpleText, 'DD/MM/YYYY').format('YYYY-MM-DD')
+      })
+    }
   }
 
   render () {
@@ -67,7 +76,7 @@ export default class HomeView extends Component {
           </View>
           <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.combo} onPress={() => Actions.destination({ ciudadSalida: this.state.ciudadSalida, handleCiudadDestino: this.handleCiudadDestino })}>
+        <TouchableOpacity style={styles.combo} onPress={() => (this.state.ciudadSalida === '') ? Alert.alert('OroTicket', 'Escoja una salida') : Actions.destination({ ciudadSalida: this.state.ciudadSalida, handleCiudadDestino: this.handleCiudadDestino })}>
           <View style={styles.seleccion}>
             <Text style={styles.label}>Escoje tu Destino</Text>
             <Text style={styles.element}>{this.state.ciudadDestino}</Text>
