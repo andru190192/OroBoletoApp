@@ -4,19 +4,21 @@ import {
   View,
   Text,
   Image,
-  TextInput,
-  Alert,
-  TouchableHighlight
+  TouchableHighlight,
+  ScrollView
 } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
-import { signUP } from '../api-client'
+import { signUP, updatePerson } from '../api-client'
+import TextField from 'react-native-md-textinput'
 const parameters = require('../parameters')
 
 export default class PerfilView extends Component {
+
   constructor (props) {
     super()
     if (props.usuario === undefined) {
+      this.nameBotton = 'MODIFICAR'
       this.state = {
         usuario: parameters.USER.usuario,
         cedulaRuc: parameters.USER.cedulaRuc,
@@ -29,6 +31,7 @@ export default class PerfilView extends Component {
         picture: parameters.USER.picture
       }
     } else {
+      this.nameBotton = 'GUARDAR'
       this.state = {
         usuario: props.usuario.id,
         cedulaRuc: '',
@@ -44,66 +47,101 @@ export default class PerfilView extends Component {
     console.log(this.state)
   }
 
-  handleSignUp () {
-    signUP(this.state)
-    .then(data => {
-      parameters.USER = data.persona
-      parameters.USER.picture = this.state.picture
-      parameters.TOKEN = data.token
-      Actions.dashboard()
-    })
-    .catch(err => {
-      console.warn(`${err}`)
-    })
+  handleAction () {
+    if (this.nameBotton === 'MODIFICAR') {
+      updatePerson(this.state)
+      .then(data => {
+        // console.warn(data)
+        parameters.USER = data.persona
+        parameters.USER.picture = this.state.picture
+        Actions.perfilView()
+      })
+      .catch(err => {
+        console.warn(`${err}`)
+      })
+    } else {
+      signUP(this.state)
+      .then(data => {
+        parameters.USER = data.persona
+        parameters.USER.picture = this.state.picture
+        parameters.TOKEN = data.token
+        Actions.dashboard()
+      })
+      .catch(err => {
+        console.warn(`${err}`)
+      })
+    }
+  }
+
+  cancelar () {
+    console.warn('CANCELAR')
   }
 
   render () {
     return (
-      <View style={styles.container}>
-        <Image source={{uri: this.state.picture}} style={styles.picture} />
-        <Text style={styles.titulo}>DATOS DE USUARIO</Text>
-        <TextInput
-          style={styles.input}
-          placeholder='Cedula/Ruc'
-          value={this.state.cedulaRuc}
-          onChangeText={(cedulaRuc) => this.setState({ cedulaRuc })}
-          />
-        <TextInput style={styles.input}
-          placeholder='Apellido'
-          value={this.state.apellido}
-          onChangeText={(apellido) => this.setState({ apellido })}
-          />
-        <TextInput style={styles.input}
-          placeholder='Nombre'
-          value={this.state.nombre}
-          onChangeText={(nombre) => this.setState({ nombre })}
-          />
-        <TextInput style={styles.input}
-          placeholder='Direccion'
-          value={this.state.direccion}
-          onChangeText={(direccion) => this.setState({ direccion })}
-          />
-        <TextInput style={styles.input}
-          placeholder='Email'
-          value={this.state.email}
-          onChangeText={(email) => this.setState({ email })}
-          />
-        <TextInput style={styles.input}
-          placeholder='Telefono'
-          value={this.state.telefono}
-          onChangeText={(telefono) => this.setState({ telefono })}
-          />
-        <TextInput style={styles.input}
-          placeholder='Ciudad'
-          value={this.state.ciudad}
-          onChangeText={(ciudad) => this.setState({ ciudad })}
-          />
-
-        <TouchableHighlight
-          style={styles.button}
-          onPress={() => this.handleSignUp()}>
-          <Text style={styles.textButtom}>Send</Text>
-        </TouchableHighlight>
+      <View style={styles.perfil}>
+        <View style={styles.perfilPicture}>
+          <Image source={{uri: this.state.picture}} style={styles.picture} />
+          <Text style={styles.titulo}>DATOS DE USUARIO</Text>
+        </View>
+        <ScrollView>
+          <TextField
+            highlightColor={'#00BCD4'}
+            label={'Cedula/Ruc'}
+            value={this.state.cedulaRuc}
+            maxLength={10}
+            keyboardType={'phone-pad'}
+            onChangeText={(cedulaRuc) => this.setState({ cedulaRuc })}
+              />
+          <TextField
+            highlightColor={'#00BCD4'}
+            label={'Apellido'}
+            value={this.state.apellido}
+            onChangeText={(apellido) => this.setState({ apellido })}
+              />
+          <TextField
+            highlightColor={'#00BCD4'}
+            label={'Nombre'}
+            value={this.state.nombre}
+            onChangeText={(nombre) => this.setState({ nombre })}
+              />
+          <TextField
+            highlightColor={'#00BCD4'}
+            label='Direccion'
+            value={this.state.direccion}
+            onChangeText={(direccion) => this.setState({ direccion })}
+              />
+          <TextField
+            highlightColor={'#00BCD4'}
+            label='Email'
+            value={this.state.email}
+            onChangeText={(email) => this.setState({ email })}
+              />
+          <TextField
+            highlightColor={'#00BCD4'}
+            label='Telefono'
+            value={this.state.telefono}
+            onChangeText={(telefono) => this.setState({ telefono })}
+              />
+          <TextField
+            highlightColor={'#00BCD4'}
+            label='Ciudad'
+            value={this.state.ciudad}
+            onChangeText={(ciudad) => this.setState({ ciudad })}
+              />
+          <View style={styles.button}>
+            <TouchableHighlight
+              style={styles.buttonAction}
+              onPress={() => this.handleAction()}>
+              <Text style={styles.textButtom}>{this.nameBotton}</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.buttonCancelar}
+              onPress={() => this.cancelar()}>
+              <Text style={styles.textButtom}>CANCELAR</Text>
+            </TouchableHighlight>
+          </View>
+        </ScrollView>
       </View>
 
     )
@@ -111,40 +149,61 @@ export default class PerfilView extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  perfil: {
     flex: 1,
     backgroundColor: '#F3F3F3',
+    justifyContent: 'center',
     marginTop: 30,
     paddingLeft: 15,
     paddingRight: 15
   },
   titulo: {
     margin: 20,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#FFFFFF'
   },
   button: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  buttonAction: {
     backgroundColor: 'skyblue',
-    paddingTop: 15,
+    paddingTop: 10,
     paddingBottom: 15,
-    borderRadius: 5
+    borderRadius: 5,
+    height: 40,
+    width: 150
+
+  },
+  buttonCancelar: {
+    backgroundColor: 'red',
+    paddingTop: 10,
+    paddingBottom: 15,
+    borderRadius: 5,
+    height: 40,
+    width: 150
 
   },
   textButtom: {
     textAlign: 'center',
     color: 'white'
   },
-  input: {
-    height: 40,
-    borderColor: '#CCC',
-    borderWidth: 2,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingHorizontal: 15
+  // input: {
+  //   height: 40,
+  //   borderColor: '#CCC',
+  //   borderWidth: 2,
+  //   borderRadius: 5,
+  //   marginBottom: 10,
+  //   paddingHorizontal: 15
+  // },
+  perfilPicture: {
+    backgroundColor: '#e74c3c'
   },
   picture: {
+    marginTop: 15,
     width: 100,
     height: 100,
     borderRadius: 50,
-    justifyContent: 'center'
+    alignSelf: 'center'
   }
 })

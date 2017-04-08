@@ -31,6 +31,15 @@ function signUP (usuario) {
   .then(checkStatus)
 }
 
+function updatePerson (usuario) {
+  return fetch(`${parameters.URL}/persona/0703865584`, {
+    method: 'PUT',
+    headers: parameters.getHeader(),
+    body: JSON.stringify(usuario)
+  })
+  .then(checkStatus)
+}
+
 function getOrigenes () {
   return fetch(`${parameters.URL}/rutasAppMobile/ciudadOrigen`, {
     headers: parameters.getHeader()
@@ -52,4 +61,4 @@ function getTurnos (origen, destino, fecha) {
   .then(checkStatus)
 }
 
-export { signIn, signUP, getOrigenes, getDestinos, getTurnos }
+export { signIn, signUP, updatePerson, getOrigenes, getDestinos, getTurnos }
