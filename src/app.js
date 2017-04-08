@@ -13,6 +13,7 @@ import InvoiceView from './views/InvoiceView'
 import PaymentView from './views/PaymentView'
 import PerfilView from './views/PerfilView'
 import DashboardView from './views/DashboardView'
+import SeatView from './views/SeatView'
 
 export default class OroTicketMobile extends Component {
   render () {
@@ -25,7 +26,8 @@ export default class OroTicketMobile extends Component {
         <Scene key='origin' component={OriginView} title='Salidas' hideNavBar={isAndroid} direction='vertical' />
         <Scene key='destination' component={DestinationView} title='Destinos' hideNavBar={isAndroid} direction='vertical' />
         <Scene key='perfil' component={PerfilView} hideNavBar />
-        <Scene key='turno' component={TurnView} hideNavBar />
+        <Scene key='turn' component={TurnView} hideNavBar />
+        <Scene key='seat' component={SeatView} hideNavBar />
       </Scene>
     </Router>
     // return <Router getSceneStyle={getSceneStyle}>

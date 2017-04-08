@@ -55,7 +55,7 @@ function getDestinos (origen) {
 }
 
 function getTurnos (origen, destino, fecha) {
-  return fetch(`${parameters.URL}/rutasAppMobile/ciudadDestino/${origen}/${destino}/${fecha}`, {
+  return fetch(`${parameters.URL}/turnosAppMobile/${origen}/${destino}/${fecha}`, {
     headers: parameters.getHeader()
   })
   .then(checkStatus)

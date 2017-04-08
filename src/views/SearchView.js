@@ -48,7 +48,11 @@ export default class HomeView extends Component {
   }
 
   handleBuscar () {
-    Actions.turno()
+    Actions.turn({
+      ciudadSalida: this.state.ciudadSalida,
+      ciudadDestino: this.state.ciudadDestino,
+      fecha: moment(this.state.simpleText, 'DD/MM/YYYY').format('YYYY-MM-DD')
+    })
   }
 
   render () {
@@ -78,7 +82,7 @@ export default class HomeView extends Component {
             <Icon style={styles.icon} name='calendar' size={32} color='#e74c3c' />
           </View>
         </TouchableWithoutFeedback>
-        <TouchableOpacity style={styles.btnBuscar} onPress={() => Actions.turno()} title='Buscar'>
+        <TouchableOpacity style={styles.btnBuscar} onPress={() => this.handleBuscar()} title='Buscar'>
           <Text style={{color: '#FFFFFF'}}>Buscar</Text>
         </TouchableOpacity>
       </View>
