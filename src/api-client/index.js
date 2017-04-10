@@ -40,6 +40,22 @@ function updatePerson (usuario) {
   .then(checkStatus)
 }
 
+function getFormasPagos (cedulaRuc) {
+  return fetch(`${parameters.URL}/formasPagos/${cedulaRuc}`, {
+    headers: parameters.getHeader()
+  })
+  .then(checkStatus)
+}
+
+function setFormaPago (formaPago) {
+  return fetch(`${parameters.URL}/formaPago`, {
+    method: 'POST',
+    headers: parameters.getHeader(),
+    body: JSON.stringify(formaPago)
+  })
+  .then(checkStatus)
+}
+
 function getOrigenes () {
   return fetch(`${parameters.URL}/rutasAppMobile/ciudadOrigen`, {
     headers: parameters.getHeader()
@@ -61,4 +77,4 @@ function getTurnos (origen, destino, fecha) {
   .then(checkStatus)
 }
 
-export { signIn, signUP, updatePerson, getOrigenes, getDestinos, getTurnos }
+export { signIn, signUP, updatePerson, getFormasPagos, setFormaPago, getOrigenes, getDestinos, getTurnos }

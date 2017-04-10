@@ -11,6 +11,7 @@ import DestinationView from './views/DestinationView'
 import TurnView from './views/TurnView'
 import InvoiceView from './views/InvoiceView'
 import PaymentView from './views/PaymentView'
+import PaymentFormView from './views/PaymentFormView'
 import PerfilView from './views/PerfilView'
 import DashboardView from './views/DashboardView'
 import SeatView from './views/SeatView'
@@ -26,8 +27,11 @@ export default class OroTicketMobile extends Component {
         <Scene key='origin' component={OriginView} title='Salidas' hideNavBar={isAndroid} direction='vertical' />
         <Scene key='destination' component={DestinationView} title='Destinos' hideNavBar={isAndroid} direction='vertical' />
         <Scene key='perfil' component={PerfilView} hideNavBar />
+        <Scene key='paymentView' component={PaymentView} title='Lista de Tarjeta' hideNavBar />
+        <Scene key='PaymentFormView' component={PaymentFormView} title='Registro de Tarjeta' hideNavBar={isAndroid} direction='vertical' />
         <Scene key='turn' component={TurnView} hideNavBar />
         <Scene key='seat' component={SeatView} hideNavBar />
+
       </Scene>
     </Router>
     // return <Router getSceneStyle={getSceneStyle}>

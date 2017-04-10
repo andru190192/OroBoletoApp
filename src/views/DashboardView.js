@@ -14,6 +14,7 @@ export default class DashboardView extends Component {
         <InvoiceView name='invoiceView' tabLabel='tags' />
         <PaymentView name='paymentView' tabLabel='credit-card' />
         <PerfilView name='perfilView' tabLabel='user-o' />
+
       </ScrollableTabView>
     )
   }

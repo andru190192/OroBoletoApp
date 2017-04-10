@@ -1,69 +1,33 @@
 import React, { Component } from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableHighlight } from 'react-native'
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native'
+import { getFormasPagos } from '../api-client'
+import PaymentList from '../components/PaymentList'
+import { Actions } from 'react-native-router-flux'
 
 export default class PaymentView extends Component {
-  constructor (props) {
-    super()
-    this.state = {
-      cliente: '0703865584',
-      tipo: 'SE',
-      nombreTarjeta: 'CARLOS AJILA M',
-      numeroTarjeta: '1234567890',
-      codigoSeguridad: '123',
-      fechaVencimiento: '12/12',
-      activo: ''
-    }
+  state = {
+    payments: []
   }
+  componentDidMount () {
+    getFormasPagos('0703865584').then(data => {
+      this.setState({ payments: data.formasPago })
+    })
+  }
+  handleAction(){
+    Actions.PaymentFormView()
+  }
+
   render () {
+    let payments = this.state.payments
     return (
       <View style={styles.container}>
-        <Text>
-          PaymentView
-        </Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder='Cliente'
-          value={this.state.cliente}
-          onChangeText={(cliente) => this.setState({ cliente })}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Tipo'
-          value={this.state.tipo}
-          onChangeText={(tipo) => this.setState({ tipo })}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Nombre'
-          value={this.state.nombreTarjeta}
-          onChangeText={(nombreTarjeta) => this.setState({ nombreTarjeta })}
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder='Numero de la Tarjeta'
-          value={this.state.numeroTarjeta}
-          onChangeText={(numeroTarjeta) => this.setState({ numeroTarjeta })}
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder='Codigo de seguridad'
-          value={this.state.codigoSeguridad}
-          onChangeText={(codigoSeguridad) => this.setState({ codigoSeguridad })}
-        />
+      <Text style={styles.titulo}>BUSCA TU BOLETO</Text>
         <TouchableHighlight
-          style={styles.buttonAction}
+          style={styles.buttonAgregar}
           onPress={() => this.handleAction()}>
-          <Text style={styles.textButtom}>GUARDAR</Text>
+          <Text style={styles.textButtom}>+</Text>
         </TouchableHighlight>
-
+        <PaymentList payments={payments} />
       </View>
     )
   }
@@ -73,25 +37,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'lightgray',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  input: {
-    height: 40,
-    borderColor: '#CCC',
-    borderWidth: 2,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingHorizontal: 15
-  },
-  icon: {
-    marginTop: 5,
-    marginRight: 5
+    paddingTop: 20
   },
   titulo: {
     margin: 20
   },
-  buttonAction: {
+  buttonAgregar: {
     backgroundColor: 'skyblue',
     paddingTop: 10,
     paddingBottom: 15,
@@ -102,6 +53,8 @@ const styles = StyleSheet.create({
   },
   textButtom: {
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
+    fontSize: 20
   }
+
 })
