@@ -5,24 +5,28 @@ import {
   Text
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import moment from 'moment'
 export default class PaymentBox extends Component {
   render () {
     return (
       <View style={styles.paymentBox}>
-        <View>
-          <Icon style={styles.icon} name='cc-visa' size={32} color='#e74c3c' />
-          <Text style={styles.titulo}>Numero Tarjeta:</Text>
-          <Text style={styles.titulo}>Fecha Vencimiento:</Text>
-          <Text style={styles.titulo}>Tipo:</Text>
-          <Text style={styles.titulo}>Activo:</Text>
+        <View style={styles.row}>
+          <Icon style={styles.icon} name='user-o' size={25} color='#e74c3c' />
+          <View style={styles.grupoVertical}>
+            <Text style={styles.detalle}>{this.props.payment.nombre_tarjeta}</Text>
+          </View>
         </View>
-        <View style={styles.info}>
-          <View>
-            <Text style={styles.detalle}>{this.props.payment.nombreTarjeta}</Text>
-            <Text style={styles.detalle}>{this.props.payment.numeroTarjeta}</Text>
-            <Text style={styles.detalle}>{this.props.payment.fechaVencimiento}</Text>
-            <Text style={styles.detalle}>{this.props.payment.tipo}</Text>
-            <Text style={styles.detalle}>{this.props.payment.activo}</Text>
+        <View style={styles.row}>
+          <Icon style={styles.icon} name='credit-card' size={25} color='#e74c3c' />
+          <View style={styles.grupoVertical}>
+            <Text style={styles.detalle}>{this.props.payment.numero_tarjeta}</Text>
+          </View>
+        </View>
+
+        <View style={styles.row}>
+          <Icon style={styles.icon} name='calendar-o' size={25} color='#e74c3c' />
+          <View style={styles.grupoVertical}>
+            <Text style={styles.detalle}>{moment(this.props.payment.fecha_vencimiento).format('MM/YYYY')}</Text>
           </View>
         </View>
       </View>
@@ -30,36 +34,40 @@ export default class PaymentBox extends Component {
     )
   }
 }
-// <Text style={styles.titulo}>Nombre Tarjeta:</Text>
-// <Text style={styles.titulo}>Numero Tarjeta:</Text>
-// <Text style={styles.titulo}>Fecha Vencimiento:</Text>
-// <Text style={styles.titulo}>Tipo:</Text>
-// <Text style={styles.titulo}>Activo:</Text>
 
 const styles = StyleSheet.create({
   paymentBox: {
-    margin: 5,
-    backgroundColor: 'white',
-    flexDirection: 'row',
+    flex: 1,
+    backgroundColor: '#F3F3F3',
+    justifyContent: 'flex-start',
     shadowColor: 'black',
     shadowOpacity: 0.2,
     shadowOffset: {
       height: 1,
       width: -2
     },
-    elevation: 2
+    elevation: 2,
+    marginTop: 5,
+    paddingLeft: 10
   },
-  titulo: {
-    fontSize: 15,
-    marginTop: 3
-  },
-  detalle: {
-    fontSize: 15,
-    marginTop: 3
-  },
-  info: {
-    flex: 1,
+  row: {
     flexDirection: 'row',
+    marginVertical: 5
+  },
+  icon: {
+    marginTop: 5,
+    marginRight: 5
+  },
+  iconContainer: {
+    backgroundColor: 'black'
+  },
+  txtContainer: {
+    flex: 1,
+    alignSelf: 'flex-start',
+    backgroundColor: 'blue'
+  },
+  grupoVertical: {
+    flexDirection: 'column',
     justifyContent: 'center'
   }
 

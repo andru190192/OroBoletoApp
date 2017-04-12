@@ -23,7 +23,6 @@ export default class PaymentList extends Component {
  // /// se llama cada ves que se cambia las propiedades
   componentWillReceiveProps (newProps) {
     if (newProps.payments !== this.props.payments) {
-      //console.warn('cambio la lista');
       this.updateDataSource(newProps.payments)
     }
   }
@@ -38,13 +37,9 @@ export default class PaymentList extends Component {
   //  console.warn( 'paymentlll',payment )
     Actions.PaymentFormView({payment})
   }
-
-
-  render() {
+  render () {
     return (
-      <ListView
-         enableEmptySections = {true}
-         dataSource={this.state.dataSource}
+      <ListView enableEmptySections={true} dataSource={this.state.dataSource}
          renderRow={(payment) => {
            return (
               <TouchableOpacity

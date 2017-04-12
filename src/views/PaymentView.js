@@ -21,7 +21,7 @@ export default class PaymentView extends Component {
     let payments = this.state.payments
     return (
       <View style={styles.container}>
-      <Text style={styles.titulo}>BUSCA TU BOLETO</Text>
+      <Text style={styles.titulo}>LISTA DE TARJETA</Text>
         <TouchableHighlight
           style={styles.buttonAgregar}
           onPress={() => this.handleAction()}>

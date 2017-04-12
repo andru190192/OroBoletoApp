@@ -41,14 +41,14 @@ function updatePerson (usuario) {
 }
 
 function getFormasPagos (cedulaRuc) {
-  return fetch(`${parameters.URL}/formasPagos/${cedulaRuc}`, {
+  return fetch(`${parameters.URL}/formasPagosAppMobile/${cedulaRuc}`, {
     headers: parameters.getHeader()
   })
   .then(checkStatus)
 }
 
 function setFormaPago (formaPago) {
-  return fetch(`${parameters.URL}/formaPago`, {
+  return fetch(`${parameters.URL}/formaPagoAppMobile`, {
     method: 'POST',
     headers: parameters.getHeader(),
     body: JSON.stringify(formaPago)
