@@ -15,23 +15,25 @@ import PaymentFormView from './views/PaymentFormView'
 import PerfilView from './views/PerfilView'
 import DashboardView from './views/DashboardView'
 import SeatView from './views/SeatView'
+import PreInvoiceView from './views/PreInvoiceView'
 
 export default class OroTicketMobile extends Component {
   render () {
     const isAndroid = Platform.OS === 'android'
     return <Router getSceneStyle={getSceneStyle}>
       <Scene key='root'>
+        <Scene key='seat' component={SeatView} hideNavBar />
         <Scene key='login' component={LoginView} hideNavBar />
         <Scene key='dashboard' component={DashboardView} hideNavBar />
         <Scene key='search' component={SearchView} hideNavBar />
         <Scene key='origin' component={OriginView} title='Salidas' hideNavBar={isAndroid} direction='vertical' />
         <Scene key='destination' component={DestinationView} title='Destinos' hideNavBar={isAndroid} direction='vertical' />
         <Scene key='perfil' component={PerfilView} hideNavBar />
+        <Scene key='invoice' component={InvoiceView} hideNavBar />
         <Scene key='paymentView' component={PaymentView} title='Lista de Tarjeta' hideNavBar />
         <Scene key='PaymentFormView' component={PaymentFormView} title='Registro de Tarjeta' hideNavBar={isAndroid} direction='vertical' />
         <Scene key='turn' component={TurnView} hideNavBar />
-        <Scene key='seat' component={SeatView} hideNavBar />
-
+        <Scene key='preInvoice' component={PreInvoiceView} hideNavBar />
       </Scene>
     </Router>
     // return <Router getSceneStyle={getSceneStyle}>
