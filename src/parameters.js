@@ -1,6 +1,6 @@
 module.exports = {
-  // URL: 'https://oro-ticket-server.herokuapp.com/api',
-  URL: 'http://192.168.1.10:3000/api',
+  USER: '',
+  URL: 'https://oro-ticket-server.herokuapp.com/api',
   TOKEN: '',
   getHeader: function () {
     return new Headers({
