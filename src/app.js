@@ -22,7 +22,6 @@ export default class OroTicketMobile extends Component {
     const isAndroid = Platform.OS === 'android'
     return <Router getSceneStyle={getSceneStyle}>
       <Scene key='root'>
-        <Scene key='seat' component={SeatView} hideNavBar />
         <Scene key='login' component={LoginView} hideNavBar />
         <Scene key='dashboard' component={DashboardView} hideNavBar />
         <Scene key='search' component={SearchView} hideNavBar />
@@ -34,6 +33,7 @@ export default class OroTicketMobile extends Component {
         <Scene key='PaymentFormView' component={PaymentFormView} title='Registro de Tarjeta' hideNavBar={isAndroid} direction='vertical' />
         <Scene key='turn' component={TurnView} hideNavBar />
         <Scene key='preInvoice' component={PreInvoiceView} hideNavBar />
+        <Scene key='seat' component={SeatView} hideNavBar />
       </Scene>
     </Router>
     // return <Router getSceneStyle={getSceneStyle}>
