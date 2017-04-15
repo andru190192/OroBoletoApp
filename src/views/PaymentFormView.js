@@ -186,7 +186,7 @@ export default class PaymentFormView extends Component {
               ]}
               onBlur={this._onBlurFechaVencimiento.bind(this)}
               onFocus={this._onFocusFechaVencimiento.bind(this)}
-              placeholder='MM-AAAA'
+              placeholder='AAAA-MM'
               value={this.state.fechaVencimiento}
               onChangeText={(fechaVencimiento) => this.setState({ fechaVencimiento })}
             />
