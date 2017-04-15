@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
 import {
   StyleSheet,
-  Image,
   View,
   Text,
   TextInput,
+  Alert,
   TouchableHighlight } from 'react-native'
 import { setFormaPago } from '../api-client'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
+import payform from 'payform'
 const parameters = require('../parameters')
 export default class PaymentFormView extends Component {
+  // 4017779991118888
+  // 5342102102260692
+  // 4242 4242 4242 4242
+  // editable={false}
   constructor (props) {
     super()
-    // console.warn('props.payment', props.payment)
     if (props.payment === undefined) {
       this.nameBotton = 'GUARDAR'
       this.state = {
@@ -23,7 +27,10 @@ export default class PaymentFormView extends Component {
         numeroTarjeta: '',
         codigoSeguridad: '',
         fechaVencimiento: '',
-        activo: ''
+        activo: '',
+        tipoTj: '',
+        isFocused: false
+
       }
     } else {
       this.nameBotton = 'MODIFICAR'
@@ -39,22 +46,98 @@ export default class PaymentFormView extends Component {
       }
     }
   }
+
+  _onBlurNumeroTarjeta (e) {
+    if (!payform.validateCardNumber(this.state.numeroTarjeta)) {
+      console.warn('Numero de tj incorrecto')
+      this.state.tipoTj = ''
+    } else {
+      this.state.tipoTj = payform.parseCardType(this.state.numeroTarjeta)
+      console.warn('tajeta correcta')
+      this.setState({ isFocused: false })
+    }
+  }
+  _onFocusNumeroTarjeta (e) {
+    this.setState({ isFocused: true })
+    console.warn('_onFocus')
+  }
+
+  _onBlurFechaVencimiento (e) {
+    console.warn(this.state.fechaVencimiento.substring(0, 4))
+    console.warn(this.state.fechaVencimiento.substring(5, 7))
+    if (!payform.validateCardExpiry(this.state.fechaVencimiento.substring(5, 7), this.state.fechaVencimiento.substring(0, 4))) {
+      console.warn('error fecha')
+    } else {
+      console.warn('fecha correcta')
+      this.setState({ isFocused: false })
+    }
+  }
+  _onFocusFechaVencimiento (e) {
+    this.setState({ isFocused: true })
+    console.warn('_onFocus')
+  }
+  _onBlurCVC (e) {
+    if (this.state.tipoTj === 'amex') {
+      this.validarCVC = payform.validateCardCVC('123', 'amex')
+    } else {
+      this.validarCVC = payform.validateCardCVC('123')
+    }
+    if (!this.validarCVC) {
+      console.warn('error en el CVC')
+    } else {
+      console.warn('Datos Correctos')
+      this.setState({ isFocused: false })
+    }
+  }
+
+  _onFocusCVC (e) {
+    this.setState({ isFocused: true })
+    console.warn('_onFocus')
+  }
+  mensajeError (titulo, mensaje) {
+    Alert.alert(
+      titulo,
+      mensaje,
+      [
+        {text: 'OK', onPress: () => console.log('OK Pressed')}
+      ],
+      { cancelable: false }
+    )
+  }
+
   handleAction () {
     this.state.activo = 'TRUE'
-    setFormaPago(this.state)
-      .then(data => {
-        console.warn('data', data)
-      })
-      .catch(err => {
-        console.warn(`${err}`)
-      })
+
+    if (!payform.validateCardNumber(this.state.numeroTarjeta)) {
+      this.mensajeError('Error en los datos', 'Numero de Tarjeta Incorrecto')
+    } else if (!payform.validateCardExpiry(this.state.fechaVencimiento.substring(5, 7), this.state.fechaVencimiento.substring(0, 4))) {
+      this.mensajeError('Error en los datos', 'Fecha Incorrecta')
+    } else {
+      let typeCardNumero = payform.parseCardType(this.state.numeroTarjeta)
+      if (typeCardNumero === 'amex') {
+        this.validarCVC = payform.validateCardCVC('123', 'amex')
+      } else {
+        this.validarCVC = payform.validateCardCVC('123')
+      }
+      if (!this.validarCVC) {
+        this.mensajeError('Error en los datos', 'CVC Incorrecto')
+      } else {
+        setFormaPago(this.state)
+          .then(data => {
+            console.warn('data', data)
+            this.mensajeError('Datos de la tarjeta', 'Guardados Correctamente')
+          })
+          .catch(err => {
+            console.warn(`${err}`)
+          })
+      }
+    }
   }
 
   render () {
     return (
       <View style={styles.container}>
         <View>
-          <Image source={require('../static/images/tarjetaCredito4.png')} style={styles.logo} />
           <Text style={styles.titulo}>
             Datos de Tarjeta de Credito
           </Text>
@@ -78,10 +161,18 @@ export default class PaymentFormView extends Component {
           </View>
           <View style={styles.txtContainer}>
             <TextInput
-              style={styles.input}
+              style={[ styles.input, this.state.isFocused && styles.focused
+              ]}
+              onBlur={this._onBlurNumeroTarjeta.bind(this)}
+              onFocus={this._onFocusNumeroTarjeta.bind(this)}
               placeholder='Numero de la Tarjeta'
               value={this.state.numeroTarjeta}
               onChangeText={(numeroTarjeta) => this.setState({ numeroTarjeta })}
+              />
+            <TextInput
+              style={styles.input}
+              value={this.state.tipoTj}
+              editable={false}
               />
           </View>
         </View>
@@ -91,8 +182,11 @@ export default class PaymentFormView extends Component {
           </View>
           <View style={styles.txtContainer}>
             <TextInput
-              style={styles.input}
-              placeholder='MM/AAAA'
+              style={[ styles.input, this.state.isFocused && styles.focused
+              ]}
+              onBlur={this._onBlurFechaVencimiento.bind(this)}
+              onFocus={this._onFocusFechaVencimiento.bind(this)}
+              placeholder='MM-AAAA'
               value={this.state.fechaVencimiento}
               onChangeText={(fechaVencimiento) => this.setState({ fechaVencimiento })}
             />
@@ -102,7 +196,10 @@ export default class PaymentFormView extends Component {
           </View>
           <View style={styles.txtContainer}>
             <TextInput
-              style={styles.input}
+              style={[ styles.input, this.state.isFocused && styles.focused
+              ]}
+              onBlur={this._onBlurCVC.bind(this)}
+              onFocus={this._onFocusCVC.bind(this)}
               placeholder='CVC'
               value={this.state.codigoSeguridad}
               onChangeText={(codigoSeguridad) => this.setState({ codigoSeguridad })}
@@ -119,7 +216,13 @@ export default class PaymentFormView extends Component {
     )
   }
 }
-
+// <TextInput
+//   valid={false}
+//   style={styles.input}
+//   placeholder='Numero de la Tarjeta'
+//   value={this.state.numeroTarjeta}
+//   onChangeText={(numeroTarjeta) => this.setState({ numeroTarjeta })}
+//   />
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -128,6 +231,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingLeft: 15,
     paddingRight: 15
+  },
+  default: {
+    borderColor: 'gray',
+    borderBottomWidth: 2
+  },
+  focused: {
+    borderColor: 'blue'
   },
   logo: {
     width: 350,
@@ -170,7 +280,8 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderRadius: 5,
     height: 40,
-    width: 150
+    width: 250,
+    alignSelf: 'center'
 
   },
   textButtom: {
@@ -178,3 +289,18 @@ const styles = StyleSheet.create({
     color: 'white'
   }
 })
+
+// const validarCardNumero = payform.validateCardNumber(this.state.numeroTarjeta)
+// const validaCarExp = payform.validateCardExpiry('05', '20')// (month, year)
+//
+// const typeCardNumero = payform.parseCardType(this.state.numeroTarjeta)
+// let validarCVC = ''
+// if (typeCardNumero === 'amex') {
+//   validarCVC = payform.validateCardCVC('123', 'amex')
+// } else {
+//   validarCVC = payform.validateCardCVC('123')
+// }
+// console.warn('validarCardNumero', validarCardNumero)
+// console.warn('validaCarExp', validaCarExp)
+// console.warn('typeCardNumero', typeCardNumero)
+// console.warn('validarCVC', validarCVC)

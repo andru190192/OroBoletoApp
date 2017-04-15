@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "moment": "^2.18.1",
+    "payform": "^1.2.1",
     "react": "15.4.2",
     "react-native": "0.42.3",
     "react-native-fbsdk": "^0.5.0",
