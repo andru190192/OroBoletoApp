@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     alignSelf: 'center',
-    marginTop: (Platform.OS === 'ios') ? 30 : 0
+    marginTop: (Platform.OS === 'ios') ? 30 : 20
   },
   buttonAction: {
     backgroundColor: 'skyblue',
@@ -200,14 +200,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   TextField: {
-    height: (Platform.OS === 'ios') ? 40 : 40
+    height: 40
   },
   separador: {
     marginVertical: 60
   },
   linea: {
     borderColor: '#e74c3c',
-    borderWidth: 0.5,
+    borderWidth: 0.3,
     marginTop: 20,
     width: 300,
     alignSelf: 'center'
