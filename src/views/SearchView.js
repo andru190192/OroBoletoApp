@@ -4,6 +4,7 @@ import { StyleSheet, TouchableOpacity, Text, View, TouchableWithoutFeedback, Dat
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
+import DatePicker from '../components/DatePicker'
 
 export default class HomeView extends Component {
   showPicker = async (stateKey, options) => {
@@ -65,7 +66,7 @@ export default class HomeView extends Component {
   }
 
   render () {
-    const isAndroid = Platform.OS === 'android'
+    const isIos = Platform.OS === 'ios'
     return (
       <View style={styles.container}>
         <Text style={styles.titulo}>BUSCA TU BOLETO</Text>
@@ -83,14 +84,7 @@ export default class HomeView extends Component {
           </View>
           <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
         </TouchableOpacity>
-        <TouchableWithoutFeedback onPress={this.showPicker.bind(this, 'simple', {date: this.state.simpleDate})}>
-          <View style={styles.combo}>
-            <View style={styles.seleccion}>
-              <Text style={styles.label}>{this.state.simpleText}</Text>
-            </View>
-            <Icon style={styles.icon} name='calendar' size={32} color='#e74c3c' />
-          </View>
-        </TouchableWithoutFeedback>
+        <DatePicker />
         <TouchableOpacity style={styles.btnBuscar} onPress={() => this.handleBuscar()} title='Buscar'>
           <Text style={{color: '#FFFFFF'}}>Buscar</Text>
         </TouchableOpacity>
