@@ -32,6 +32,7 @@ export default class DatePicker extends Component {
         newState[stateKey + 'Date'] = date
       }
       this.setState(newState)
+      this.props.onHandleFecha(this.state.simpleText)
     } catch ({code, message}) {
       Actions.pop()
       Alert.alert('OroTicket', message)

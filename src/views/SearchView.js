@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, Text, View, TouchableWithoutFeedback, DatePickerAndroid, Platform, Alert } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View, Platform, Alert } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -7,36 +7,22 @@ import moment from 'moment'
 import DatePicker from '../components/DatePicker'
 
 export default class HomeView extends Component {
-  showPicker = async (stateKey, options) => {
-    try {
-      var newState = {}
-      const {action, year, month, day} = await DatePickerAndroid.open(options)
-      var date = new Date(year, month, day)
-      if (action === DatePickerAndroid.dismissedAction) {
-        newState[stateKey + 'Date'] = date
-      } else {
-        newState[stateKey + 'Text'] = moment(`${day}/${month + 1}/${year}`, 'DD/MM/yyyy').format('DD/MM/YYYY')
-        newState[stateKey + 'Date'] = date
-      }
-      this.setState(newState)
-    } catch ({code, message}) {
-      Actions.pop()
-      Alert.alert('OroTicket', message)
-    }
-  }
-
   constructor (props) {
     super()
 
     this.state = {
       ciudadSalida: '',
       ciudadDestino: '',
-      simpleDate: new Date(moment().format('MM/DD/YYYY')),
-      simpleText: moment().format('DD/MM/YYYY')
+      simpleText: ''
     }
 
     this.handleCiudadSalida = this.handleCiudadSalida.bind(this)
     this.handleCiudadDestino = this.handleCiudadDestino.bind(this)
+    this.handleFecha = this.handleFecha.bind(this)
+  }
+
+  handleFecha (fecha) {
+    this.setState({ simpleText: fecha })
   }
 
   handleCiudadSalida (ciudadSalida) {
@@ -84,7 +70,7 @@ export default class HomeView extends Component {
           </View>
           <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
         </TouchableOpacity>
-        <DatePicker />
+        <DatePicker onHandleFecha={this.handleFecha} />
         <TouchableOpacity style={styles.btnBuscar} onPress={() => this.handleBuscar()} title='Buscar'>
           <Text style={{color: '#FFFFFF'}}>Buscar</Text>
         </TouchableOpacity>
