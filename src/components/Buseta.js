@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 40,
     width: 150
-
   },
   textButtom: {
     textAlign: 'center',

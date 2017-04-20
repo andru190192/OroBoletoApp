@@ -107,7 +107,9 @@ const styles = StyleSheet.create({
     marginRight: 5
   },
   titulo: {
-    margin: 20
+    margin: 20,
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   btnBuscar: {
     height: 50,
