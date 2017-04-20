@@ -20,7 +20,7 @@ export default class PerfilView extends Component {
     if (props.usuario === undefined) {
       this.nameBotton = 'MODIFICAR'
       this.state = {
-        usuario: parameters.USER.usuario,
+        // usuario: parameters.USER.usuario,
         cedulaRuc: parameters.USER.cedulaRuc,
         nombre: parameters.USER.nombre,
         apellido: parameters.USER.apellido,
@@ -44,7 +44,7 @@ export default class PerfilView extends Component {
         picture: props.usuario.picture.data.url
       }
     }
-    console.log(this.state)
+    // console.log(this.state)
   }
 
   handleAction () {
@@ -54,7 +54,7 @@ export default class PerfilView extends Component {
         // console.warn(data)
         parameters.USER = data.persona
         parameters.USER.picture = this.state.picture
-        Actions.perfilView()
+        // Actions.perfilView()
       })
       .catch(err => {
         console.warn(`${err}`)
@@ -80,17 +80,14 @@ export default class PerfilView extends Component {
   render () {
     return (
       <View style={styles.perfil}>
-        <View style={styles.perfilPicture}>
-          <Image source={{uri: this.state.picture}} style={styles.picture} />
-          <Text style={styles.titulo}>DATOS DE USUARIO</Text>
-        </View>
         <ScrollView>
+          <Image source={{uri: this.state.picture}} style={styles.picture} />
           <TextField
             highlightColor={'#00BCD4'}
             label={'Cedula/Ruc'}
             value={this.state.cedulaRuc}
-            maxLength={10}
-            keyboardType={'phone-pad'}
+            maxLength={13}
+            keyboardType={'numeric'}
             onChangeText={(cedulaRuc) => this.setState({ cedulaRuc })}
               />
           <TextField
@@ -115,12 +112,16 @@ export default class PerfilView extends Component {
             highlightColor={'#00BCD4'}
             label='Email'
             value={this.state.email}
+            maxLength={13}
+            keyboardType={'email-address'}
             onChangeText={(email) => this.setState({ email })}
               />
           <TextField
             highlightColor={'#00BCD4'}
             label='Telefono'
             value={this.state.telefono}
+            maxLength={13}
+            keyboardType={'phone-pad'}
             onChangeText={(telefono) => this.setState({ telefono })}
               />
           <TextField
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
 
   },
   buttonCancelar: {
-    backgroundColor: 'red',
+    backgroundColor: '#e74c3c',
     paddingTop: 10,
     paddingBottom: 15,
     borderRadius: 5,

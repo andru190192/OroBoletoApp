@@ -14,36 +14,11 @@ export default class DatePicker extends Component {
     super()
   }
 
-  static defaultProps = {
-    date: new Date(),
-    timeZoneOffsetInHours: (-1) * (new Date()).getTimezoneOffset() / 60}
-
-  state = {
-    date: this.props.date,
-    timeZoneOffsetInHours: this.props.timeZoneOffsetInHours}
-
-  onDateChange = (date) => {
-    this.setState({date: date})
-  }
-
-  onTimezoneChange = (event) => {
-    var offset = parseInt(event.nativeEvent.text, 10)
-    if (isNaN(offset)) {
-      return
-    }
-    this.setState({timeZoneOffsetInHours: offset})
-  }
-
   render () {
     return (
       <View>
         <Text>DatePickerIOS</Text>
-        <DatePickerIOS
-          date={this.state.date}
-          mode='date'
-          timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-          onDateChange={this.onDateChange}
-          />
+
       </View>
     )
   }

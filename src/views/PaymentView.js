@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Alert } from 'react-native'
 import { getFormasPagos } from '../api-client'
 import PaymentList from '../components/PaymentList'
 const parameters = require('../parameters')
@@ -7,18 +7,20 @@ export default class PaymentView extends Component {
   state = {
     payments: []
   }
+
   componentDidMount () {
     getFormasPagos(parameters.USER.cedulaRuc).then(data => {
       this.setState({ payments: data.formasPago })
+    }).catch(err => {
+      Alert.alert('OroTicket', err.message)
     })
   }
 
   render () {
-    let payments = this.state.payments
     return (
       <View style={styles.container}>
         <Text style={styles.titulo}>LISTA DE TARJETA</Text>
-        <PaymentList payments={payments} />
+        <PaymentList payments={this.state.payments} />
       </View>
     )
   }
@@ -31,7 +33,8 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   titulo: {
-    margin: 20
+    margin: 20,
+    alignSelf: 'center'
   }
 
 })

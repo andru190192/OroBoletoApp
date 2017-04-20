@@ -40,19 +40,17 @@ export default class PaymentList extends Component {
   renderSectionHeader () {
     return (
       <View style={styles.grupoHorizontal}>
-        <Icon style={styles.icon} name='user-o' size={17} color='#e74c3c' />
-        <Text>NOMBRE</Text>
-        <Icon style={styles.icon} name='credit-card' size={17} color='#e74c3c' />
-        <Text>NUMERO</Text>
-        <Icon style={styles.icon} name='calendar-o' size={17} color='#e74c3c' />
-        <Text>FECHA</Text>
         <TouchableHighlight
           style={styles.buttonAgregar}
           onPress={() => Actions.PaymentFormView()}>
-          <Text style={styles.textButtom}>+</Text>
+          <Text style={styles.textButtom}>AGREGAR TARJETA</Text>
         </TouchableHighlight>
       </View>
     )
+  }
+
+  handlePayment (payment) {
+    Actions.PaymentFormView({payment})
   }
   render () {
     return (
@@ -60,12 +58,12 @@ export default class PaymentList extends Component {
          renderRow={(payment) => {
            return (
               <TouchableOpacity
-              onPress={() => Actions.PaymentFormView({payment})}>
+              onPress={() => this.handlePayment(payment)}>
                 <PaymentBox payment={payment}/>
               </TouchableOpacity>
             )
          }}
-         renderSectionHeader={() => this.renderSectionHeader()} 
+         renderSectionHeader={() => this.renderSectionHeader()}
        />
     );
   }
@@ -87,16 +85,16 @@ const styles = StyleSheet.create({
   },
   buttonAgregar: {
     backgroundColor: 'skyblue',
-    // paddingTop: 10,
-    //paddingBottom: ,
+    paddingTop: 10,
+    paddingBottom: 15,
     borderRadius: 5,
-    height: 20,
-    width: 20
+    height: 40,
+    width: 150,
+    alignSelf: 'center'
 
   },
   textButtom: {
     textAlign: 'center',
-    color: 'white',
-    fontSize: 20
+    color: 'white'
   }
 })

@@ -32,7 +32,7 @@ function signUP (usuario) {
 }
 
 function updatePerson (usuario) {
-  return fetch(`${parameters.URL}/persona/0703865584`, {
+  return fetch(`${parameters.URL}/persona/${usuario.cedulaRuc}`, {
     method: 'PUT',
     headers: parameters.getHeader(),
     body: JSON.stringify(usuario)

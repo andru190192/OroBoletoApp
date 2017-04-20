@@ -63,8 +63,6 @@ export default class PaymentFormView extends Component {
   }
 
   _onBlurFechaVencimiento (e) {
-    console.warn(this.state.fechaVencimiento.substring(0, 4))
-    console.warn(this.state.fechaVencimiento.substring(5, 7))
     if (!payform.validateCardExpiry(this.state.fechaVencimiento.substring(5, 7), this.state.fechaVencimiento.substring(0, 4))) {
       console.warn('error fecha')
     } else {
@@ -78,9 +76,9 @@ export default class PaymentFormView extends Component {
   }
   _onBlurCVC (e) {
     if (this.state.tipoTj === 'amex') {
-      this.validarCVC = payform.validateCardCVC('123', 'amex')
+      this.validarCVC = payform.validateCardCVC(this.state.codigoSeguridad, 'amex')
     } else {
-      this.validarCVC = payform.validateCardCVC('123')
+      this.validarCVC = payform.validateCardCVC(this.state.codigoSeguridad)
     }
     if (!this.validarCVC) {
       console.warn('error en el CVC')
@@ -94,7 +92,7 @@ export default class PaymentFormView extends Component {
     this.setState({ isFocused: true })
     console.warn('_onFocus')
   }
-  mensajeError (titulo, mensaje) {
+  mensajeAlerta (titulo, mensaje) {
     Alert.alert(
       titulo,
       mensaje,
@@ -109,23 +107,21 @@ export default class PaymentFormView extends Component {
     this.state.activo = 'TRUE'
 
     if (!payform.validateCardNumber(this.state.numeroTarjeta)) {
-      this.mensajeError('Error en los datos', 'Numero de Tarjeta Incorrecto')
+      this.mensajeAlerta('Error en los datos', 'Numero de Tarjeta Incorrecto')
     } else if (!payform.validateCardExpiry(this.state.fechaVencimiento.substring(5, 7), this.state.fechaVencimiento.substring(0, 4))) {
-      this.mensajeError('Error en los datos', 'Fecha Incorrecta')
+      this.mensajeAlerta('Error en los datos', 'Fecha Incorrecta')
     } else {
-      let typeCardNumero = payform.parseCardType(this.state.numeroTarjeta)
-      if (typeCardNumero === 'amex') {
-        this.validarCVC = payform.validateCardCVC('123', 'amex')
+      if (payform.parseCardType(this.state.numeroTarjeta) === 'amex') {
+        this.validarCVC = payform.validateCardCVC(this.state.codigoSeguridad, 'amex')
       } else {
-        this.validarCVC = payform.validateCardCVC('123')
+        this.validarCVC = payform.validateCardCVC(this.state.codigoSeguridad)
       }
       if (!this.validarCVC) {
-        this.mensajeError('Error en los datos', 'CVC Incorrecto')
+        this.mensajeAlerta('Error en los datos', 'CVC Incorrecto')
       } else {
         setFormaPago(this.state)
           .then(data => {
-            console.warn('data', data)
-            this.mensajeError('Datos de la tarjeta', 'Guardados Correctamente')
+            this.mensajeAlerta('Datos de la tarjeta', 'Guardados Correctamente')
           })
           .catch(err => {
             console.warn(`${err}`)
