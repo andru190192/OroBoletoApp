@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F3F3F3',
     justifyContent: 'center',
-    marginTop: (Platform.OS === 'ios') ? 30 : 0,
     paddingLeft: 15,
     paddingRight: 15
   },
@@ -164,7 +163,8 @@ const styles = StyleSheet.create({
     margin: 20,
     fontSize: 16,
     fontWeight: 'bold',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: (Platform.OS === 'ios') ? 30 : 0
   },
   buttonAction: {
     backgroundColor: 'skyblue',
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   TextField: {
-    height: (Platform.OS === 'ios') ? 50 : 40
+    height: (Platform.OS === 'ios') ? 40 : 40
   },
   separador: {
     marginVertical: 60

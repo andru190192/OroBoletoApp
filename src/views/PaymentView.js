@@ -29,12 +29,10 @@ export default class PaymentView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F3F3',
-    paddingTop: 20
+    backgroundColor: '#F3F3F3'
   },
   titulo: {
     margin: 20,
     alignSelf: 'center'
   }
-
 })

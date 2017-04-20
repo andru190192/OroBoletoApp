@@ -16,6 +16,7 @@ export default class PaymentFormView extends Component {
   // 5342102102260692
   // 4242 4242 4242 4242
   // editable={false}
+
   constructor (props) {
     super()
     if (props.payment === undefined) {
@@ -28,7 +29,7 @@ export default class PaymentFormView extends Component {
         codigoSeguridad: '',
         fechaVencimiento: '',
         activo: '',
-        tipoTj: '',
+        tipoTj: 'credit-card',
         isFocused: false
 
       }
@@ -42,7 +43,8 @@ export default class PaymentFormView extends Component {
         codigoSeguridad: props.payment.codigo_seguridad,
         fechaVencimiento: moment(props.payment.fecha_vencimiento).format('MM/YYYY'),
         activo: props.payment.activo,
-        id: props.payment.id
+        id: props.payment.id,
+        tipoTj: 'credit-card'
       }
     }
   }
@@ -50,10 +52,21 @@ export default class PaymentFormView extends Component {
   _onBlurNumeroTarjeta (e) {
     if (!payform.validateCardNumber(this.state.numeroTarjeta)) {
       console.warn('Numero de tj incorrecto')
-      this.state.tipoTj = ''
+      this.state.tipoTj = 'credit-card'
     } else {
-      this.state.tipoTj = payform.parseCardType(this.state.numeroTarjeta)
-      console.warn('tajeta correcta')
+      let tipoTarjeta = payform.parseCardType(this.state.numeroTarjeta)
+      this.state.tipoTj = 'credit-card'
+      if (tipoTarjeta === 'visa') {
+        this.state.tipoTj = 'cc-visa'
+      } if (tipoTarjeta === 'mastercard') {
+        this.state.tipoTj = 'cc-mastercard'
+      } else if (tipoTarjeta === 'diners club') {
+        this.state.tipoTj = 'cc-diners-club'
+      } else if (tipoTarjeta === 'discover') {
+        this.state.tipoTj = 'cc-discover'
+      } if (tipoTarjeta === 'american express') {
+        this.state.tipoTj = 'cc-amex'
+      }
       this.setState({ isFocused: false })
     }
   }
@@ -135,7 +148,7 @@ export default class PaymentFormView extends Component {
       <View style={styles.container}>
         <View>
           <Text style={styles.titulo}>
-            Datos de Tarjeta de Credito
+            DATOS DE TARJETA (CREDITO/DEBITO)
           </Text>
         </View>
         <View style={styles.row}>
@@ -153,7 +166,7 @@ export default class PaymentFormView extends Component {
         </View>
         <View style={styles.row}>
           <View style={styles.iconContainer}>
-            <Icon style={styles.icon} name='credit-card' size={25} color='#e74c3c' />
+            <Icon style={styles.icon} name={this.state.tipoTj} size={25} color='#e74c3c' />
           </View>
           <View style={styles.txtContainer}>
             <TextInput
@@ -165,11 +178,7 @@ export default class PaymentFormView extends Component {
               value={this.state.numeroTarjeta}
               onChangeText={(numeroTarjeta) => this.setState({ numeroTarjeta })}
               />
-            <TextInput
-              style={styles.input}
-              value={this.state.tipoTj}
-              editable={false}
-              />
+
           </View>
         </View>
         <View style={styles.row}>
@@ -212,13 +221,7 @@ export default class PaymentFormView extends Component {
     )
   }
 }
-// <TextInput
-//   valid={false}
-//   style={styles.input}
-//   placeholder='Numero de la Tarjeta'
-//   value={this.state.numeroTarjeta}
-//   onChangeText={(numeroTarjeta) => this.setState({ numeroTarjeta })}
-//   />
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -285,18 +288,3 @@ const styles = StyleSheet.create({
     color: 'white'
   }
 })
-
-// const validarCardNumero = payform.validateCardNumber(this.state.numeroTarjeta)
-// const validaCarExp = payform.validateCardExpiry('05', '20')// (month, year)
-//
-// const typeCardNumero = payform.parseCardType(this.state.numeroTarjeta)
-// let validarCVC = ''
-// if (typeCardNumero === 'amex') {
-//   validarCVC = payform.validateCardCVC('123', 'amex')
-// } else {
-//   validarCVC = payform.validateCardCVC('123')
-// }
-// console.warn('validarCardNumero', validarCardNumero)
-// console.warn('validaCarExp', validaCarExp)
-// console.warn('typeCardNumero', typeCardNumero)
-// console.warn('validarCVC', validarCVC)
