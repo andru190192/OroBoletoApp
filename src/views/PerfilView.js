@@ -75,75 +75,72 @@ export default class PerfilView extends Component {
 
   render () {
     return (
-      <View style={styles.container}>
-        <Text style={styles.titulo}>{this.nameBotton === 'MODIFICAR' ? 'PERFIL' : 'REGISTRATE'}</Text>
-        <ScrollView>
-          <View style={styles.perfil}>
-            <Image source={{uri: this.state.picture}} style={styles.picture} />
-            <View style={styles.linea} />
-            <TextField style={styles.TextField}
-              highlightColor={'#00BCD4'}
-              label={'Cedula/Ruc'}
-              value={this.state.cedulaRuc}
-              maxLength={13}
-              keyboardType={'numeric'}
-              onChangeText={(cedulaRuc) => this.setState({ cedulaRuc })}
+      <ScrollView>
+        <View style={styles.perfil}>
+          <Text style={styles.titulo}>{this.nameBotton === 'MODIFICAR' ? 'PERFIL' : 'REGISTRATE'}</Text>
+          <Image source={{uri: this.state.picture}} style={styles.picture} />
+          <View style={styles.linea} />
+          <TextField style={styles.TextField}
+            highlightColor={'#00BCD4'}
+            label={'Cedula/Ruc'}
+            value={this.state.cedulaRuc}
+            maxLength={13}
+            keyboardType={'numeric'}
+            onChangeText={(cedulaRuc) => this.setState({ cedulaRuc })}
               />
-            <TextField style={styles.TextField}
-              highlightColor={'#00BCD4'}
-              label={'Apellido'}
-              value={this.state.apellido}
-              onChangeText={(apellido) => this.setState({ apellido })}
+          <TextField style={styles.TextField}
+            highlightColor={'#00BCD4'}
+            label={'Apellido'}
+            value={this.state.apellido}
+            onChangeText={(apellido) => this.setState({ apellido })}
               />
-            <TextField style={styles.TextField}
-              highlightColor={'#00BCD4'}
-              label={'Nombre'}
-              value={this.state.nombre}
-              onChangeText={(nombre) => this.setState({ nombre })}
+          <TextField style={styles.TextField}
+            highlightColor={'#00BCD4'}
+            label={'Nombre'}
+            value={this.state.nombre}
+            onChangeText={(nombre) => this.setState({ nombre })}
               />
-            <TextField style={styles.TextField}
-              highlightColor={'#00BCD4'}
-              label='Direccion'
-              value={this.state.direccion}
-              onChangeText={(direccion) => this.setState({ direccion })}
+          <TextField style={styles.TextField}
+            highlightColor={'#00BCD4'}
+            label='Direccion'
+            value={this.state.direccion}
+            onChangeText={(direccion) => this.setState({ direccion })}
               />
-            <TextField style={styles.TextField}
-              highlightColor={'#00BCD4'}
-              label='Email'
-              value={this.state.email}
-              keyboardType={'email-address'}
-              onChangeText={(email) => this.setState({ email })}
+          <TextField style={styles.TextField}
+            highlightColor={'#00BCD4'}
+            label='Email'
+            value={this.state.email}
+            keyboardType={'email-address'}
+            onChangeText={(email) => this.setState({ email })}
               />
-            <TextField style={styles.TextField}
-              highlightColor={'#00BCD4'}
-              label='Telefono'
-              value={this.state.telefono}
-              maxLength={13}
-              keyboardType={'phone-pad'}
-              onChangeText={(telefono) => this.setState({ telefono })}
+          <TextField style={styles.TextField}
+            highlightColor={'#00BCD4'}
+            label='Telefono'
+            value={this.state.telefono}
+            maxLength={13}
+            keyboardType={'phone-pad'}
+            onChangeText={(telefono) => this.setState({ telefono })}
               />
-            <TextField style={styles.TextField}
-              highlightColor={'#00BCD4'}
-              label='Ciudad'
-              value={this.state.ciudad}
-              onChangeText={(ciudad) => this.setState({ ciudad })}
+          <TextField style={styles.TextField}
+            highlightColor={'#00BCD4'}
+            label='Ciudad'
+            value={this.state.ciudad}
+            onChangeText={(ciudad) => this.setState({ ciudad })}
               />
-            <View style={styles.grupoHorizontal}>
-              <TouchableHighlight
-                style={styles.buttonAction}
-                onPress={() => this.handleAction()}>
-                <Text style={styles.textButtom}>{this.nameBotton}</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={styles.buttonCancelar}
-                onPress={() => this.cancelar()}>
-                <Text style={styles.textButtom}>CANCELAR</Text>
-              </TouchableHighlight>
-              <View style={styles.separador} />
-            </View>
+          <View style={styles.grupoHorizontal}>
+            <TouchableHighlight
+              style={styles.buttonAction}
+              onPress={() => this.handleAction()}>
+              <Text style={styles.textButtom}>{this.nameBotton}</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.buttonCancelar}
+              onPress={() => this.cancelar()}>
+              <Text style={styles.textButtom}>CANCELAR</Text>
+            </TouchableHighlight>
           </View>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     )
   }
 }
@@ -201,9 +198,6 @@ const styles = StyleSheet.create({
   },
   TextField: {
     height: 40
-  },
-  separador: {
-    marginVertical: 60
   },
   linea: {
     borderColor: '#e74c3c',
