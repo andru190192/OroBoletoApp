@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 import payform from 'payform'
 const parameters = require('../parameters')
+import { Actions } from 'react-native-router-flux'
 export default class PaymentFormView extends Component {
   // 4017779991118888
   // 5342102102260692
@@ -29,9 +30,7 @@ export default class PaymentFormView extends Component {
         codigoSeguridad: '',
         fechaVencimiento: '',
         activo: '',
-        tipoTj: 'credit-card',
-        isFocused: false
-
+        tipoTj: 'credit-card'
       }
     } else {
       this.nameBotton = 'MODIFICAR'
@@ -51,8 +50,8 @@ export default class PaymentFormView extends Component {
 
   _onBlurNumeroTarjeta (e) {
     if (!payform.validateCardNumber(this.state.numeroTarjeta)) {
-      console.warn('Numero de tj incorrecto')
       this.state.tipoTj = 'credit-card'
+      this.setState({ isFocusNumTj: true })
     } else {
       let tipoTarjeta = payform.parseCardType(this.state.numeroTarjeta)
       this.state.tipoTj = 'credit-card'
@@ -67,26 +66,18 @@ export default class PaymentFormView extends Component {
       } if (tipoTarjeta === 'american express') {
         this.state.tipoTj = 'cc-amex'
       }
-      this.setState({ isFocused: false })
+      this.setState({ isFocusNumTj: false })
     }
-  }
-  _onFocusNumeroTarjeta (e) {
-    this.setState({ isFocused: true })
-    console.warn('_onFocus')
   }
 
   _onBlurFechaVencimiento (e) {
     if (!payform.validateCardExpiry(this.state.fechaVencimiento.substring(5, 7), this.state.fechaVencimiento.substring(0, 4))) {
-      console.warn('error fecha')
+      this.setState({ isFocusFecha: true })
     } else {
-      console.warn('fecha correcta')
-      this.setState({ isFocused: false })
+      this.setState({ isFocusFecha: false })
     }
   }
-  _onFocusFechaVencimiento (e) {
-    this.setState({ isFocused: true })
-    console.warn('_onFocus')
-  }
+
   _onBlurCVC (e) {
     if (this.state.tipoTj === 'amex') {
       this.validarCVC = payform.validateCardCVC(this.state.codigoSeguridad, 'amex')
@@ -94,17 +85,12 @@ export default class PaymentFormView extends Component {
       this.validarCVC = payform.validateCardCVC(this.state.codigoSeguridad)
     }
     if (!this.validarCVC) {
-      console.warn('error en el CVC')
+      this.setState({ isFocused: true })
     } else {
-      console.warn('Datos Correctos')
       this.setState({ isFocused: false })
     }
   }
 
-  _onFocusCVC (e) {
-    this.setState({ isFocused: true })
-    console.warn('_onFocus')
-  }
   mensajeAlerta (titulo, mensaje) {
     Alert.alert(
       titulo,
@@ -134,13 +120,21 @@ export default class PaymentFormView extends Component {
       } else {
         setFormaPago(this.state)
           .then(data => {
-            this.mensajeAlerta('Datos de la tarjeta', 'Guardados Correctamente')
+            Actions.pop()
+            // this.mensajeAlerta('Datos de la tarjeta', 'Guardados Correctamente')
           })
           .catch(err => {
             console.warn(`${err}`)
           })
       }
     }
+  }
+  changeFecha (fechaVencimiento) {
+    if (fechaVencimiento.length === 4) {
+      fechaVencimiento = `${fechaVencimiento}-`
+    }
+    // console.warn('fechaVencimiento', fechaVencimiento)
+    this.setState({ fechaVencimiento })
   }
 
   render () {
@@ -170,12 +164,12 @@ export default class PaymentFormView extends Component {
           </View>
           <View style={styles.txtContainer}>
             <TextInput
-              style={[ styles.input, this.state.isFocused && styles.focused
+              style={[ styles.input, this.state.isFocusNumTj && styles.focusedError
               ]}
               onBlur={this._onBlurNumeroTarjeta.bind(this)}
-              onFocus={this._onFocusNumeroTarjeta.bind(this)}
               placeholder='Numero de la Tarjeta'
               value={this.state.numeroTarjeta}
+              keyboardType={'numeric'}
               onChangeText={(numeroTarjeta) => this.setState({ numeroTarjeta })}
               />
 
@@ -187,13 +181,14 @@ export default class PaymentFormView extends Component {
           </View>
           <View style={styles.txtContainer}>
             <TextInput
-              style={[ styles.input, this.state.isFocused && styles.focused
+              style={[ styles.input, this.state.isFocusFecha && styles.focusedError
               ]}
               onBlur={this._onBlurFechaVencimiento.bind(this)}
-              onFocus={this._onFocusFechaVencimiento.bind(this)}
               placeholder='AAAA-MM'
               value={this.state.fechaVencimiento}
-              onChangeText={(fechaVencimiento) => this.setState({ fechaVencimiento })}
+              maxLength={7}
+              keyboardType={'numeric'}
+              onChangeText={(fechaVencimiento) => this.changeFecha(fechaVencimiento)}
             />
           </View>
           <View style={styles.iconContainer}>
@@ -201,11 +196,11 @@ export default class PaymentFormView extends Component {
           </View>
           <View style={styles.txtContainer}>
             <TextInput
-              style={[ styles.input, this.state.isFocused && styles.focused
+              style={[ styles.input, this.state.isFocused && styles.focusedError
               ]}
               onBlur={this._onBlurCVC.bind(this)}
-              onFocus={this._onFocusCVC.bind(this)}
               placeholder='CVC'
+              keyboardType={'numeric'}
               value={this.state.codigoSeguridad}
               onChangeText={(codigoSeguridad) => this.setState({ codigoSeguridad })}
             />
@@ -234,6 +229,9 @@ const styles = StyleSheet.create({
   default: {
     borderColor: 'gray',
     borderBottomWidth: 2
+  },
+  focusedError: {
+    borderColor: 'red'
   },
   focused: {
     borderColor: 'blue'

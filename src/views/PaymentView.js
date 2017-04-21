@@ -3,24 +3,36 @@ import { StyleSheet, View, Text, Alert } from 'react-native'
 import { getFormasPagos } from '../api-client'
 import PaymentList from '../components/PaymentList'
 const parameters = require('../parameters')
+
 export default class PaymentView extends Component {
   state = {
-    payments: []
+    payments: [],
+    mensaje:null
   }
+  // componentWillMount () {
+  //   this.authenticateUser()
+  // }
 
-  componentDidMount () {
+  componentWillMount () {
     getFormasPagos(parameters.USER.cedulaRuc).then(data => {
       this.setState({ payments: data.formasPago })
     }).catch(err => {
-      Alert.alert('OroTicket', err.message)
+      this.setState ({mensaje: 'No tiene Tarjetas Registrada'})
     })
   }
+
+  _renderMensajeLista() {
+       if (this.state.mensaje !== null) {
+           return (<Text style={styles.mensaje}>{this.state.mensaje}</Text>);
+       }
+   }
 
   render () {
     return (
       <View style={styles.container}>
-        <Text style={styles.titulo}>LISTA DE TARJETA</Text>
-        <PaymentList payments={this.state.payments} />
+          <Text style={styles.titulo}>LISTA DE TARJETA</Text>
+          {this._renderMensajeLista()}
+          <PaymentList payments={this.state.payments} />
       </View>
     )
   }
@@ -34,5 +46,9 @@ const styles = StyleSheet.create({
   titulo: {
     margin: 20,
     alignSelf: 'center'
+  },
+  mensaje: {
+    margin: 30,
+    alignSelf: 'center',
   }
 })
