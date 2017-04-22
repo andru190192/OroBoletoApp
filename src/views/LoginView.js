@@ -70,8 +70,7 @@ export default class LoginView extends Component {
   }
 
   render () {
-    console.warn('token', this.state.token)
-    if (this.state.token !== '' && this.state.token !== 'sali' ) {
+    if (this.state.token !== '' && this.state.token !== 'sali') {
       return (
         <View style={styles.container}>
           <ActivityIndicator size='large' />
