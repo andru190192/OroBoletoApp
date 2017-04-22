@@ -1,3 +1,8 @@
+const ReactNative = require('react-native')
+const {
+  NetInfo
+} = ReactNative
+
 const parameters = require('../parameters')
 
 async function checkStatus (response) {
@@ -13,7 +18,15 @@ async function checkStatus (response) {
   }
 }
 
+async function isConnected () {
+  let isConnected
+  await NetInfo.isConnected.fetch().then(value => { isConnected = value })
+  .catch(err => console.warn(err))
+  return isConnected
+}
+
 function signIn (usuarioId) {
+  console.warn('isConnected', isConnected())
   return fetch(`${parameters.URL}/signIn`, {
     method: 'POST',
     headers: parameters.getHeader(),
@@ -57,6 +70,8 @@ function setFormaPago (formaPago) {
 }
 
 function getOrigenes () {
+  console.warn('isConnected', isConnected())
+
   return fetch(`${parameters.URL}/rutasAppMobile/ciudadOrigen`, {
     headers: parameters.getHeader()
   })

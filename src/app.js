@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-import { AppRegistry, Platform, Text, StyleSheet } from 'react-native'
-
+import { AppRegistry, Platform, NetInfo, Text, View } from 'react-native'
 import {Scene, Router} from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/FontAwesome'
-
 import LoginView from './views/LoginView'
 import SearchView from './views/SearchView'
 import OriginView from './views/OriginView'
@@ -20,22 +17,25 @@ import PreInvoiceView from './views/PreInvoiceView'
 export default class OroTicketMobile extends Component {
   render () {
     const isAndroid = Platform.OS === 'android'
-    return <Router getSceneStyle={getSceneStyle}>
-      <Scene key='root'>
-        <Scene key='login' component={LoginView} hideNavBar />
-        <Scene key='dashboard' component={DashboardView} hideNavBar />
-        <Scene key='search' component={SearchView} hideNavBar />
-        <Scene key='origin' component={OriginView} title='Salidas' hideNavBar={isAndroid} direction='vertical' />
-        <Scene key='destination' component={DestinationView} title='Destinos' hideNavBar={isAndroid} direction='vertical' />
-        <Scene key='perfil' component={PerfilView} hideNavBar />
-        <Scene key='invoice' component={InvoiceView} hideNavBar />
-        <Scene key='paymentView' component={PaymentView} title='Lista de Tarjeta' hideNavBar />
-        <Scene key='PaymentFormView' component={PaymentFormView} title='Tarjeta de Credito' hideNavBar={isAndroid} direction='vertical' />
-        <Scene key='turn' component={TurnView} hideNavBar />
-        <Scene key='preInvoice' component={PreInvoiceView} hideNavBar />
-        <Scene key='seat' component={SeatView} hideNavBar />
-      </Scene>
-    </Router>
+    return (
+      <Router getSceneStyle={getSceneStyle}>
+        <Scene key='root'>
+          <Scene key='login' component={LoginView} hideNavBar />
+          <Scene key='dashboard' component={DashboardView} hideNavBar />
+          <Scene key='search' component={SearchView} hideNavBar />
+          <Scene key='origin' component={OriginView} title='Salidas' hideNavBar={isAndroid} direction='vertical' />
+          <Scene key='destination' component={DestinationView} title='Destinos' hideNavBar={isAndroid} direction='vertical' />
+          <Scene key='perfil' component={PerfilView} hideNavBar />
+          <Scene key='invoice' component={InvoiceView} hideNavBar />
+          <Scene key='paymentView' component={PaymentView} title='Lista de Tarjeta' hideNavBar />
+          <Scene key='PaymentFormView' component={PaymentFormView} title='Tarjeta de Credito' hideNavBar={isAndroid} direction='vertical' />
+          <Scene key='turn' component={TurnView} hideNavBar />
+          <Scene key='preInvoice' component={PreInvoiceView} hideNavBar />
+          <Scene key='seat' component={SeatView} hideNavBar />
+        </Scene>
+      </Router>
+    )
+
     // return <Router getSceneStyle={getSceneStyle}>
     //   <Scene key='root'>
     //     <Scene key='login' component={LoginView} hideNavBar />
@@ -73,14 +73,14 @@ export default class OroTicketMobile extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  tabBarStyle: {
-    backgroundColor: '#eee'
-  },
-  tabBarSelectedItemStyle: {
-    color: '#e74c3c'
-  }
-})
+// const styles = StyleSheet.create({
+//   tabBarStyle: {
+//     backgroundColor: '#eee'
+//   },
+//   tabBarSelectedItemStyle: {
+//     color: '#e74c3c'
+//   }
+// })
 
 const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) => {
   const style = {

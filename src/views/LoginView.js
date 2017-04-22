@@ -10,19 +10,28 @@ export default class LoginView extends Component {
   constructor () {
     super()
     this.state = {
-      token: 'token'
+      token: 'Login'
     }
-    this.responseInfo = this.responseInfo.bind(this)
-  }
-
-  componentWillMount () {
     AsyncStorage.getItem('@OroTicket:TOKEN')
     .then(value => {
       this.setState({
         token: value
       })
+    }).catch(err => {
+      console.error(err)
     })
+
+    this.responseInfo = this.responseInfo.bind(this)
+  }
+
+  componentWillMount () {
     this.authenticateUser()
+  }
+
+  componentWillReceiveProps () {
+    this.setState({
+      token: null
+    })
   }
 
   handleLogin = (error, result) => {
@@ -58,9 +67,9 @@ export default class LoginView extends Component {
         parameters.USER.picture = usuario.picture.data.url
         parameters.TOKEN = data.token
         this.setState({
-          token: data.token
+          token: 'Login'
         })
-        AsyncStorage.setItem('@OroTicket:TOKEN', data.token, err => { if (err) console.warn(err) })
+        AsyncStorage.setItem('@OroTicket:TOKEN', 'Login', err => { if (err) console.warn(err) })
         Actions.dashboard()
       })
       .catch(err => {
@@ -70,8 +79,7 @@ export default class LoginView extends Component {
   }
 
   render () {
-    console.warn('token', this.state.token)
-    if (this.state.token !== '' && this.state.token !== 'sali' ) {
+    if (this.state.token === 'Login') {
       return (
         <View style={styles.container}>
           <ActivityIndicator size='large' />
