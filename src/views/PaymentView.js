@@ -9,17 +9,17 @@ export default class PaymentView extends Component {
     payments: [],
     mensaje:null
   }
-  // componentWillMount () {
-  //   this.authenticateUser()
-  // }
 
-  componentWillMount () {
+  componentDidMount () {
     getFormasPagos(parameters.USER.cedulaRuc).then(data => {
       this.setState({ payments: data.formasPago })
     }).catch(err => {
       this.setState ({mensaje: 'No tiene Tarjetas Registrada'})
     })
   }
+
+
+
 
   _renderMensajeLista() {
        if (this.state.mensaje !== null) {
@@ -30,7 +30,9 @@ export default class PaymentView extends Component {
   render () {
     return (
       <View style={styles.container}>
-          <Text style={styles.titulo}>LISTA DE TARJETA</Text>
+          <View style={styles.containerInterno}>
+            <Text style={styles.titulo}>LISTA DE TARJETA</Text>
+          </View>
           {this._renderMensajeLista()}
           <PaymentList payments={this.state.payments} />
       </View>
@@ -42,10 +44,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F3F3'
+
+  },
+  containerInterno: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   titulo: {
     margin: 20,
-    alignSelf: 'center'
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   mensaje: {
     margin: 30,
