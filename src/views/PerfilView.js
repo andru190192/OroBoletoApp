@@ -77,8 +77,8 @@ export default class PerfilView extends Component {
 
   handleSalir () {
     parameters.TOKEN = ''
-    AsyncStorage.setItem('@OroTicket:TOKEN', 'sali', err => { if (err) console.warn(err) })
-    Actions.login({type: 'reset'})
+    AsyncStorage.removeItem('@OroTicket:TOKEN', err => { if (err) console.log(err) })
+    Actions.login({type: 'reset', TOKEN: null})
   }
 
   render () {
