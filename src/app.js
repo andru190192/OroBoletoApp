@@ -21,7 +21,6 @@ export default class OroTicketMobile extends Component {
   render () {
     const isAndroid = Platform.OS === 'android'
     return <Router getSceneStyle={getSceneStyle}>
-
       <Scene key='root'>
         <Scene key='login' component={LoginView} hideNavBar />
         <Scene key='dashboard' component={DashboardView} hideNavBar />

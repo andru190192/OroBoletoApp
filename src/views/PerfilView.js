@@ -6,13 +6,15 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
-  Platform
+  Platform,
+  AsyncStorage
 } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import { signUP, updatePerson } from '../api-client'
 import TextField from 'react-native-md-textinput'
 const parameters = require('../parameters')
+import { LoginButton } from 'react-native-fbsdk'
 
 export default class PerfilView extends Component {
   constructor (props) {
@@ -73,13 +75,22 @@ export default class PerfilView extends Component {
     console.warn('CANCELAR')
   }
 
+  handleSalir () {
+    parameters.TOKEN = ''
+    AsyncStorage.setItem('@OroTicket:TOKEN', 'sali', err => { if (err) console.warn(err) })
+    console.warn('ggggg')
+    Actions.login({type: 'reset'})
+  }
+
   render () {
     return (
       <ScrollView>
         <View style={styles.perfil}>
           <Text style={styles.titulo}>{this.nameBotton === 'MODIFICAR' ? 'PERFIL' : 'REGISTRATE'}</Text>
           <Image source={{uri: this.state.picture}} style={styles.picture} />
-          <View style={styles.linea} />
+          <View style={styles.grupoHorizontal}>
+            <LoginButton onLogoutFinished={this.handleSalir} />
+          </View>
           <TextField style={styles.TextField}
             highlightColor={'#00BCD4'}
             label={'Cedula/Ruc'}
@@ -199,17 +210,11 @@ const styles = StyleSheet.create({
   TextField: {
     height: 40
   },
-  linea: {
-    borderColor: '#e74c3c',
-    borderWidth: 0.3,
-    marginTop: 20,
-    width: 300,
-    alignSelf: 'center'
-  },
   grupoHorizontal: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignSelf: 'center',
-    flex: 1
+    flex: 1,
+    marginTop: 10
   }
 })

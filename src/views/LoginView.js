@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image, ActivityIndicator, AsyncStorage } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { signIn } from '../api-client'
 import FBSDK, { LoginButton, AccessToken } from 'react-native-fbsdk'
@@ -7,7 +7,21 @@ const {GraphRequest, GraphRequestManager} = FBSDK
 const parameters = require('../parameters')
 
 export default class LoginView extends Component {
+  constructor () {
+    super()
+    this.state = {
+      token: 'token'
+    }
+    this.responseInfo = this.responseInfo.bind(this)
+  }
+
   componentWillMount () {
+    AsyncStorage.getItem('@OroTicket:TOKEN')
+    .then(value => {
+      this.setState({
+        token: value
+      })
+    })
     this.authenticateUser()
   }
 
@@ -43,6 +57,10 @@ export default class LoginView extends Component {
         parameters.USER = data.persona
         parameters.USER.picture = usuario.picture.data.url
         parameters.TOKEN = data.token
+        this.setState({
+          token: data.token
+        })
+        AsyncStorage.setItem('@OroTicket:TOKEN', data.token, err => { if (err) console.warn(err) })
         Actions.dashboard()
       })
       .catch(err => {
@@ -52,6 +70,14 @@ export default class LoginView extends Component {
   }
 
   render () {
+    console.warn('token', this.state.token)
+    if (this.state.token !== '' && this.state.token !== 'sali' ) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size='large' />
+        </View>
+      )
+    }
     return (
       <View style={styles.container}>
         <Image source={require('../static/images/logo.png')} style={styles.logo} />
@@ -64,7 +90,7 @@ export default class LoginView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lightgray',
+    backgroundColor: '#F3F3F3',
     justifyContent: 'center',
     alignItems: 'center'
   },
