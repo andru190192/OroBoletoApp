@@ -5,14 +5,14 @@ import {
   View,
   Text,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import PaymentBox from './PaymentBox'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default class PaymentList extends Component {
-
   constructor (props) {
     super(props)
 
@@ -40,10 +40,12 @@ export default class PaymentList extends Component {
   renderSectionHeader () {
     return (
       <View style={styles.grupoHorizontal}>
+        <Icon style={styles.icon} name='plus-square' size={32} color='#FFF' />
+        <Text style={styles.titulo}>LISTA DE TARJETA</Text>
         <TouchableHighlight
           style={styles.buttonAgregar}
           onPress={() => Actions.PaymentFormView()}>
-          <Text style={styles.textButtom}>AGREGAR TARJETA</Text>
+          <Icon style={styles.icon} name='plus-square' size={32} color='skyblue' />
         </TouchableHighlight>
       </View>
     )
@@ -52,49 +54,38 @@ export default class PaymentList extends Component {
   handlePayment (payment) {
     Actions.PaymentFormView({payment})
   }
+
+  handleLongPress () {
+    Alert.alert('OroTicket', 'Desea eliminar')
+  }
+
   render () {
     return (
-      <ListView enableEmptySections={true} dataSource={this.state.dataSource}
-         renderRow={(payment) => {
-           return (
-              <TouchableOpacity
-              onPress={() => this.handlePayment(payment)}>
-                <PaymentBox payment={payment}/>
-              </TouchableOpacity>
-            )
-         }}
-         renderSectionHeader={() => this.renderSectionHeader()}
-       />
-    );
+      <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={(payment) =>
+        <TouchableOpacity onLongPress={() => this.handleLongPress()} onPress={() => this.handlePayment(payment)}>
+          <PaymentBox payment={payment} />
+        </TouchableOpacity>} renderSectionHeader={() => this.renderSectionHeader()} />
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'lightgray',
-    paddingTop: 50
-
-  },
   grupoHorizontal: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    height: 50,
-    paddingTop: 15,
     flex: 1
   },
   buttonAgregar: {
-    backgroundColor: 'skyblue',
-    paddingTop: 10,
-    paddingBottom: 15,
-    borderRadius: 5,
-    height: 40,
-    width: 150,
-    alignSelf: 'center'
-
+    alignSelf: 'center',
+    marginBottom: 5
   },
-  textButtom: {
-    textAlign: 'center',
-    color: 'white'
+  icon: {
+    marginLeft: 10,
+    marginBottom: 4
+  },
+  titulo: {
+    margin: 20,
+    fontSize: 16,
+    fontWeight: 'bold'
   }
 })

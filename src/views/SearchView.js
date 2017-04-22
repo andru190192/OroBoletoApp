@@ -13,7 +13,7 @@ export default class HomeView extends Component {
     this.state = {
       ciudadSalida: '',
       ciudadDestino: '',
-      simpleText: ''
+      simpleText: moment().format('DD/MM/YYYY')
     }
 
     this.handleCiudadSalida = this.handleCiudadSalida.bind(this)
