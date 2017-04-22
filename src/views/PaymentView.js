@@ -18,9 +18,7 @@ export default class PaymentView extends Component {
     })
   }
 
-
-
-
+  
   _renderMensajeLista() {
        if (this.state.mensaje !== null) {
            return (<Text style={styles.mensaje}>{this.state.mensaje}</Text>);
