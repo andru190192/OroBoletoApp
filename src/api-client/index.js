@@ -26,7 +26,7 @@ async function isConnected () {
 }
 
 function signIn (usuarioId) {
-  console.warn('isConnected', isConnected())
+  // console.warn('isConnected', isConnected())
   return fetch(`${parameters.URL}/signIn`, {
     method: 'POST',
     headers: parameters.getHeader(),
