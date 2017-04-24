@@ -6,7 +6,7 @@ import {
   TextInput,
   Alert,
   TouchableHighlight } from 'react-native'
-import { setFormaPago } from '../api-client'
+import { setFormaPago, updateFormaPago } from '../api-client'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 import payform from 'payform'
@@ -15,7 +15,7 @@ import { Actions } from 'react-native-router-flux'
 export default class PaymentFormView extends Component {
   // 4017779991118888
   // 5342102102260692
-  // 4242 4242 4242 4242
+  // 4242424242424242
   // editable={false}
 
   constructor (props) {
@@ -25,10 +25,12 @@ export default class PaymentFormView extends Component {
       this.state = {
         cliente: parameters.USER.cedulaRuc,
         tipo: 'SE',
-        nombreTarjeta: '',
+        nombreTarjeta: `${parameters.USER.nombre} ${parameters.USER.apellido}`,
         numeroTarjeta: '',
         codigoSeguridad: '',
         fechaVencimiento: '',
+        anio: '',
+        mes: '',
         activo: '',
         tipoTj: 'credit-card'
       }
@@ -41,6 +43,8 @@ export default class PaymentFormView extends Component {
         numeroTarjeta: props.payment.numero_tarjeta,
         codigoSeguridad: props.payment.codigo_seguridad,
         fechaVencimiento: moment(props.payment.fecha_vencimiento).format('MM/YYYY'),
+        anio: moment(props.payment.fecha_vencimiento).format('YYYY'),
+        mes: moment(props.payment.fecha_vencimiento).format('MM'),
         activo: props.payment.activo,
         id: props.payment.id,
         tipoTj: 'credit-card'
@@ -71,10 +75,12 @@ export default class PaymentFormView extends Component {
   }
 
   _onBlurFechaVencimiento (e) {
-    if (!payform.validateCardExpiry(this.state.fechaVencimiento.substring(5, 7), this.state.fechaVencimiento.substring(0, 4))) {
-      this.setState({ isFocusFecha: true })
-    } else {
-      this.setState({ isFocusFecha: false })
+    if (this.state.mes.length === 2 && this.state.anio.length === 4) {
+      if (!payform.validateCardExpiry(this.state.mes, this.state.anio)) {
+        this.setState({ isFocusFecha: true })
+      } else {
+        this.setState({ isFocusFecha: false })
+      }
     }
   }
 
@@ -96,7 +102,7 @@ export default class PaymentFormView extends Component {
       titulo,
       mensaje,
       [
-        {text: 'OK', onPress: () => console.log('OK Pressed')}
+        {text: 'OK', onPress: () => { this.state.datosCorrecto && Actions.pop() } }
       ],
       { cancelable: false }
     )
@@ -104,11 +110,14 @@ export default class PaymentFormView extends Component {
 
   handleAction () {
     this.state.activo = 'TRUE'
-
+    this.state.fechaVencimiento = `${this.state.anio}-${this.state.mes}`
+    this.setState({ datosCorrecto: true })
     if (!payform.validateCardNumber(this.state.numeroTarjeta)) {
       this.mensajeAlerta('Error en los datos', 'Numero de Tarjeta Incorrecto')
-    } else if (!payform.validateCardExpiry(this.state.fechaVencimiento.substring(5, 7), this.state.fechaVencimiento.substring(0, 4))) {
+      this.setState({ datosCorrecto: false })
+    } else if (!payform.validateCardExpiry(this.state.mes, this.state.anio)) {
       this.mensajeAlerta('Error en los datos', 'Fecha Incorrecta')
+      this.setState({ datosCorrecto: false })
     } else {
       if (payform.parseCardType(this.state.numeroTarjeta) === 'amex') {
         this.validarCVC = payform.validateCardCVC(this.state.codigoSeguridad, 'amex')
@@ -117,37 +126,38 @@ export default class PaymentFormView extends Component {
       }
       if (!this.validarCVC) {
         this.mensajeAlerta('Error en los datos', 'CVC Incorrecto')
+        this.setState({ datosCorrecto: false })
       } else {
-        setFormaPago(this.state)
-          .then(data => {
-            Actions.pop()
-            // this.mensajeAlerta('Datos de la tarjeta', 'Guardados Correctamente')
-          })
-          .catch(err => {
-            console.warn(`${err}`)
-          })
+        if (this.nameBotton === 'GUARDAR') {
+          setFormaPago(this.state)
+            .then(data => {
+              this.mensajeAlerta('Datos de la tarjeta', 'Guardados Correctamente')
+            })
+            .catch(err => {
+              console.warn(`${err}`)
+            })
+        } else {
+          updateFormaPago(this.state)
+            .then(data => {
+              this.mensajeAlerta('Datos de la tarjeta', 'Se Modifico Correctamente')
+            })
+            .catch(err => {
+              console.warn(`${err}`)
+            })
+        }
       }
     }
-  }
-  changeFecha (fechaVencimiento) {
-    if (fechaVencimiento.length === 4) {
-      fechaVencimiento = `${fechaVencimiento}-`
-    }
-    // console.warn('fechaVencimiento', fechaVencimiento)
-    this.setState({ fechaVencimiento })
   }
 
   render () {
     return (
       <View style={styles.container}>
-        <View>
-          <Text style={styles.titulo}>
-            DATOS DE TARJETA (CREDITO/DEBITO)
-          </Text>
-        </View>
+        <Text style={styles.titulo}>
+            DATOS
+        </Text>
         <View style={styles.row}>
           <View style={styles.iconContainer}>
-            <Icon style={styles.icon} name='user-o' size={25} color='#e74c3c' />
+            <Icon style={styles.icon} name='address-card-o' size={25} color='#e74c3c' />
           </View>
           <View style={styles.txtContainer}>
             <TextInput
@@ -169,6 +179,7 @@ export default class PaymentFormView extends Component {
               onBlur={this._onBlurNumeroTarjeta.bind(this)}
               placeholder='Numero de la Tarjeta'
               value={this.state.numeroTarjeta}
+              maxLength={16}
               keyboardType={'numeric'}
               onChangeText={(numeroTarjeta) => this.setState({ numeroTarjeta })}
               />
@@ -184,12 +195,28 @@ export default class PaymentFormView extends Component {
               style={[ styles.input, this.state.isFocusFecha && styles.focusedError
               ]}
               onBlur={this._onBlurFechaVencimiento.bind(this)}
-              placeholder='AAAA-MM'
-              value={this.state.fechaVencimiento}
-              maxLength={7}
+              placeholder='AAAA'
+              value={this.state.anio}
+              maxLength={4}
               keyboardType={'numeric'}
-              onChangeText={(fechaVencimiento) => this.changeFecha(fechaVencimiento)}
+              onChangeText={(anio) => this.setState({ anio })}
             />
+
+          </View>
+
+          <Text style={styles.etiqueta}>/</Text>
+
+          <View style={styles.txtContainer}>
+            <TextInput
+              style={[ styles.input, this.state.isFocusFecha && styles.focusedError
+              ]}
+              onBlur={this._onBlurFechaVencimiento.bind(this)}
+              placeholder='MM'
+              value={this.state.mes}
+              maxLength={2}
+              keyboardType={'numeric'}
+              onChangeText={(mes) => this.setState({ mes })}
+          />
           </View>
           <View style={styles.iconContainer}>
             <Icon style={styles.icon} name='unlock-alt' size={25} color='#e74c3c' />
@@ -200,6 +227,7 @@ export default class PaymentFormView extends Component {
               ]}
               onBlur={this._onBlurCVC.bind(this)}
               placeholder='CVC'
+              maxLength={4}
               keyboardType={'numeric'}
               value={this.state.codigoSeguridad}
               onChangeText={(codigoSeguridad) => this.setState({ codigoSeguridad })}
@@ -211,7 +239,6 @@ export default class PaymentFormView extends Component {
           onPress={() => this.handleAction()}>
           <Text style={styles.textButtom}>GUARDAR</Text>
         </TouchableHighlight>
-
       </View>
     )
   }
@@ -221,7 +248,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F3F3',
-    paddingTop: 50,
+    // paddingTop: 5,
     marginTop: 5,
     paddingLeft: 15,
     paddingRight: 15
@@ -240,8 +267,14 @@ const styles = StyleSheet.create({
     width: 350,
     height: 100
   },
+  // titulo: {
+  //   margin: 20
+  // },
   titulo: {
-    margin: 20
+    margin: 20,
+    fontSize: 16,
+    fontWeight: 'bold',
+    alignSelf: 'center'
   },
   row: {
     flexDirection: 'row',
@@ -251,8 +284,11 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     alignItems: 'center',
-    width: 35,
-    height: 20
+    paddingHorizontal: 5
+  },
+  icon: {
+    marginTop: 5,
+    marginRight: 5
   },
   txtContainer: {
     flex: 1,
@@ -265,10 +301,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     paddingHorizontal: 15
-  },
-  icon: {
-    marginTop: 5,
-    marginRight: 5
   },
 
   buttonAction: {
@@ -284,5 +316,9 @@ const styles = StyleSheet.create({
   textButtom: {
     textAlign: 'center',
     color: 'white'
+  },
+  etiqueta: {
+    margin: 5,
+    fontSize: 20
   }
 })

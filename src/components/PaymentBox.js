@@ -38,7 +38,7 @@ export default class PaymentBox extends Component {
 const styles = StyleSheet.create({
   paymentBox: {
     flex: 1,
-    backgroundColor: '#F3F3F3',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'flex-start',
     shadowColor: 'black',
     shadowOpacity: 0.2,

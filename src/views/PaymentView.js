@@ -25,17 +25,22 @@ export default class PaymentView extends Component {
 
   _renderMensajeLista () {
     if (this.state.mensaje !== null) {
-      return (<Text style={styles.mensaje}>{this.state.mensaje}</Text>)
+      return (
+        <View style={styles.containerInterno}>
+          <PaymentList payments={this.state.payments} />
+          <Text style={styles.mensaje}>{this.state.mensaje}</Text>
+        </View>)
+    } else {
+      return (
+        <PaymentList payments={this.state.payments} />
+      )
     }
   }
-
+  // <PaymentList payments={this.state.payments} />
   render () {
     return (
-      <View>
-        <PaymentList payments={this.state.payments} />
-        <View style={styles.containerInterno}>
-          <Text>{this._renderMensajeLista()}</Text>
-        </View>
+      <View style={styles.container}>
+        {this._renderMensajeLista()}
       </View>
     )
   }
@@ -44,8 +49,8 @@ export default class PaymentView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F3F3'
-
+    backgroundColor: '#F3F3F3',
+    justifyContent: 'flex-start'
   },
   containerInterno: {
     alignItems: 'center',

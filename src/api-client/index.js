@@ -70,6 +70,15 @@ function setFormaPago (formaPago) {
   .then(checkStatus)
 }
 
+function updateFormaPago (formaPago) {
+  return fetch(`${parameters.URL}/formaPagoAppMobile/${formaPago.id}`, {
+    method: 'PUT',
+    headers: parameters.getHeader(),
+    body: JSON.stringify(formaPago)
+  })
+  .then(checkStatus)
+}
+
 function getOrigenes () {
   return fetch(`${URL}/rutasAppMobile/ciudadOrigen`, {
     headers: parameters.getHeader()
@@ -91,4 +100,4 @@ function getTurnos (origen, destino, fecha) {
   .then(checkStatus)
 }
 
-export { signIn, signUP, updatePerson, getFormasPagos, setFormaPago, getOrigenes, getDestinos, getTurnos }
+export { signIn, signUP, updatePerson, getFormasPagos, setFormaPago, updateFormaPago, getOrigenes, getDestinos, getTurnos }

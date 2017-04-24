@@ -28,7 +28,7 @@ export default class OroTicketMobile extends Component {
           <Scene key='perfil' component={PerfilView} hideNavBar />
           <Scene key='invoice' component={InvoiceView} hideNavBar />
           <Scene key='paymentView' component={PaymentView} title='Lista de Tarjeta' hideNavBar />
-          <Scene key='PaymentFormView' component={PaymentFormView} title='Tarjeta de Credito' hideNavBar={isAndroid} direction='vertical' />
+          <Scene key='PaymentFormView' component={PaymentFormView} title='Tarjeta de Cre/Deb' hideNavBar={isAndroid} direction='vertical' />
           <Scene key='turn' component={TurnView} hideNavBar />
           <Scene key='preInvoice' component={PreInvoiceView} hideNavBar />
           <Scene key='seat' component={SeatView} hideNavBar />

@@ -11,6 +11,7 @@ import {
 import { Actions } from 'react-native-router-flux'
 import PaymentBox from './PaymentBox'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { updateFormaPago } from '../api-client'
 
 export default class PaymentList extends Component {
   constructor (props) {
@@ -40,8 +41,8 @@ export default class PaymentList extends Component {
   renderSectionHeader () {
     return (
       <View style={styles.grupoHorizontal}>
-        <Icon style={styles.icon} name='plus-square' size={32} color='#FFF' />
-        <Text style={styles.titulo}>LISTA DE TARJETA</Text>
+        <Icon style={styles.icon} name='plus-square' size={32} color='#F3F3F3' />
+        <Text style={styles.titulo}>METODOS DE PAGO</Text>
         <TouchableHighlight
           style={styles.buttonAgregar}
           onPress={() => Actions.PaymentFormView()}>
@@ -55,14 +56,32 @@ export default class PaymentList extends Component {
     Actions.PaymentFormView({payment})
   }
 
-  handleLongPress () {
-    Alert.alert('OroTicket', 'Desea eliminar')
+  handleLongPress (payment) {
+    Alert.alert(
+      'OroTicket',
+      'Desea eliminar',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: () => { this.anularFormaPago(payment) } }
+      ],
+      { cancelable: false }
+    )
+  }
+  anularFormaPago (payment) {
+    payment.activo = 'false'
+    updateFormaPago(payment)
+      .then(data => {
+        console.warn('data', data);
+      })
+      .catch(err => {
+        console.warn(`${err}`)
+      })
   }
 
   render () {
     return (
       <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={(payment) =>
-        <TouchableOpacity onLongPress={() => this.handleLongPress()} onPress={() => this.handlePayment(payment)}>
+        <TouchableOpacity onLongPress={() => this.handleLongPress(payment)} onPress={() => this.handlePayment(payment)}>
           <PaymentBox payment={payment} />
         </TouchableOpacity>} renderSectionHeader={() => this.renderSectionHeader()} />
     )
