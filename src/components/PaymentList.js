@@ -71,7 +71,7 @@ export default class PaymentList extends Component {
     payment.activo = 'false'
     updateFormaPago(payment)
       .then(data => {
-        console.warn('data', data);
+        console.log();
       })
       .catch(err => {
         console.warn(`${err}`)
