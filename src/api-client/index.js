@@ -71,7 +71,7 @@ function setFormaPago (formaPago) {
 }
 
 function updateFormaPago (formaPago) {
-  return fetch(`${parameters.URL}/formaPagoAppMobile/${formaPago.id}`, {
+  return fetch(`${URL}/formaPagoAppMobile/${formaPago.id}`, {
     method: 'PUT',
     headers: parameters.getHeader(),
     body: JSON.stringify(formaPago)

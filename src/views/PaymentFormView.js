@@ -10,6 +10,7 @@ import { setFormaPago, updateFormaPago } from '../api-client'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 import payform from 'payform'
+import Button from '../components/Button'
 const parameters = require('../parameters')
 import { Actions } from 'react-native-router-flux'
 export default class PaymentFormView extends Component {
@@ -50,6 +51,7 @@ export default class PaymentFormView extends Component {
         tipoTj: 'credit-card'
       }
     }
+    this.handleAction = this.handleAction.bind(this)
   }
 
   _onBlurNumeroTarjeta (e) {
@@ -157,7 +159,7 @@ export default class PaymentFormView extends Component {
         </Text>
         <View style={styles.row}>
           <View style={styles.iconContainer}>
-            <Icon style={styles.icon} name='address-card-o' size={25} color='#e74c3c' />
+            <Icon style={styles.icon} name='address-card-o' size={25} color='#F49A00' />
           </View>
           <View style={styles.txtContainer}>
             <TextInput
@@ -170,7 +172,7 @@ export default class PaymentFormView extends Component {
         </View>
         <View style={styles.row}>
           <View style={styles.iconContainer}>
-            <Icon style={styles.icon} name={this.state.tipoTj} size={25} color='#e74c3c' />
+            <Icon style={styles.icon} name={this.state.tipoTj} size={25} color='#F49A00' />
           </View>
           <View style={styles.txtContainer}>
             <TextInput
@@ -188,7 +190,7 @@ export default class PaymentFormView extends Component {
         </View>
         <View style={styles.row}>
           <View style={styles.iconContainer}>
-            <Icon style={styles.icon} name='calendar-o' size={25} color='#e74c3c' />
+            <Icon style={styles.icon} name='calendar-o' size={25} color='#F49A00' />
           </View>
           <View style={styles.txtContainer}>
             <TextInput
@@ -219,7 +221,7 @@ export default class PaymentFormView extends Component {
           />
           </View>
           <View style={styles.iconContainer}>
-            <Icon style={styles.icon} name='unlock-alt' size={25} color='#e74c3c' />
+            <Icon style={styles.icon} name='unlock-alt' size={25} color='#F49A00' />
           </View>
           <View style={styles.txtContainer}>
             <TextInput
@@ -234,11 +236,7 @@ export default class PaymentFormView extends Component {
             />
           </View>
         </View>
-        <TouchableHighlight
-          style={styles.buttonAction}
-          onPress={() => this.handleAction()}>
-          <Text style={styles.textButtom}>GUARDAR</Text>
-        </TouchableHighlight>
+        <Button text={this.nameBotton} onPress={this.handleAction} primary icon='check' />
       </View>
     )
   }
@@ -248,10 +246,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F3F3F3',
-    // paddingTop: 5,
     marginTop: 5,
     paddingLeft: 15,
-    paddingRight: 15
+    paddingRight: 15,
+    alignItems: 'center'
   },
   default: {
     borderColor: 'gray',
@@ -267,14 +265,12 @@ const styles = StyleSheet.create({
     width: 350,
     height: 100
   },
-  // titulo: {
-  //   margin: 20
-  // },
   titulo: {
     margin: 20,
     fontSize: 16,
     fontWeight: 'bold',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    color: '#1E70B8'
   },
   row: {
     flexDirection: 'row',

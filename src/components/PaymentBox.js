@@ -11,22 +11,22 @@ export default class PaymentBox extends Component {
     return (
       <View style={styles.paymentBox}>
         <View style={styles.row}>
-          <Icon style={styles.icon} name='user-o' size={25} color='#e74c3c' />
+          <Icon style={styles.icon} name='user-o' size={25} color='#F49A00' />
           <View style={styles.grupoVertical}>
             <Text style={styles.detalle}>{this.props.payment.nombre_tarjeta}</Text>
           </View>
         </View>
         <View style={styles.row}>
-          <Icon style={styles.icon} name='credit-card' size={25} color='#e74c3c' />
+          <Icon style={styles.icon} name='credit-card' size={25} color='#F49A00' />
           <View style={styles.grupoVertical}>
             <Text style={styles.detalle}>{this.props.payment.numero_tarjeta}</Text>
           </View>
         </View>
 
         <View style={styles.row}>
-          <Icon style={styles.icon} name='calendar-o' size={25} color='#e74c3c' />
+          <Icon style={styles.icon} name='calendar-o' size={25} color='#F49A00' />
           <View style={styles.grupoVertical}>
-            <Text style={styles.detalle}>{moment(this.props.payment.fecha_vencimiento).format('MM/YYYY')}</Text>
+            <Text style={styles.detalle}>{moment(this.props.payment.fecha_vencimiento).format('YYYY/MM')}</Text>
           </View>
         </View>
       </View>
