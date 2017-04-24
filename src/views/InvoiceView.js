@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     margin: 20,
     fontSize: 16,
     fontWeight: 'bold',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    color: '#1E70B8'
   }
 })

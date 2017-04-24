@@ -10,13 +10,11 @@ const parameters = require('../parameters')
 
 export default class TurnList extends Component {
   render () {
-    console.warn(`${parameters.URL}${this.props.turno.logo}`)
-
     return (
       <View style={styles.seleccion}>
         <View style={styles.grupoVertical}>
           <Text style={styles.titulo}>{this.props.turno.cooperativa}</Text>
-          <Image source={{uri: `${parameters.URL}${this.props.turno.logo}`}} style={styles.logo} />
+          <Image source={{uri: `${parameters.URL}${this.props.turno.url_logo}`}} style={styles.logo} />
         </View>
         <View style={styles.informacion}>
           <View style={styles.grupoHorizontalPrecio}>

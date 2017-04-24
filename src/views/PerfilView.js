@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     alignSelf: 'center',
-    marginTop: (Platform.OS === 'ios') ? 30 : 20
+    marginTop: (Platform.OS === 'ios') ? 30 : 20,
+    color: '#1E70B8'
   },
   buttonAction: {
     backgroundColor: 'skyblue',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, ListView, TouchableOpacity, Text, View, Alert } from 'react-native'
+import { StyleSheet, ListView, TouchableOpacity, Text, View, Alert, ActivityIndicator } from 'react-native'
 import { getTurnos } from '../api-client'
 import TurnList from '../components/TurnList'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -10,7 +10,8 @@ export default class TurnView extends Component {
     super()
 
     this.state = {
-      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+      datos: false
     }
   }
 
@@ -18,7 +19,8 @@ export default class TurnView extends Component {
     getTurnos(this.props.ciudadSalida, this.props.ciudadDestino, this.props.fecha)
       .then(turnos => {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(turnos.turnos)
+          dataSource: this.state.dataSource.cloneWithRows(turnos.turnos),
+          datos: true
         })
       })
       .catch(err => {
@@ -49,6 +51,13 @@ export default class TurnView extends Component {
   }
 
   render () {
+    if (!this.state.datos) {
+      return (
+        <View>
+          <ActivityIndicator size='large' />
+        </View>
+      )
+    }
     return (
       <ListView dataSource={this.state.dataSource} renderRow={(turno) =>
         <TouchableOpacity style={styles.combo} onPress={() => this.handleTurno(turno)}>
