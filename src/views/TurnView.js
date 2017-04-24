@@ -30,11 +30,11 @@ export default class TurnView extends Component {
   renderSectionHeader () {
     return (
       <View style={styles.grupoHorizontal}>
-        <Icon style={styles.icon} name='map-marker' size={17} color='#e74c3c' />
+        <Icon style={styles.icon} name='map-marker' size={17} color='#F49A00' />
         <Text>{this.props.ciudadSalida}</Text>
-        <Icon style={styles.icon} name='map-marker' size={17} color='#e74c3c' />
+        <Icon style={styles.icon} name='map-marker' size={17} color='#F49A00' />
         <Text>{this.props.ciudadDestino}</Text>
-        <Icon style={styles.icon} name='calendar' size={14} color='#e74c3c' />
+        <Icon style={styles.icon} name='calendar' size={14} color='#F49A00' />
         <Text>{this.props.fecha}</Text>
       </View>
     )

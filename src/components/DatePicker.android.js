@@ -44,9 +44,10 @@ export default class DatePicker extends Component {
       <TouchableWithoutFeedback onPress={this.showPicker.bind(this, 'simple', {date: this.state.simpleDate})}>
         <View style={styles.combo}>
           <View style={styles.seleccion}>
+            <Text style={styles.texto}>Fecha</Text>
             <Text style={styles.label}>{this.state.simpleText}</Text>
           </View>
-          <Icon style={styles.icon} name='calendar' size={32} color='#e74c3c' />
+          <Icon style={styles.icon} name='calendar' size={32} color='#F49A00' />
         </View>
       </TouchableWithoutFeedback>
     )
@@ -73,5 +74,9 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: 5,
     marginRight: 5
+  },
+  texto: {
+    color: '#1E70B8',
+    fontWeight: 'bold'
   }
 })

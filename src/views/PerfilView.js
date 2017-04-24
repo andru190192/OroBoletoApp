@@ -15,12 +15,13 @@ import { signUP, updatePerson } from '../api-client'
 import TextField from 'react-native-md-textinput'
 const parameters = require('../parameters')
 import { LoginButton } from 'react-native-fbsdk'
+import Button from '../components/Button'
 
 export default class PerfilView extends Component {
   constructor (props) {
     super()
     if (props.usuario === undefined) {
-      this.nameBotton = 'MODIFICAR'
+      this.nameBotton = 'Modificar'
       this.state = {
         cedulaRuc: parameters.USER.cedulaRuc,
         nombre: parameters.USER.nombre,
@@ -32,7 +33,7 @@ export default class PerfilView extends Component {
         picture: parameters.USER.picture
       }
     } else {
-      this.nameBotton = 'GUARDAR'
+      this.nameBotton = 'Guardar'
       this.state = {
         usuario: props.usuario.id,
         cedulaRuc: '',
@@ -45,10 +46,12 @@ export default class PerfilView extends Component {
         picture: props.usuario.picture.data.url
       }
     }
+    this.handleAction = this.handleAction.bind(this)
+    this.handleCancelar = this.handleCancelar.bind(this)
   }
 
   handleAction () {
-    if (this.nameBotton === 'MODIFICAR') {
+    if (this.nameBotton === 'Modificar') {
       updatePerson(this.state)
       .then(data => {
         parameters.USER = data.persona
@@ -71,8 +74,17 @@ export default class PerfilView extends Component {
     }
   }
 
-  cancelar () {
-    console.warn('CANCELAR')
+  handleCancelar () {
+    this.setState({
+      cedulaRuc: parameters.USER.cedulaRuc,
+      nombre: parameters.USER.nombre,
+      apellido: parameters.USER.apellido,
+      direccion: parameters.USER.direccion,
+      email: parameters.USER.email,
+      telefono: parameters.USER.telefono,
+      ciudad: parameters.USER.ciudad,
+      picture: parameters.USER.picture
+    })
   }
 
   handleSalir () {
@@ -85,7 +97,7 @@ export default class PerfilView extends Component {
     return (
       <ScrollView>
         <View style={styles.perfil}>
-          <Text style={styles.titulo}>{this.nameBotton === 'MODIFICAR' ? 'PERFIL' : 'REGISTRATE'}</Text>
+          <Text style={styles.titulo}>{this.nameBotton === 'Modificar' ? 'PERFIL' : 'REGISTRATE'}</Text>
           <Image source={{uri: this.state.picture}} style={styles.picture} />
           <View style={styles.grupoHorizontal}>
             <LoginButton onLogoutFinished={this.handleSalir} />
@@ -138,16 +150,8 @@ export default class PerfilView extends Component {
             onChangeText={(ciudad) => this.setState({ ciudad })}
               />
           <View style={styles.grupoHorizontal}>
-            <TouchableHighlight
-              style={styles.buttonAction}
-              onPress={() => this.handleAction()}>
-              <Text style={styles.textButtom}>{this.nameBotton}</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.buttonCancelar}
-              onPress={() => this.cancelar()}>
-              <Text style={styles.textButtom}>CANCELAR</Text>
-            </TouchableHighlight>
+            <Button text={this.nameBotton} onPress={this.handleAction} primary icon='check' />
+            <Button text='Cancelar' onPress={this.handleCancelar} icon='times' />
           </View>
         </View>
       </ScrollView>

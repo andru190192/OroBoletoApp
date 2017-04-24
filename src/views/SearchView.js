@@ -5,6 +5,7 @@ import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 import DatePicker from '../components/DatePicker'
+import Button from '../components/Button'
 
 export default class HomeView extends Component {
   constructor (props) {
@@ -19,6 +20,7 @@ export default class HomeView extends Component {
     this.handleCiudadSalida = this.handleCiudadSalida.bind(this)
     this.handleCiudadDestino = this.handleCiudadDestino.bind(this)
     this.handleFecha = this.handleFecha.bind(this)
+    this.handleBuscar = this.handleBuscar.bind(this)
   }
 
   handleFecha (fecha) {
@@ -58,22 +60,20 @@ export default class HomeView extends Component {
         <Text style={styles.titulo}>BUSCA TU BOLETO</Text>
         <TouchableOpacity style={styles.combo} onPress={() => Actions.origin({ handleCiudadSalida: this.handleCiudadSalida })}>
           <View style={styles.seleccion}>
-            <Text style={styles.label}>Escoje tu salida</Text>
+            <Text style={styles.texto}>Salida</Text>
             <Text style={styles.element}>{this.state.ciudadSalida}</Text>
           </View>
-          <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
+          <Icon style={styles.icon} name='map-marker' size={32} color='#F49A00' />
         </TouchableOpacity>
         <TouchableOpacity style={styles.combo} onPress={() => (this.state.ciudadSalida === '') ? Alert.alert('OroTicket', 'Escoja una salida') : Actions.destination({ ciudadSalida: this.state.ciudadSalida, handleCiudadDestino: this.handleCiudadDestino })}>
           <View style={styles.seleccion}>
-            <Text style={styles.label}>Escoje tu Destino</Text>
+            <Text style={styles.texto}>Destino</Text>
             <Text style={styles.element}>{this.state.ciudadDestino}</Text>
           </View>
-          <Icon style={styles.icon} name='map-marker' size={32} color='#e74c3c' />
+          <Icon style={styles.icon} name='map-marker' size={32} color='#F49A00' />
         </TouchableOpacity>
         <DatePicker onHandleFecha={this.handleFecha} />
-        <TouchableOpacity style={styles.btnBuscar} onPress={() => this.handleBuscar()} title='Buscar'>
-          <Text style={{color: '#FFFFFF'}}>Buscar</Text>
-        </TouchableOpacity>
+        <Button text='Buscar' onPress={this.handleBuscar} primary icon='search' />
       </View>
     )
   }
@@ -109,15 +109,11 @@ const styles = StyleSheet.create({
   titulo: {
     margin: 20,
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#1E70B8'
   },
-  btnBuscar: {
-    height: 50,
-    width: 200,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-    backgroundColor: '#e74c3c'
+  texto: {
+    color: '#1E70B8',
+    fontWeight: 'bold'
   }
 })

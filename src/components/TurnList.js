@@ -6,22 +6,25 @@ import {
   Image
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+const parameters = require('../parameters')
 
 export default class TurnList extends Component {
   render () {
+    console.warn(`${parameters.URL}${this.props.turno.logo}`)
+
     return (
       <View style={styles.seleccion}>
         <View style={styles.grupoVertical}>
           <Text style={styles.titulo}>{this.props.turno.cooperativa}</Text>
-          <Image source={require('../static/images/cooperativa.png')} style={styles.logo} />
+          <Image source={{uri: `${parameters.URL}${this.props.turno.logo}`}} style={styles.logo} />
         </View>
         <View style={styles.informacion}>
           <View style={styles.grupoHorizontalPrecio}>
-            <Icon style={styles.icon} name='usd' size={14} color='#e74c3c' />
+            <Icon style={styles.icon} name='usd' size={14} color='#F49A00' />
             <Text style={styles.precio}>{this.props.turno.valor}</Text>
           </View>
           <View style={styles.grupoHorizontal}>
-            <Icon name='clock-o' size={20} color='#e74c3c' />
+            <Icon name='clock-o' size={20} color='#F49A00' />
             <Text>{this.props.turno.hora_salida}</Text>
             <Text>-</Text>
             <Text>{this.props.turno.hora_llegada}</Text>
@@ -66,7 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   titulo: {
-    // color: '#e74c3c',
+    // color: '#F49A00',
     fontSize: 18,
     marginTop: 5,
     marginBottom: 5

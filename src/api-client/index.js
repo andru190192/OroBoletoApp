@@ -4,6 +4,7 @@ const {
 } = ReactNative
 
 const parameters = require('../parameters')
+const URL = `${parameters.URL}/api`
 
 async function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
@@ -18,16 +19,16 @@ async function checkStatus (response) {
   }
 }
 
-async function isConnected () {
-  let isConnected
-  await NetInfo.isConnected.fetch().then(value => { isConnected = value })
-  .catch(err => console.warn(err))
-  return isConnected
-}
+// async function isConnected () {
+//   let isConnected
+//   await NetInfo.isConnected.fetch().then(value => { isConnected = value })
+//   .catch(err => console.warn(err))
+//   return isConnected
+// }
 
 function signIn (usuarioId) {
   // console.warn('isConnected', isConnected())
-  return fetch(`${parameters.URL}/signIn`, {
+  return fetch(`${URL}/signIn`, {
     method: 'POST',
     headers: parameters.getHeader(),
     body: JSON.stringify({ usuario: usuarioId })
@@ -36,7 +37,7 @@ function signIn (usuarioId) {
 }
 
 function signUP (usuario) {
-  return fetch(`${parameters.URL}/signUp`, {
+  return fetch(`${URL}/signUp`, {
     method: 'POST',
     headers: parameters.getHeader(),
     body: JSON.stringify(usuario)
@@ -45,7 +46,7 @@ function signUP (usuario) {
 }
 
 function updatePerson (usuario) {
-  return fetch(`${parameters.URL}/persona/${usuario.cedulaRuc}`, {
+  return fetch(`${URL}/persona/${usuario.cedulaRuc}`, {
     method: 'PUT',
     headers: parameters.getHeader(),
     body: JSON.stringify(usuario)
@@ -54,14 +55,14 @@ function updatePerson (usuario) {
 }
 
 function getFormasPagos (cedulaRuc) {
-  return fetch(`${parameters.URL}/formasPagosAppMobile/${cedulaRuc}`, {
+  return fetch(`${URL}/formasPagosAppMobile/${cedulaRuc}`, {
     headers: parameters.getHeader()
   })
   .then(checkStatus)
 }
 
 function setFormaPago (formaPago) {
-  return fetch(`${parameters.URL}/formaPagoAppMobile`, {
+  return fetch(`${URL}/formaPagoAppMobile`, {
     method: 'POST',
     headers: parameters.getHeader(),
     body: JSON.stringify(formaPago)
@@ -70,23 +71,21 @@ function setFormaPago (formaPago) {
 }
 
 function getOrigenes () {
-  console.warn('isConnected', isConnected())
-
-  return fetch(`${parameters.URL}/rutasAppMobile/ciudadOrigen`, {
+  return fetch(`${URL}/rutasAppMobile/ciudadOrigen`, {
     headers: parameters.getHeader()
   })
   .then(checkStatus)
 }
 
 function getDestinos (origen) {
-  return fetch(`${parameters.URL}/rutasAppMobile/ciudadDestino/${origen}`, {
+  return fetch(`${URL}/rutasAppMobile/ciudadDestino/${origen}`, {
     headers: parameters.getHeader()
   })
   .then(checkStatus)
 }
 
 function getTurnos (origen, destino, fecha) {
-  return fetch(`${parameters.URL}/turnosAppMobile/${origen}/${destino}/${fecha}`, {
+  return fetch(`${URL}/turnosAppMobile/${origen}/${destino}/${fecha}`, {
     headers: parameters.getHeader()
   })
   .then(checkStatus)
