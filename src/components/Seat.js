@@ -7,27 +7,28 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-let asiento
-
 export default class Seat extends Component {
   constructor (props) {
     super()
 
-    console.log(prop.numero)
-    console.log(prop.nombre)
-    console.log(prop.ocupados)
-
     this.state = {
       seleccionado: false,
-      ocupado: true
+      ocupado: props.vendidos.includes(props.numero)
     }
-    }
+  }
 
   handleSeleccion () {
     this.setState({
       seleccionado: !this.state.seleccionado
     })
-    this.props.onHandleSeleccion(this.props.numero)
+    this.props.onHandleSeleccion(this.props.numero, this.props.nombre)
+  }
+
+  componentWillReceiveProps (next_props) {
+    console.log('numero: ' + this.props.numero + ' selec: ' + next_props.seleccionado)
+    this.setState({
+      seleccionado: this.props.numero === next_props.seleccionado ? true : false
+    })
   }
 
   render () {

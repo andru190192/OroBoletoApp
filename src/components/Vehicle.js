@@ -13,28 +13,32 @@ export default class Vehicle extends Component {
   constructor (props) {
     super()
     this.state = {
-      asientosVendidos: props.asientosVendidos,
-      asientoSeleccionado: null
+      asientosVendidos: 0,
+      numeroAsiento: null,
+      nombreAsiento: null
     }
     this.handleSeleccion = this.handleSeleccion.bind(this)
   }
 
-  handleSeleccion (asiento) {
-    console.log(asiento)
-    // this.setState({
-    //   asientoSeleccionado: asiento
-    // })
+  componentWillReceiveProps (next_props) {
+    this.setState({
+      asientosVendidos: next_props.asientosVendidos
+    })
+  }
+
+  handleSeleccion (numeroAsiento, nombreAsiento) {
+    this.setState({ numeroAsiento, nombreAsiento })
   }
 
   handleContinuar () {
-    if (this.state.asientoSeleccionado === null) {
+    if (this.state.numeroAsiento === null) {
       Alert.alert('OroTicket', 'Escoja un asiento')
     } else {
-      Actions.preInvoice({asiento: this.state.asientoSeleccionado})
+      Actions.preInvoice({asiento: this.state.nombreAsiento})
     }
   }
 
-  diseñoBus () {
+  designBus () {
     let asientos = []
     for (var i = 0; i < this.props.numeroAsientos; i++) {
       asientos.push(
@@ -48,7 +52,7 @@ export default class Vehicle extends Component {
     return asientos
   }
 
-  diseñoBuseta () {
+  designBuseta () {
     let asientos = []
     let numero = 1
     for (var i = 1; i <= 6; i++) {
@@ -58,35 +62,40 @@ export default class Vehicle extends Component {
             numero={i === 1 ? null : numero++}
             nombre={`${i}A`}
             render={i === 1 ? false : true}
-            ocupados={this.state.asientosVendidos}
+            seleccionado={this.state.numeroAsiento}
+            vendidos={this.state.asientosVendidos}
             onHandleSeleccion={this.handleSeleccion} />
           <Seat
             numero={numero++}
             nombre={`${i}B`}
             render
-            ocupados={this.state.asientosVendidos}
+            seleccionado={this.state.numeroAsiento}
+            vendidos={this.state.asientosVendidos}
             onHandleSeleccion={this.handleSeleccion} />
           <Seat
             numero={i === 3 ? null : numero++}
             nombre={`${i}C`}
             render={i === 3 ? false : true}
-            ocupados={this.state.asientosVendidos}
+            seleccionado={this.state.numeroAsiento}
+            vendidos={this.state.asientosVendidos}
             onHandleSeleccion={this.handleSeleccion} />
           <Seat
             numero={i === 6 ? numero++ : null}
             nombre={`${i}D`}
             render={i === 6 ? true : false}
-            ocupados={this.state.asientosVendidos}
+            seleccionado={this.state.numeroAsiento}
+            vendidos={this.state.asientosVendidos}
             onHandleSeleccion={this.handleSeleccion} />
         </View>)
     }
+
     return asientos
   }
 
   render () {
     return (
       <View style={styles.container}>
-        {this.props.numeroAsientos === 15 ? this.diseñoBuseta() : this.diseñoBus()}
+        {this.props.numeroAsientos === 17 ? this.designBuseta() : this.designBus()}
         <View style={styles.grupoHorizontal}>
           <TouchableOpacity
             style={styles.buttonAction}
