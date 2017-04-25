@@ -37,7 +37,6 @@ export default class PaymentList extends Component {
       dataSource: this.state.dataSource.cloneWithRows(data)
     })
   }
-
   renderSectionHeader () {
     return (
       <View style={styles.grupoHorizontal}>

@@ -48,7 +48,9 @@ export default class PaymentFormView extends Component {
         mes: moment(props.payment.fecha_vencimiento).format('MM'),
         activo: props.payment.activo,
         id: props.payment.id,
-        tipoTj: 'credit-card'
+        tipoTj: 'credit-card',
+        isFocusNumTjMod: true,
+        isFocusedMod: true
       }
     }
     this.handleAction = this.handleAction.bind(this)
@@ -58,6 +60,7 @@ export default class PaymentFormView extends Component {
     if (!payform.validateCardNumber(this.state.numeroTarjeta)) {
       this.state.tipoTj = 'credit-card'
       this.setState({ isFocusNumTj: true })
+      this.setState({ isFocusNumTjMod: false })
     } else {
       let tipoTarjeta = payform.parseCardType(this.state.numeroTarjeta)
       this.state.tipoTj = 'credit-card'
@@ -73,6 +76,12 @@ export default class PaymentFormView extends Component {
         this.state.tipoTj = 'cc-amex'
       }
       this.setState({ isFocusNumTj: false })
+      this.setState({ isFocusNumTjMod: false })
+    }
+  }
+  _onFocusNumeroTarjeta (e) {
+    if (this.nameBotton === 'MODIFICAR' && this.state.isFocusNumTjMod) {
+      this.setState({ numeroTarjeta: '' })
     }
   }
 
@@ -94,8 +103,15 @@ export default class PaymentFormView extends Component {
     }
     if (!this.validarCVC) {
       this.setState({ isFocused: true })
+      this.setState({ isFocusedMod: false })
     } else {
       this.setState({ isFocused: false })
+      this.setState({ isFocusedMod: false })
+    }
+  }
+  _onFocusCVC (e) {
+    if (this.nameBotton === 'MODIFICAR' && this.state.isFocusedMod) {
+      this.setState({ codigoSeguridad: '' })
     }
   }
 
@@ -179,6 +195,7 @@ export default class PaymentFormView extends Component {
               style={[ styles.input, this.state.isFocusNumTj && styles.focusedError
               ]}
               onBlur={this._onBlurNumeroTarjeta.bind(this)}
+              onFocus={this._onFocusNumeroTarjeta.bind(this)}
               placeholder='Numero de la Tarjeta'
               value={this.state.numeroTarjeta}
               maxLength={16}
@@ -228,6 +245,7 @@ export default class PaymentFormView extends Component {
               style={[ styles.input, this.state.isFocused && styles.focusedError
               ]}
               onBlur={this._onBlurCVC.bind(this)}
+              onFocus={this._onFocusCVC.bind(this)}
               placeholder='CVC'
               maxLength={4}
               keyboardType={'numeric'}
