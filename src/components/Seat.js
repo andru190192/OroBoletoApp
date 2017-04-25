@@ -25,7 +25,6 @@ export default class Seat extends Component {
   }
 
   componentWillReceiveProps (next_props) {
-    console.log('numero: ' + this.props.numero + ' selec: ' + next_props.seleccionado)
     this.setState({
       seleccionado: this.props.numero === next_props.seleccionado ? true : false
     })

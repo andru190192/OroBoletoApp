@@ -42,12 +42,37 @@ export default class Vehicle extends Component {
     let asientos = []
     for (var i = 0; i < this.props.numeroAsientos; i++) {
       asientos.push(
-        <View style={styles.grupoHorizontal}>
-          <Seat numero='1A' />
-          <Seat render numero='1B' ocupado />
-          <Seat render numero='1C' onHandleSeleccion={this.handleSeleccion} />
-          <Seat numero='1D' onHandleSeleccion={this.handleSeleccion} />
-        </View>)
+        <View style={styles.grupoHorizontal} key={i}>
+          <Seat
+            numero={i === 1 ? null : numero++}
+            nombre={i}
+            render={i === 1 ? false : true}
+            seleccionado={this.state.numeroAsiento}
+            vendidos={this.state.asientosVendidos}
+            onHandleSeleccion={this.handleSeleccion} />
+          <Seat
+            numero={numero++}
+            nombre={i}
+            render
+            seleccionado={this.state.numeroAsiento}
+            vendidos={this.state.asientosVendidos}
+            onHandleSeleccion={this.handleSeleccion} />
+          <Seat
+            numero={i === 3 ? null : numero++}
+            nombre={i}
+            render={i === 3 ? false : true}
+            seleccionado={this.state.numeroAsiento}
+            vendidos={this.state.asientosVendidos}
+            onHandleSeleccion={this.handleSeleccion} />
+          <Seat
+            numero={i === 6 ? numero++ : null}
+            nombre={i}
+            render={i === 6 ? true : false}
+            seleccionado={this.state.numeroAsiento}
+            vendidos={this.state.asientosVendidos}
+            onHandleSeleccion={this.handleSeleccion} />
+        </View>
+      )
     }
     return asientos
   }
@@ -86,7 +111,8 @@ export default class Vehicle extends Component {
             seleccionado={this.state.numeroAsiento}
             vendidos={this.state.asientosVendidos}
             onHandleSeleccion={this.handleSeleccion} />
-        </View>)
+        </View>
+      )
     }
 
     return asientos
