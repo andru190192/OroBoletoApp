@@ -100,4 +100,22 @@ function getTurnos (origen, destino, fecha) {
   .then(checkStatus)
 }
 
-export { signIn, signUP, updatePerson, getFormasPagos, setFormaPago, updateFormaPago, getOrigenes, getDestinos, getTurnos }
+function getTurnoVehiculo (turno, fecha) {
+  return fetch(`${URL}/turnoVehiculoAppMobile/${turno}/${fecha}`, {
+    headers: parameters.getHeader()
+  })
+  .then(checkStatus)
+}
+
+export {
+  signIn,
+  signUP,
+  updatePerson,
+  getFormasPagos,
+  setFormaPago,
+  updateFormaPago,
+  getOrigenes,
+  getDestinos,
+  getTurnos,
+  getTurnoVehiculo
+}

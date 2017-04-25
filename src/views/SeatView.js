@@ -1,11 +1,24 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, ScrollView, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Buseta from '../components/Buseta'
+import { getTurnoVehiculo } from '../api-client'
+import Vehicle from '../components/Vehicle'
 
 export default class SeatView extends Component {
   constructor (props) {
     super()
+    this.state = {
+      vehiculoAsientos: {
+        numero_asientos: 0,
+        asientos_vendidos: []
+      }
+    }
+  }
+
+  componentWillMount () {
+    getTurnoVehiculo(this.props.turno, this.props.fecha)
+      .then(turnoVehiculo => this.setState({ vehiculoAsientos: turnoVehiculo.vehiculoAsientos }))
+      .catch(err => Alert.alert('OroTicket', err.message))
   }
 
   render () {
@@ -27,7 +40,10 @@ export default class SeatView extends Component {
             </View>
           </View>
           <Image source={require('../static/images/bus.png')} style={styles.bus} />
-          <Buseta disponibles={() => this.props.turno.numero_asientos} />
+          <Vehicle
+            numeroAsientos={this.state.vehiculoAsientos.numero_asientos}
+            asientosVendidos={this.state.vehiculoAsientos.asientos_vendidos}
+          />
         </View>
       </ScrollView>
     )

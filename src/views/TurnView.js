@@ -46,7 +46,7 @@ export default class TurnView extends Component {
     if (turno.asientos === '0') {
       Alert.alert('OroTicket', 'No hay asientos disponibles')
     } else {
-      Actions.seat({ turno })
+      Actions.seat({ turno: turno.codigo, fecha: this.props.fecha })
     }
   }
 

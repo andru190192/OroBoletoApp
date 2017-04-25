@@ -12,45 +12,42 @@ let asiento
 export default class Seat extends Component {
   constructor (props) {
     super()
-  }
 
-  componentWillMount () {
+    console.log(prop.numero)
+    console.log(prop.nombre)
+    console.log(prop.ocupados)
+
     this.state = {
-      render: this.props.render,
-      numero: this.props.numero,
-      seleccionado: this.props.seleccionado,
-      ocupado: this.props.ocupado
+      seleccionado: false,
+      ocupado: true
     }
-  }
+    }
 
   handleSeleccion () {
-    if (this.state.seleccionado) {
-      this.setState({
-        seleccionado: false
-      })
-      this.props.onHandleSeleccion('')
-    } else {
-      this.setState({
-        seleccionado: true
-      })
-      this.props.onHandleSeleccion(this.state.numero)
-    }
+    this.setState({
+      seleccionado: !this.state.seleccionado
+    })
+    this.props.onHandleSeleccion(this.props.numero)
   }
 
   render () {
-    asiento = this.state.render ? <TouchableOpacity onPress={() => this.handleSeleccion()} disabled={this.state.ocupado}>
-      <Text style={styles.asiento}>{this.state.ocupado ? '' : this.state.numero}</Text>
-      <Icon name={this.state.seleccionado ? 'square' : this.state.ocupado ? 'minus-square-o' : 'square-o'} size={48} color={this.state.seleccionado ? '#FEE800' : this.state.ocupado ? '#808080' : '#A4C739'} />
-    </TouchableOpacity> : <TouchableOpacity disabled>
-      <View style={{ flexDirection: 'row', opacity: 0 }}>
-        <Text style={styles.asiento}>{this.state.numero}</Text>
-        <Icon name='square-o' size={48} color='#A4C739' />
-      </View>
-    </TouchableOpacity>
-
-    return (
-          asiento
-    )
+    if (this.props.render) {
+      return (
+        <TouchableOpacity onPress={() => this.handleSeleccion()} disabled={this.state.ocupado}>
+          <Text style={styles.asiento}>{this.state.ocupado ? '' : this.props.nombre}</Text>
+          <Icon name={this.state.seleccionado ? 'square' : this.state.ocupado ? 'minus-square-o' : 'square-o'} size={48} color={this.state.seleccionado ? '#FEE800' : this.state.ocupado ? '#808080' : '#A4C739'} />
+        </TouchableOpacity>
+      )
+    } else {
+      return (
+        <TouchableOpacity disabled>
+          <View style={{ flexDirection: 'row', opacity: 0 }}>
+            <Text style={styles.asiento}>{this.props.nombre}</Text>
+            <Icon name='square-o' size={48} color='#A4C739' />
+          </View>
+        </TouchableOpacity>
+      )
+    }
   }
 }
 
