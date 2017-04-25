@@ -24,8 +24,8 @@ export default class Button extends Component {
       )
     } else if (this.props.icon) {
       return (
-        <TouchableOpacity style={[{backgroundColor: this.props.primary ? '#F49A00' : '#1E70B8'}, styles.button]} onPress={() => this.props.onPress()}>
-          <Icon style={styles.icon} name={this.props.icon ? 'search' : ''} size={24} color='#FFF' />
+        <TouchableOpacity style={styles.buttonIcon} onPress={() => this.props.onPress()}>
+          <Icon name={this.props.icon ? this.props.icon : 'search'} size={32} color={this.props.primary ? '#F49A00' : '#1E70B8'} />
         </TouchableOpacity>
       )
     }
@@ -44,10 +44,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 5
   },
+  buttonIcon: {
+    alignSelf: 'center'
+  },
   textButton: {
     textAlign: 'center',
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    height: 20
   },
   icon: {
     height: 20,

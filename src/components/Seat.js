@@ -13,15 +13,14 @@ export default class Seat extends Component {
 
     this.state = {
       seleccionado: false,
-      ocupado: props.vendidos.includes(props.numero)
+      ocupado: props.vendidos.includes(props.numero),
+      nombre: props.nombre ? props.nombre : props.numero
     }
   }
 
   handleSeleccion () {
-    this.setState({
-      seleccionado: !this.state.seleccionado
-    })
-    this.props.onHandleSeleccion(this.props.numero, this.props.nombre)
+    this.setState({ seleccionado: true })
+    this.props.onHandleSeleccion(this.props.numero, this.state.nombre)
   }
 
   componentWillReceiveProps (next_props) {
@@ -33,17 +32,23 @@ export default class Seat extends Component {
   render () {
     if (this.props.render) {
       return (
-        <TouchableOpacity onPress={() => this.handleSeleccion()} disabled={this.state.ocupado}>
-          <Text style={styles.asiento}>{this.state.ocupado ? '' : this.props.nombre}</Text>
-          <Icon name={this.state.seleccionado ? 'square' : this.state.ocupado ? 'minus-square-o' : 'square-o'} size={48} color={this.state.seleccionado ? '#FEE800' : this.state.ocupado ? '#808080' : '#A4C739'} />
+        <TouchableOpacity
+          disabled={this.state.ocupado}
+          onPress={() => this.handleSeleccion()}
+          >
+          <Text style={styles.asiento}>{this.state.nombre}</Text>
+          <Icon
+            name='square'
+            color={this.state.seleccionado ? '#F49A00' : this.state.ocupado ? '#808080' : '#1E70B8'}
+            size={48} />
         </TouchableOpacity>
       )
     } else {
       return (
         <TouchableOpacity disabled>
           <View style={{ flexDirection: 'row', opacity: 0 }}>
-            <Text style={styles.asiento}>{this.props.nombre}</Text>
-            <Icon name='square-o' size={48} color='#A4C739' />
+            <Text style={styles.asiento}>{this.state.nombre}</Text>
+            <Icon name='square' size={48} color='#1E70B8' />
           </View>
         </TouchableOpacity>
       )
@@ -58,6 +63,6 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     marginTop: 7,
     fontSize: 20,
-    color: '#A4C739'
+    color: '#FFF'
   }
 })

@@ -1,21 +1,16 @@
 import React, { Component } from 'react'
 import {
   StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Alert
+  View
 } from 'react-native'
 import Seat from '../components/Seat'
-import { Actions } from 'react-native-router-flux'
 
 export default class Vehicle extends Component {
   constructor (props) {
     super()
     this.state = {
       asientosVendidos: 0,
-      numeroAsiento: null,
-      nombreAsiento: null
+      numeroAsiento: null
     }
     this.handleSeleccion = this.handleSeleccion.bind(this)
   }
@@ -27,47 +22,40 @@ export default class Vehicle extends Component {
   }
 
   handleSeleccion (numeroAsiento, nombreAsiento) {
-    this.setState({ numeroAsiento, nombreAsiento })
-  }
-
-  handleContinuar () {
-    if (this.state.numeroAsiento === null) {
-      Alert.alert('OroTicket', 'Escoja un asiento')
-    } else {
-      Actions.preInvoice({asiento: this.state.nombreAsiento})
-    }
+    this.setState({ numeroAsiento })
+    this.props.onHandleSeleccion(numeroAsiento, nombreAsiento)
   }
 
   designBus () {
+    let filas = Math.floor(this.props.numeroAsientos / 4)
+    let asientosSobrantes = this.props.numeroAsientos % 4
+    if (asientosSobrantes > 0) filas++
     let asientos = []
-    for (var i = 0; i < this.props.numeroAsientos; i++) {
+    let numero = 1
+    for (var i = 0; i < filas; i++) {
       asientos.push(
-        <View style={styles.grupoHorizontal} key={i}>
-          <Seat
-            numero={i === 1 ? null : numero++}
-            nombre={i}
-            render={i === 1 ? false : true}
-            seleccionado={this.state.numeroAsiento}
-            vendidos={this.state.asientosVendidos}
-            onHandleSeleccion={this.handleSeleccion} />
+        <View style={styles.grupoHorizontalBus} key={i}>
           <Seat
             numero={numero++}
-            nombre={i}
             render
             seleccionado={this.state.numeroAsiento}
             vendidos={this.state.asientosVendidos}
             onHandleSeleccion={this.handleSeleccion} />
           <Seat
-            numero={i === 3 ? null : numero++}
-            nombre={i}
-            render={i === 3 ? false : true}
+            numero={numero++}
+            render={i === filas - 1 ? (asientosSobrantes >= 2 ? true : false) : true}
             seleccionado={this.state.numeroAsiento}
             vendidos={this.state.asientosVendidos}
             onHandleSeleccion={this.handleSeleccion} />
           <Seat
-            numero={i === 6 ? numero++ : null}
-            nombre={i}
-            render={i === 6 ? true : false}
+            numero={numero++}
+            render={i === filas - 1 ? (asientosSobrantes >= 3 ? true : false) : true}
+            seleccionado={this.state.numeroAsiento}
+            vendidos={this.state.asientosVendidos}
+            onHandleSeleccion={this.handleSeleccion} />
+          <Seat
+            numero={numero++}
+            render={i === filas - 1 ? (asientosSobrantes >= 4 ? true : false) : true}
             seleccionado={this.state.numeroAsiento}
             vendidos={this.state.asientosVendidos}
             onHandleSeleccion={this.handleSeleccion} />
@@ -82,7 +70,7 @@ export default class Vehicle extends Component {
     let numero = 1
     for (var i = 1; i <= 6; i++) {
       asientos.push(
-        <View style={styles.grupoHorizontal} key={i}>
+        <View style={styles.grupoHorizontalBuseta} key={i}>
           <Seat
             numero={i === 1 ? null : numero++}
             nombre={`${i}A`}
@@ -121,14 +109,10 @@ export default class Vehicle extends Component {
   render () {
     return (
       <View style={styles.container}>
-        {this.props.numeroAsientos === 17 ? this.designBuseta() : this.designBus()}
-        <View style={styles.grupoHorizontal}>
-          <TouchableOpacity
-            style={styles.buttonAction}
-            onPress={() => this.handleContinuar()}>
-            <Text style={styles.textButtom}>CONTINUAR</Text>
-          </TouchableOpacity>
-        </View>
+        { this.props.numeroAsientos === 17 ?
+            this.designBuseta()
+            :
+            this.designBus()}
       </View>
     )
   }
@@ -139,38 +123,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     flex: 1
   },
-  grupoHorizontal: {
+  grupoHorizontalBuseta: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     flex: 1
   },
-  grupoVertical: {
-    flexDirection: 'column',
-    justifyContent: 'center',
+  grupoHorizontalBus: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     flex: 1
-  },
-  bus: {
-    width: 350,
-    height: 102,
-    flex: 1,
-    marginHorizontal: 5,
-    marginVertical: 20
-  },
-  asientos: {
-    marginTop: 20,
-    fontSize: 20
-  },
-  buttonAction: {
-    backgroundColor: 'skyblue',
-    marginTop: 10,
-    paddingTop: 10,
-    paddingBottom: 15,
-    borderRadius: 5,
-    height: 40,
-    width: 150
-  },
-  textButtom: {
-    textAlign: 'center',
-    color: 'white'
   }
 })

@@ -13,16 +13,12 @@ import payform from 'payform'
 import Button from '../components/Button'
 const parameters = require('../parameters')
 import { Actions } from 'react-native-router-flux'
-export default class PaymentFormView extends Component {
-  // 4017779991118888
-  // 5342102102260692
-  // 4242424242424242
-  // editable={false}
 
+export default class PaymentFormView extends Component {
   constructor (props) {
     super()
     if (props.payment === undefined) {
-      this.nameBotton = 'GUARDAR'
+      this.nameBotton = 'Guardar'
       this.state = {
         cliente: parameters.USER.cedulaRuc,
         tipo: 'SE',
@@ -36,7 +32,7 @@ export default class PaymentFormView extends Component {
         tipoTj: 'credit-card'
       }
     } else {
-      this.nameBotton = 'MODIFICAR'
+      this.nameBotton = 'Modificar'
       this.state = {
         cliente: props.payment.cliente,
         tipo: props.payment.tipo,
@@ -80,7 +76,7 @@ export default class PaymentFormView extends Component {
     }
   }
   _onFocusNumeroTarjeta (e) {
-    if (this.nameBotton === 'MODIFICAR' && this.state.isFocusNumTjMod) {
+    if (this.nameBotton === 'Modificar' && this.state.isFocusNumTjMod) {
       this.setState({ numeroTarjeta: '' })
     }
   }
@@ -110,7 +106,7 @@ export default class PaymentFormView extends Component {
     }
   }
   _onFocusCVC (e) {
-    if (this.nameBotton === 'MODIFICAR' && this.state.isFocusedMod) {
+    if (this.nameBotton === 'Modificar' && this.state.isFocusedMod) {
       this.setState({ codigoSeguridad: '' })
     }
   }
@@ -146,7 +142,7 @@ export default class PaymentFormView extends Component {
         this.mensajeAlerta('Error en los datos', 'CVC Incorrecto')
         this.setState({ datosCorrecto: false })
       } else {
-        if (this.nameBotton === 'GUARDAR') {
+        if (this.nameBotton === 'Guardar') {
           setFormaPago(this.state)
             .then(data => {
               this.mensajeAlerta('Datos de la tarjeta', 'Guardados Correctamente')

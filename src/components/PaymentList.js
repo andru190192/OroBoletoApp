@@ -11,6 +11,7 @@ import {
 import { Actions } from 'react-native-router-flux'
 import PaymentBox from './PaymentBox'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Button from '../components/Button'
 import { updateFormaPago } from '../api-client'
 
 export default class PaymentList extends Component {
@@ -25,7 +26,7 @@ export default class PaymentList extends Component {
   componentDidMount () {
     this.updateDataSource(this.props.payments)
   }
- // /// se llama cada ves que se cambia las propiedades
+
   componentWillReceiveProps (newProps) {
     if (newProps.payments !== this.props.payments) {
       this.updateDataSource(newProps.payments)
@@ -42,11 +43,11 @@ export default class PaymentList extends Component {
       <View style={styles.grupoHorizontal}>
         <Icon style={styles.icon} name='plus-square' size={32} color='#F3F3F3' />
         <Text style={styles.titulo}>METODOS DE PAGO</Text>
-        <TouchableHighlight
-          style={styles.buttonAgregar}
-          onPress={() => Actions.PaymentFormView()}>
-          <Icon style={styles.icon} name='plus-square' size={32} color='skyblue' />
-        </TouchableHighlight>
+        <Button
+          primary
+          icon='plus-square'
+          onPress={() => Actions.PaymentFormView()}
+        />
       </View>
     )
   }
@@ -92,14 +93,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     flex: 1
-  },
-  buttonAgregar: {
-    alignSelf: 'center',
-    marginBottom: 5
-  },
-  icon: {
-    marginLeft: 10,
-    marginBottom: 4
   },
   titulo: {
     margin: 20,

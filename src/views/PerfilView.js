@@ -150,8 +150,15 @@ export default class PerfilView extends Component {
             onChangeText={(ciudad) => this.setState({ ciudad })}
               />
           <View style={styles.grupoHorizontal}>
-            <Button text={this.nameBotton} onPress={this.handleAction} primary icon='check' />
-            <Button text='Cancelar' onPress={this.handleCancelar} icon='times' />
+            <Button
+              primary
+              text={this.nameBotton}
+              icon='check'
+              onPress={this.handleAction} />
+            <Button
+              text='Cancelar'
+              icon='times'
+              onPress={this.handleCancelar} />
           </View>
         </View>
       </ScrollView>
