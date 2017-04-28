@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, Text, View, Platform, Alert } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View, Alert } from 'react-native'
 
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -54,7 +54,6 @@ export default class HomeView extends Component {
   }
 
   render () {
-    const isIos = Platform.OS === 'ios'
     return (
       <View style={styles.container}>
         <Text style={styles.titulo}>BUSCA TU BOLETO</Text>

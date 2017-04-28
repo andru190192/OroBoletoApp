@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Alert, Image } from 'react-native'
+import { StyleSheet, View, Text, Alert, Image } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 const parameters = require('../parameters')
 import Button from '../components/Button'

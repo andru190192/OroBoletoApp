@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AppRegistry, Platform, NetInfo, Text, View } from 'react-native'
+import { AppRegistry, Platform } from 'react-native'
 import {Scene, Router} from 'react-native-router-flux'
 import LoginView from './views/LoginView'
 import SearchView from './views/SearchView'
@@ -29,9 +29,9 @@ export default class OroTicketMobile extends Component {
           <Scene key='invoice' component={InvoiceView} hideNavBar />
           <Scene key='paymentView' component={PaymentView} title='Lista de Tarjeta' hideNavBar />
           <Scene key='PaymentFormView' component={PaymentFormView} title='Tarjeta de Cre/Deb' hideNavBar={isAndroid} direction='vertical' />
-          <Scene key='turn' component={TurnView} hideNavBar />
-          <Scene key='preInvoice' component={PreInvoiceView} hideNavBar />
-          <Scene key='seat' component={SeatView} hideNavBar />
+          <Scene key='turn' component={TurnView} title='Lista de Turnos' hideNavBar={isAndroid} direction='vertical' />
+          <Scene key='preInvoice' component={PreInvoiceView} title='Pre-Factura' hideNavBar={isAndroid} direction='vertical' />
+          <Scene key='seat' component={SeatView} title='Asientos' hideNavBar={isAndroid} direction='vertical' />
         </Scene>
       </Router>
     )

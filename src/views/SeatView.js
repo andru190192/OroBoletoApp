@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, ScrollView, Image, Alert } from 'react-native'
+import { StyleSheet, View, Text, ScrollView, Image, Alert, Platform } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getTurnoVehiculo } from '../api-client'
@@ -88,7 +88,8 @@ export default class SeatView extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
-    flex: 1
+    flex: 1,
+    paddingTop: (Platform.OS === 'ios') ? 15 : 0
   },
   grupoHorizontal: {
     flexDirection: 'row',
